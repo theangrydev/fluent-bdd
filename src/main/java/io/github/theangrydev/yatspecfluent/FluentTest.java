@@ -52,6 +52,15 @@ public abstract class FluentTest<
         return given(dependency);
     }
 
+    @SuppressWarnings("unused")
+    protected <D extends Dependency<TestInfrastructure>> D and(D dependency, String messageToDisplay) {
+        return given(dependency);
+    }
+
+    protected <D extends Dependency<TestInfrastructure>> D and(D dependency) {
+        return given(dependency);
+    }
+
     protected <D extends Dependency<TestInfrastructure>> D given(D dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
@@ -124,5 +133,5 @@ public abstract class FluentTest<
     protected abstract SystemUnderTest systemUnderTest();
     protected abstract Assertions responseAssertions(Response response);
     protected abstract TestInfrastructure testInfrastructure();
-    protected abstract void afterSystemHasBeenCalled(RequestResponse result);
+    protected abstract void afterSystemHasBeenCalled(RequestResponse<Response> result);
 }

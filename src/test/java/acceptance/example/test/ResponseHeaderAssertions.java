@@ -1,5 +1,6 @@
-package acceptance.example;
+package acceptance.example.test;
 
+import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
 public class ResponseHeaderAssertions implements WithAssertions {
@@ -10,8 +11,8 @@ public class ResponseHeaderAssertions implements WithAssertions {
         this.response = response;
     }
 
-    public ResponseHeaderAssertions containsContentLength() {
-        assertThat(response.getHeaders()).contains("");
+    public ResponseHeaderAssertions contains(String headerName) {
+        assertThat(response.headers().names()).contains(headerName);
         return this;
     }
 }

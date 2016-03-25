@@ -1,10 +1,10 @@
 package io.github.theangrydev.yatspecfluent;
 
-public class RequestResponse<R> {
+public class RequestResponse<Response> {
     private final Object request;
-    private final R response;
+    private final Response response;
 
-    public RequestResponse(Object request, R response) {
+    public RequestResponse(Object request, Response response) {
         this.request = request;
         this.response = response;
     }
@@ -13,7 +13,7 @@ public class RequestResponse<R> {
         return request;
     }
 
-    public R getResponse() {
+    public Response getResponse() {
         return response;
     }
 }

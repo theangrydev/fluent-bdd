@@ -65,6 +65,11 @@ public abstract class FluentTest<
         return dependency;
     }
 
+    @SuppressWarnings("unused")
+    protected SystemUnderTest when(String messageToDisplay) {
+        return when();
+    }
+
     protected SystemUnderTest when() {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
@@ -75,6 +80,11 @@ public abstract class FluentTest<
         return systemUnderTest;
     }
 
+    @SuppressWarnings("unused")
+    protected Assertions then(String messageToDisplay)  {
+        return then();
+    }
+
     protected Assertions then() {
         if (stage == Stage.GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
@@ -82,14 +92,26 @@ public abstract class FluentTest<
         if (stage == Stage.THEN) {
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
-        RequestResponse<Response> result = systemUnderTest.call(testInfrastructure());
+        RequestResponse<Response> result = callSystemUnderTest();
         if (result == null) {
-            throw new IllegalStateException(format("%s result was null", systemUnderTest.getClass().getSimpleName()));
+            throw new IllegalStateException(format("%s result was null", systemUnderTestName()));
         }
         afterSystemHasBeenCalled(result);
         stage = Stage.THEN;
         assertions = responseAssertions(result.getResponse());
         return assertions;
+    }
+
+    private RequestResponse<Response> callSystemUnderTest() {
+        try {
+            return systemUnderTest.call(testInfrastructure());
+        } catch (Exception exception) {
+            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
+        }
+    }
+
+    private String systemUnderTestName() {
+        return systemUnderTest.getClass().getSimpleName();
     }
 
     protected Assertions and() {

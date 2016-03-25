@@ -1,28 +1,28 @@
 package acceptance;
 
 import com.googlecode.yatspec.junit.SpecRunner;
-import acceptance.example.AcceptanceTest;
-import acceptance.example.PacRequestSystem;
-import acceptance.example.Response;
-import acceptance.example.ResponseAssertions;
+import acceptance.example.test.AcceptanceTest;
+import acceptance.example.test.WeatherApplicationUnderTest;
+import acceptance.example.test.ResponseAssertions;
+import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SpecRunner.class)
-public class ExampleTest extends AcceptanceTest<PacRequestSystem, Response, ResponseAssertions> {
+public class ExampleTest extends AcceptanceTest<WeatherApplicationUnderTest, Response, ResponseAssertions> {
 
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {
-        given(theWeatherService, "OpenWeatherMap").willReturn("foo").whenGiven("bar");
-        when("another system").callsTheEndpoint().withArgument("bar");
-        then().theResponse().isEqualTo("response");
-        and().theResponseHeader().containsContentLength();
-        and().theResponseHeader().containsContentLength();
+        given(theWeatherService, "OpenWeatherMap").willReturn().weatherDescription("light rain").forCity("London");
+        when("the user").requestsTheWeather().forCity("London");
+        then().theResponse().isEqualTo("There is light rain in London");
+        and().theResponseHeaders().contains("Content-Length");
+        and().theResponseHeaders().contains("Date");
     }
 
     @Override
-    protected PacRequestSystem systemUnderTest() {
-        return new PacRequestSystem();
+    protected WeatherApplicationUnderTest systemUnderTest() {
+        return new WeatherApplicationUnderTest();
     }
 
     @Override

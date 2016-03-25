@@ -1,4 +1,4 @@
-package acceptance.example;
+package acceptance.example.test;
 
 import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
 import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
@@ -21,11 +21,12 @@ public abstract class AcceptanceTest<
     private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
 
     private String caller;
-    protected GivenThirdParty theWeatherService = new GivenThirdParty();
+    protected GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap();
 
+    @Override
     protected SystemUnderTest when(String caller) {
         this.caller = caller;
-        return when();
+        return super.when(caller);
     }
 
     @Override
@@ -48,7 +49,7 @@ public abstract class AcceptanceTest<
 
     @Override
     protected TestInfrastructure testInfrastructure() {
-        return new TestInfrastructure();
+        return testInfrastructure;
     }
 
     @Override

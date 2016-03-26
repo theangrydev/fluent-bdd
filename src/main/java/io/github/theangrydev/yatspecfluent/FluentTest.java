@@ -70,8 +70,17 @@ public abstract class FluentTest<
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency.getClass().getSimpleName()));
         }
+        if (!dependencies.isEmpty()) {
+            primePreviousGiven();
+        }
         dependencies.add(dependency);
         return dependency;
+    }
+
+    private void primePreviousGiven() {
+        if (!dependencies.isEmpty()) {
+            dependencies.get(dependencies.size() - 1).prime(this, testInfrastructure());
+        }
     }
 
     @SuppressWarnings("unused")
@@ -83,7 +92,9 @@ public abstract class FluentTest<
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        dependencies.stream().forEach(dependency -> dependency.prime(this, testInfrastructure()));
+        if (!dependencies.isEmpty()) {
+            primePreviousGiven();
+        }
         this.systemUnderTest = systemUnderTest();
         stage = Stage.WHEN;
         return systemUnderTest;

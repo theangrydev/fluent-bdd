@@ -24,7 +24,7 @@ public abstract class FluentTest<
     }
 
     private Stage stage = Stage.GIVEN;
-    private List<Primer<TestInfrastructure>> dependencies = new ArrayList<>();
+    private List<Primer<TestInfrastructure>> primers = new ArrayList<>();
 
     private SystemUnderTest systemUnderTest;
     private Assertions assertions;
@@ -66,20 +66,20 @@ public abstract class FluentTest<
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 
         }
-        boolean alreadyHadGiven = dependencies.stream().map(Primer::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
+        boolean alreadyHadGiven = primers.stream().map(Primer::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency.getClass().getSimpleName()));
         }
-        if (!dependencies.isEmpty()) {
+        if (!primers.isEmpty()) {
             primePreviousGiven();
         }
-        dependencies.add(dependency);
+        primers.add(dependency);
         return dependency;
     }
 
     private void primePreviousGiven() {
-        if (!dependencies.isEmpty()) {
-            dependencies.get(dependencies.size() - 1).prime(this, testInfrastructure());
+        if (!primers.isEmpty()) {
+            primers.get(primers.size() - 1).prime(this, testInfrastructure());
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class FluentTest<
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        if (!dependencies.isEmpty()) {
+        if (!primers.isEmpty()) {
             primePreviousGiven();
         }
         this.systemUnderTest = systemUnderTest();

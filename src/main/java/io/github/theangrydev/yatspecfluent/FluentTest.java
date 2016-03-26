@@ -15,7 +15,7 @@ public abstract class FluentTest<
         TestInfrastructure,
         SystemUnderTest extends io.github.theangrydev.yatspecfluent.SystemUnderTest<TestInfrastructure, Response>,
         Response,
-        Assertions> implements WithTestState, WithInterestingGivens, WithCapturedInputsAndOutputs {
+        Assertions> implements WithTestState, WithInterestingGivens, WithCapturedInputsAndOutputs, InterestingTestItems {
 
     private enum Stage {
         GIVEN,
@@ -24,7 +24,7 @@ public abstract class FluentTest<
     }
 
     private Stage stage = Stage.GIVEN;
-    private List<Dependency<TestInfrastructure>> dependencies = new ArrayList<>();
+    private List<Primer<TestInfrastructure>> dependencies = new ArrayList<>();
 
     private SystemUnderTest systemUnderTest;
     private Assertions assertions;
@@ -48,25 +48,25 @@ public abstract class FluentTest<
     }
 
     @SuppressWarnings("unused")
-    protected <D extends Dependency<TestInfrastructure>> D given(D dependency, String messageToDisplay) {
+    protected <D extends Primer<TestInfrastructure>> D given(D dependency, String messageToDisplay) {
         return given(dependency);
     }
 
     @SuppressWarnings("unused")
-    protected <D extends Dependency<TestInfrastructure>> D and(D dependency, String messageToDisplay) {
+    protected <D extends Primer<TestInfrastructure>> D and(D dependency, String messageToDisplay) {
         return given(dependency);
     }
 
-    protected <D extends Dependency<TestInfrastructure>> D and(D dependency) {
+    protected <D extends Primer<TestInfrastructure>> D and(D dependency) {
         return given(dependency);
     }
 
-    protected <D extends Dependency<TestInfrastructure>> D given(D dependency) {
+    protected <D extends Primer<TestInfrastructure>> D given(D dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 
         }
-        boolean alreadyHadGiven = dependencies.stream().map(Dependency::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
+        boolean alreadyHadGiven = dependencies.stream().map(Primer::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency.getClass().getSimpleName()));
         }
@@ -83,7 +83,7 @@ public abstract class FluentTest<
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        dependencies.stream().forEach(dependency -> dependency.prime(interestingGivens()::add, testInfrastructure()));
+        dependencies.stream().forEach(dependency -> dependency.prime(this, testInfrastructure()));
         this.systemUnderTest = systemUnderTest();
         stage = Stage.WHEN;
         return systemUnderTest;
@@ -134,4 +134,14 @@ public abstract class FluentTest<
     protected abstract Assertions responseAssertions(Response response);
     protected abstract TestInfrastructure testInfrastructure();
     protected abstract void afterSystemHasBeenCalled(RequestResponse<Response> result);
+
+    @Override
+    public void addToGivens(String key, Object instance) {
+        interestingGivens().add(key, instance);
+    }
+
+    @Override
+    public void addToCapturedInputsAndOutputs(String key, Object instance) {
+        capturedInputAndOutputs().add(key, instance);
+    }
 }

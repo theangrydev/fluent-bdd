@@ -7,8 +7,10 @@ import org.junit.Test;
 
 public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure, FluentTestTest.TestSystem, FluentTestTest.Response, FluentTestTest.TestAssertions> implements WithAssertions {
 
-    private static final String INTERESTING_GIVENS_KEY = "key";
-    private static final String INTERESTING_GIVENS_VALUE = "value";
+    private static final String INTERESTING_GIVENS_KEY = "interesting key";
+    private static final String INTERESTING_GIVENS_VALUE = "interesting value";
+    private static final String CAPTURED_INPUTS_AND_OUTPUTS_KEY = "captured key";
+    private static final String CAPTURED_INPUTS_AND_OUTPUTS_VALUE = "captured value";
 
     private final Object request = new Object();
     private final Response response = new Response();
@@ -34,13 +36,14 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
     class Response {}
     class TestInfrastructure {}
 
-    private class SomeDependency implements Dependency<TestInfrastructure> {
+    private class SomeDependency implements Primer<TestInfrastructure> {
         private TestInfrastructure testInfrastructure;
 
         @Override
-        public void prime(InterestingGivensRecorder interestingGivensRecorder, TestInfrastructure testInfrastructure) {
+        public void prime(InterestingTestItems interestingTestItems, TestInfrastructure testInfrastructure) {
             this.testInfrastructure = testInfrastructure;
-            interestingGivensRecorder.addToGivens(INTERESTING_GIVENS_KEY, INTERESTING_GIVENS_VALUE);
+            interestingTestItems.addToGivens(INTERESTING_GIVENS_KEY, INTERESTING_GIVENS_VALUE);
+            interestingTestItems.addToGivens(CAPTURED_INPUTS_AND_OUTPUTS_KEY, CAPTURED_INPUTS_AND_OUTPUTS_VALUE);
         }
     }
 
@@ -59,6 +62,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
         then();
         assertThat(someDependency.testInfrastructure).isSameAs(testInfrastructure);
         assertThat(interestingGivens.getType(INTERESTING_GIVENS_KEY, INTERESTING_GIVENS_VALUE.getClass())).isSameAs(INTERESTING_GIVENS_VALUE);
+        assertThat(interestingGivens.getType(CAPTURED_INPUTS_AND_OUTPUTS_KEY, CAPTURED_INPUTS_AND_OUTPUTS_VALUE.getClass())).isSameAs(CAPTURED_INPUTS_AND_OUTPUTS_VALUE);
     }
 
     @Test

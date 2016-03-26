@@ -1,6 +1,6 @@
 package io.github.theangrydev.yatspecfluent;
 
-@FunctionalInterface
-public interface CapturedInputsAndOutputsPopulator {
+public interface InterestingTestItems {
+    void addToGivens(String key, Object instance);
     void addToCapturedInputsAndOutputs(String key, Object instance);
 }

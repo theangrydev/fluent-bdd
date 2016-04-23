@@ -1,5 +1,6 @@
 package io.github.theangrydev.yatspecfluent;
 
-public interface SystemUnderTest<TestInfrastructure, Result> {
-    RequestResponse<Result> call(TestInfrastructure testInfrastructure) throws Exception;
+public interface SystemUnderTest<TestInfrastructure, Request, Response> {
+    Request request(TestInfrastructure testInfrastructure) throws Exception;
+    Response call(Request request, TestInfrastructure testInfrastructure) throws Exception;
 }

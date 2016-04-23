@@ -5,14 +5,14 @@ import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure, FluentTestTest.TestSystem, FluentTestTest.Response, FluentTestTest.TestAssertions> implements WithAssertions {
+public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure, FluentTestTest.TestSystem, FluentTestTest.Request, FluentTestTest.Response, FluentTestTest.TestAssertions> implements WithAssertions {
 
     private static final String INTERESTING_GIVENS_KEY = "interesting key";
     private static final String INTERESTING_GIVENS_VALUE = "interesting value";
     private static final String CAPTURED_INPUTS_AND_OUTPUTS_KEY = "captured key";
     private static final String CAPTURED_INPUTS_AND_OUTPUTS_VALUE = "captured value";
 
-    private final Object request = new Object();
+    private final Request request = new Request();
     private final Response response = new Response();
     private final TestSystem testSystem = new TestSystem();
     private final TestInfrastructure testInfrastructure = new TestInfrastructure();
@@ -21,19 +21,27 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
     private final InterestingGivens interestingGivens = new InterestingGivens();
     private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
 
-    class TestSystem implements SystemUnderTest<TestInfrastructure, Response> {
+    class TestSystem implements SystemUnderTest<TestInfrastructure, Request, Response> {
 
-        private TestInfrastructure testInfrastructure;
+        private TestInfrastructure requestTestInfrastructure;
+        private TestInfrastructure callTestInfrastructure;
 
         @Override
-        public RequestResponse<Response> call(TestInfrastructure testInfrastructure) {
-            this.testInfrastructure = testInfrastructure;
-            return new RequestResponse<>(request, response);
+        public Request request(TestInfrastructure testInfrastructure) throws Exception {
+            this.requestTestInfrastructure = testInfrastructure;
+            return request;
+        }
+
+        @Override
+        public Response call(Request request, TestInfrastructure testInfrastructure) throws Exception {
+            this.callTestInfrastructure = testInfrastructure;
+            return response;
         }
     }
 
     class TestAssertions {}
     class Response {}
+    class Request {}
     class TestInfrastructure {}
 
     private class SomeDependency implements Primer<TestInfrastructure> {
@@ -52,7 +60,8 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
         given(someDependency);
         when();
         then();
-        assertThat(testSystem.testInfrastructure).isSameAs(testInfrastructure);
+        assertThat(testSystem.requestTestInfrastructure).isSameAs(testInfrastructure);
+        assertThat(testSystem.callTestInfrastructure).isSameAs(testInfrastructure);
     }
 
     @Test
@@ -116,9 +125,15 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
     }
 
     @Override
-    protected void afterSystemHasBeenCalled(RequestResponse result) {
-        assertThat(result.getRequest()).isSameAs(request);
-        assertThat(result.getResponse()).isSameAs(response);
+    protected void beforeSystemHasBeenCalled(Request request) {
+        assertThat(request).isSameAs(this.request);
+
+    }
+
+    @Override
+    protected void afterSystemHasBeenCalled(Response response) {
+        assertThat(response).isSameAs(this.response);
+
     }
 
     @Override

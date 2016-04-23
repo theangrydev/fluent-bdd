@@ -4,12 +4,13 @@ import com.googlecode.yatspec.junit.SpecRunner;
 import acceptance.example.test.AcceptanceTest;
 import acceptance.example.test.WeatherApplicationUnderTest;
 import acceptance.example.test.ResponseAssertions;
+import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SpecRunner.class)
-public class ExampleTest extends AcceptanceTest<WeatherApplicationUnderTest, Response, ResponseAssertions> {
+public class ExampleTest extends AcceptanceTest<WeatherApplicationUnderTest, Request, Response, ResponseAssertions> {
 
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {

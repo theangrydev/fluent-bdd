@@ -13,7 +13,8 @@ import static java.lang.String.format;
 
 public abstract class FluentTest<
         TestInfrastructure,
-        SystemUnderTest extends io.github.theangrydev.yatspecfluent.SystemUnderTest<TestInfrastructure, Response>,
+        SystemUnderTest extends io.github.theangrydev.yatspecfluent.SystemUnderTest<TestInfrastructure, Request, Response>,
+        Request,
         Response,
         Assertions> implements WithTestState, WithInterestingGivens, WithCapturedInputsAndOutputs, InterestingTestItems {
 
@@ -112,19 +113,30 @@ public abstract class FluentTest<
         if (stage == Stage.THEN) {
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
-        RequestResponse<Response> result = callSystemUnderTest();
-        if (result == null) {
-            throw new IllegalStateException(format("%s result was null", systemUnderTestName()));
+        Request request = requestToSystemUnderTest();
+        beforeSystemHasBeenCalled(request);
+
+        Response response = callSystemUnderTest(request);
+        if (response == null) {
+            throw new IllegalStateException(format("%s response was null", systemUnderTestName()));
         }
-        afterSystemHasBeenCalled(result);
+        afterSystemHasBeenCalled(response);
         stage = Stage.THEN;
-        assertions = responseAssertions(result.getResponse());
+        assertions = responseAssertions(response);
         return assertions;
     }
 
-    private RequestResponse<Response> callSystemUnderTest() {
+    private Request requestToSystemUnderTest() {
         try {
-            return systemUnderTest.call(testInfrastructure());
+            return systemUnderTest.request(testInfrastructure());
+        } catch (Exception exception) {
+            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
+        }
+    }
+
+    private Response callSystemUnderTest(Request request) {
+        try {
+            return systemUnderTest.call(request, testInfrastructure());
         } catch (Exception exception) {
             throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
         }
@@ -142,9 +154,10 @@ public abstract class FluentTest<
     }
 
     protected abstract SystemUnderTest systemUnderTest();
+    protected abstract void beforeSystemHasBeenCalled(Request request);
+    protected abstract void afterSystemHasBeenCalled(Response response);
     protected abstract Assertions responseAssertions(Response response);
     protected abstract TestInfrastructure testInfrastructure();
-    protected abstract void afterSystemHasBeenCalled(RequestResponse<Response> result);
 
     @Override
     public void addToGivens(String key, Object instance) {

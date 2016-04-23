@@ -1,6 +1,5 @@
 package acceptance.example.test;
 
-import io.github.theangrydev.yatspecfluent.RequestResponse;
 import io.github.theangrydev.yatspecfluent.SystemUnderTest;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -9,16 +8,19 @@ import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
 
-public class WeatherApplicationUnderTest implements SystemUnderTest<TestInfrastructure, Response>, WithAssertions {
+public class WeatherApplicationUnderTest implements SystemUnderTest<TestInfrastructure, Request, Response>, WithAssertions {
 
     private String city;
 
     @Override
-    public RequestResponse<Response> call(TestInfrastructure testInfrastructure) throws Exception {
+    public Request request(TestInfrastructure testInfrastructure) throws Exception {
+        return weatherRequest(testInfrastructure.serverBaseUrl());
+    }
+
+    @Override
+    public Response call(Request request, TestInfrastructure testInfrastructure) throws Exception {
         OkHttpClient httpClient = testInfrastructure.httpClient();
-        Request request = weatherRequest(testInfrastructure.serverBaseUrl());
-        Response response = httpClient.newCall(request).execute();
-        return new RequestResponse<>(request, response);
+        return httpClient.newCall(request).execute();
     }
 
     private Request weatherRequest(String baseUrl) {

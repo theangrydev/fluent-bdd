@@ -90,7 +90,7 @@ public abstract class FluentTest<TestInfrastructure, Request, Response> implemen
         return when;
     }
 
-    protected <Assertions> Assertions then(ThenFactory<Assertions, Response> thenFactory) {
+    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         if (stage == Stage.GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
         }
@@ -109,7 +109,7 @@ public abstract class FluentTest<TestInfrastructure, Request, Response> implemen
         return thenFactory.then(response);
     }
 
-    protected <Assertions> Assertions and(ThenFactory<Assertions, Response> thenFactory) {
+    protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("All of the 'then' statements after the initial then should be 'and'");
         }

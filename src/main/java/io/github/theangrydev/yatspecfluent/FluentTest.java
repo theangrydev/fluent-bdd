@@ -13,7 +13,6 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-@SuppressWarnings("PMD.TooManyMethods") // Need lots of methods to make the interface fluent
 public abstract class FluentTest<Request, Response> implements WithTestState, ReadOnlyTestItems {
 
     private final InterestingGivens interestingGivens = new InterestingGivens();

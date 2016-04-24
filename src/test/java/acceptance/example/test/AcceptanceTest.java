@@ -1,7 +1,5 @@
 package acceptance.example.test;
 
-import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
-import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import io.github.theangrydev.yatspecfluent.FluentTest;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
@@ -15,12 +13,12 @@ public abstract class AcceptanceTest<
         Response,
         Assertions> extends FluentTest<TestInfrastructure, SystemUnderTest, Request, Response, Assertions> implements WithAssertions {
 
-    private final TestInfrastructure testInfrastructure = new TestInfrastructure();
-    private final InterestingGivens interestingGivens = new InterestingGivens();
-    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
-
     private String caller;
     protected GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap();
+
+    public AcceptanceTest(SystemUnderTest systemUnderTest) {
+        super(systemUnderTest, new TestInfrastructure());
+    }
 
     @Override
     protected SystemUnderTest when(String caller) {
@@ -37,16 +35,6 @@ public abstract class AcceptanceTest<
     }
 
     @Override
-    public InterestingGivens interestingGivens() {
-        return interestingGivens;
-    }
-
-    @Override
-    public CapturedInputAndOutputs capturedInputAndOutputs() {
-        return capturedInputAndOutputs;
-    }
-
-    @Override
     protected TestInfrastructure testInfrastructure() {
         return testInfrastructure;
     }
@@ -56,7 +44,7 @@ public abstract class AcceptanceTest<
         if (request == null) {
             throw new IllegalStateException(format("%s request was null", systemName()));
         }
-        capturedInputAndOutputs.add(format("Request from %s to %s", caller, systemName()), request);
+        addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
     }
 
 
@@ -65,7 +53,7 @@ public abstract class AcceptanceTest<
         if (response == null) {
             throw new IllegalStateException(format("%s response was null", systemName()));
         }
-        capturedInputAndOutputs.add(format("Response from %s to %s", systemName(), caller), response);
+        addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
     }
 
     private String systemName() {

@@ -12,6 +12,10 @@ import org.junit.runner.RunWith;
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<WeatherApplicationUnderTest, Request, Response, ResponseAssertions> {
 
+    public ExampleTest() {
+        super(new WeatherApplicationUnderTest());
+    }
+
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {
         given(theWeatherService, "OpenWeatherMap").willReturn().weatherDescription("light rain").forCity("London");
@@ -19,11 +23,6 @@ public class ExampleTest extends AcceptanceTest<WeatherApplicationUnderTest, Req
         then().theResponse().isEqualTo("There is light rain in London");
         and().theResponseHeaders().contains("Content-Length");
         and().theResponseHeaders().contains("Date");
-    }
-
-    @Override
-    protected WeatherApplicationUnderTest systemUnderTest() {
-        return new WeatherApplicationUnderTest();
     }
 
     @Override

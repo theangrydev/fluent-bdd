@@ -1,5 +1,7 @@
 package io.github.theangrydev.yatspecfluent;
 
+import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
+import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.Rule;
@@ -16,7 +18,12 @@ public abstract class FluentTest<
         SystemUnderTest extends io.github.theangrydev.yatspecfluent.SystemUnderTest<TestInfrastructure, Request, Response>,
         Request,
         Response,
-        Assertions> implements WithTestState, WithInterestingGivens, WithCapturedInputsAndOutputs, InterestingTestItems {
+        Assertions> implements WithTestState, InterestingTestItems {
+
+    protected FluentTest(SystemUnderTest systemUnderTest, TestInfrastructure testInfrastructure) {
+        this.systemUnderTest = systemUnderTest;
+        this.testInfrastructure = testInfrastructure;
+    }
 
     private enum Stage {
         GIVEN,
@@ -24,10 +31,14 @@ public abstract class FluentTest<
         THEN
     }
 
-    private Stage stage = Stage.GIVEN;
-    private List<Primer<TestInfrastructure>> primers = new ArrayList<>();
+    private final InterestingGivens interestingGivens = new InterestingGivens();
+    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
 
-    private SystemUnderTest systemUnderTest;
+    private final List<Primer<TestInfrastructure>> primers = new ArrayList<>();
+    protected final SystemUnderTest systemUnderTest;
+    protected final TestInfrastructure testInfrastructure;
+
+    private Stage stage = Stage.GIVEN;
     private Assertions assertions;
 
     @Rule
@@ -43,8 +54,8 @@ public abstract class FluentTest<
     @Override
     public TestState testState() {
         TestState testState = new TestState();
-        testState.interestingGivens = interestingGivens();
-        testState.capturedInputAndOutputs = capturedInputAndOutputs();
+        testState.interestingGivens = interestingGivens;
+        testState.capturedInputAndOutputs = capturedInputAndOutputs;
         return testState;
     }
 
@@ -96,7 +107,6 @@ public abstract class FluentTest<
         if (!primers.isEmpty()) {
             primePreviousGiven();
         }
-        this.systemUnderTest = systemUnderTest();
         stage = Stage.WHEN;
         return systemUnderTest;
     }
@@ -152,7 +162,6 @@ public abstract class FluentTest<
         return assertions;
     }
 
-    protected abstract SystemUnderTest systemUnderTest();
     protected abstract void beforeSystemHasBeenCalled(Request request);
     protected abstract void afterSystemHasBeenCalled(Response response);
     protected abstract Assertions responseAssertions(Response response);
@@ -160,11 +169,11 @@ public abstract class FluentTest<
 
     @Override
     public void addToGivens(String key, Object instance) {
-        interestingGivens().add(key, instance);
+        interestingGivens.add(key, instance);
     }
 
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
-        capturedInputAndOutputs().add(key, instance);
+        capturedInputAndOutputs.add(key, instance);
     }
 }

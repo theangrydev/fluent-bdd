@@ -1,17 +1,17 @@
-package acceptance.example.test;
+package acceptance.example.thens;
 
 import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
-public class ResponseHeaderAssertions implements WithAssertions {
+public class ThenTheResponseHeaders implements WithAssertions {
 
     private final Response response;
 
-    public ResponseHeaderAssertions(Response response) {
+    public ThenTheResponseHeaders(Response response) {
         this.response = response;
     }
 
-    public ResponseHeaderAssertions contains(String headerName) {
+    public ThenTheResponseHeaders contains(String headerName) {
         assertThat(response.headers().names()).contains(headerName);
         return this;
     }

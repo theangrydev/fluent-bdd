@@ -1,4 +1,4 @@
-package acceptance.example;
+package acceptance.example.production;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;

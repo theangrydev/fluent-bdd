@@ -1,9 +1,13 @@
 package acceptance.example.test;
 
-import acceptance.example.WeatherApplication;
+import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
@@ -20,10 +24,6 @@ public class TestInfrastructure {
         return weatherApplication.baseUrl();
     }
 
-    public OkHttpClient httpClient() {
-        return new OkHttpClient();
-    }
-
     public void setUp() {
         WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(1235));
         wireMockServer.start();
@@ -37,5 +37,13 @@ public class TestInfrastructure {
     public void tearDown() {
         wireMock.shutdown();
         weatherApplication.stop();
+    }
+
+    public Response execute(Request request) {
+        try {
+            return new OkHttpClient().newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

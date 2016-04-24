@@ -1,12 +1,13 @@
-package acceptance.example.test;
+package acceptance.example.givens;
 
+import acceptance.example.test.TestInfrastructure;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import io.github.theangrydev.yatspecfluent.InterestingTestItems;
-import io.github.theangrydev.yatspecfluent.Primer;
+import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
+import io.github.theangrydev.yatspecfluent.Given;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class GivenOpenWeatherMap implements Primer<TestInfrastructure> {
+public class GivenOpenWeatherMap implements Given<TestInfrastructure> {
     private String description;
     private String cityName;
 
@@ -25,8 +26,8 @@ public class GivenOpenWeatherMap implements Primer<TestInfrastructure> {
     }
 
     @Override
-    public void prime(InterestingTestItems interestingTestItems, TestInfrastructure testInfrastructure) {
-        interestingTestItems.addToGivens("City", cityName);
+    public void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
+        readOnlyTestItems.addToGivens("City", cityName);
         WireMock wireMock = testInfrastructure.wireMock();
         wireMock.register(get(urlPathMatching("/data/2.5/weather")).withQueryParam("q", equalTo(cityName)).willReturn(aResponse().withStatus(200).withBody(weatherWithDescription())));
     }

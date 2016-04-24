@@ -1,4 +1,4 @@
-package acceptance.example;
+package acceptance.example.production;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

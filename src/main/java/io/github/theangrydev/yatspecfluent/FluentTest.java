@@ -4,6 +4,8 @@ import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
 import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -13,15 +15,19 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public abstract class FluentTest<
-        TestInfrastructure,
-        SystemUnderTest extends io.github.theangrydev.yatspecfluent.SystemUnderTest<TestInfrastructure, Request, Response>,
-        Request,
-        Response,
-        Assertions> implements WithTestState, InterestingTestItems {
+@SuppressWarnings("PMD.TooManyMethods") // Need lots of methods to make the interface fluent
+public abstract class FluentTest<TestInfrastructure, Request, Response> implements WithTestState, ReadOnlyTestItems {
 
-    protected FluentTest(SystemUnderTest systemUnderTest, TestInfrastructure testInfrastructure) {
-        this.systemUnderTest = systemUnderTest;
+    private final InterestingGivens interestingGivens = new InterestingGivens();
+    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
+    private final TestInfrastructure testInfrastructure;
+    private final List<Given<TestInfrastructure>> givens = new ArrayList<>();
+
+    private Stage stage = Stage.GIVEN;
+    private When<TestInfrastructure, Request, Response> when;
+    private Response response;
+
+    protected FluentTest(TestInfrastructure testInfrastructure) {
         this.testInfrastructure = testInfrastructure;
     }
 
@@ -30,16 +36,6 @@ public abstract class FluentTest<
         WHEN,
         THEN
     }
-
-    private final InterestingGivens interestingGivens = new InterestingGivens();
-    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
-
-    private final List<Primer<TestInfrastructure>> primers = new ArrayList<>();
-    protected final SystemUnderTest systemUnderTest;
-    protected final TestInfrastructure testInfrastructure;
-
-    private Stage stage = Stage.GIVEN;
-    private Assertions assertions;
 
     @Rule
     public TestWatcher makeSureThenIsUsed = new TestWatcher() {
@@ -59,113 +55,66 @@ public abstract class FluentTest<
         return testState;
     }
 
-    @SuppressWarnings("unused")
-    protected <D extends Primer<TestInfrastructure>> D given(D dependency, String messageToDisplay) {
+    protected <D extends Given<TestInfrastructure>> D and(D dependency) {
         return given(dependency);
     }
 
-    @SuppressWarnings("unused")
-    protected <D extends Primer<TestInfrastructure>> D and(D dependency, String messageToDisplay) {
-        return given(dependency);
-    }
-
-    protected <D extends Primer<TestInfrastructure>> D and(D dependency) {
-        return given(dependency);
-    }
-
-    protected <D extends Primer<TestInfrastructure>> D given(D dependency) {
+    protected <D extends Given<TestInfrastructure>> D given(D dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 
         }
-        boolean alreadyHadGiven = primers.stream().map(Primer::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
+        boolean alreadyHadGiven = givens.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
         if (alreadyHadGiven) {
-            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency.getClass().getSimpleName()));
+            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency));
         }
-        if (!primers.isEmpty()) {
-            primePreviousGiven();
-        }
-        primers.add(dependency);
+        givens.add(dependency);
         return dependency;
     }
 
     private void primePreviousGiven() {
-        if (!primers.isEmpty()) {
-            primers.get(primers.size() - 1).prime(this, testInfrastructure());
+        if (!givens.isEmpty()) {
+            givens.get(givens.size() - 1).prime(this, testInfrastructure);
         }
     }
 
-    @SuppressWarnings("unused")
-    protected SystemUnderTest when(String messageToDisplay) {
-        return when();
-    }
-
-    protected SystemUnderTest when() {
+    protected <T extends When<TestInfrastructure, Request, Response>> T when(T when) {
+        this.when = when;
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        if (!primers.isEmpty()) {
+        if (!givens.isEmpty()) {
             primePreviousGiven();
         }
         stage = Stage.WHEN;
-        return systemUnderTest;
+        return when;
     }
 
-    @SuppressWarnings("unused")
-    protected Assertions then(String messageToDisplay)  {
-        return then();
-    }
-
-    protected Assertions then() {
+    protected <Assertions> Assertions then(ThenFactory<Assertions, Response> thenFactory) {
         if (stage == Stage.GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
         }
         if (stage == Stage.THEN) {
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
-        Request request = requestToSystemUnderTest();
+        Request request = when.request(this, testInfrastructure);
         if (request == null) {
-            throw new IllegalStateException(format("%s request was null", systemUnderTest));
+            throw new IllegalStateException(format("%s request was null", when));
         }
-        beforeSystemHasBeenCalled(request);
-
-        Response response = callSystemUnderTest(request);
+        response = when.call(request, this, testInfrastructure);
         if (response == null) {
-            throw new IllegalStateException(format("%s response was null", systemUnderTest));
+            throw new IllegalStateException(format("%s response was null", when));
         }
-        afterSystemHasBeenCalled(response);
         stage = Stage.THEN;
-        assertions = responseAssertions(response);
-        return assertions;
+        return thenFactory.then(response);
     }
 
-    private Request requestToSystemUnderTest() {
-        try {
-            return systemUnderTest.request(testInfrastructure());
-        } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTest), exception);
-        }
-    }
-
-    private Response callSystemUnderTest(Request request) {
-        try {
-            return systemUnderTest.call(request, testInfrastructure());
-        } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTest), exception);
-        }
-    }
-
-    protected Assertions and() {
+    protected <Assertions> Assertions and(ThenFactory<Assertions, Response> thenFactory) {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("All of the 'then' statements after the initial then should be 'and'");
         }
-        return assertions;
+        return thenFactory.then(response);
     }
-
-    protected abstract void beforeSystemHasBeenCalled(Request request);
-    protected abstract void afterSystemHasBeenCalled(Response response);
-    protected abstract Assertions responseAssertions(Response response);
-    protected abstract TestInfrastructure testInfrastructure();
 
     @Override
     public void addToGivens(String key, Object instance) {
@@ -175,5 +124,18 @@ public abstract class FluentTest<
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
         capturedInputAndOutputs.add(key, instance);
+    }
+
+    protected abstract void setUp(TestInfrastructure testInfrastructure);
+    protected abstract void tearDown(TestInfrastructure testInfrastructure);
+
+    @Before
+    public void setUp() {
+        setUp(testInfrastructure);
+    }
+
+    @After
+    public void tearDown() {
+        tearDown(testInfrastructure);
     }
 }

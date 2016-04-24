@@ -1,4 +1,4 @@
-package acceptance.example;
+package acceptance.example.production;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;

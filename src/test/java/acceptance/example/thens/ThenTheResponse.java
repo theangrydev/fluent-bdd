@@ -1,17 +1,15 @@
-package acceptance.example.test;
+package acceptance.example.thens;
 
 import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
 import java.io.IOException;
 
-public class ResponseAssertions implements WithAssertions {
+public class ThenTheResponse implements WithAssertions {
 
-    private final Response response;
     private final String responseBody;
 
-    public ResponseAssertions(Response response) {
-        this.response = response;
+    public ThenTheResponse(Response response) {
         responseBody = responseBody(response);
     }
 
@@ -23,16 +21,8 @@ public class ResponseAssertions implements WithAssertions {
         }
     }
 
-    public ResponseAssertions theResponse() {
-        return this;
-    }
-
-    public ResponseAssertions isEqualTo(String response) {
+    public ThenTheResponse isEqualTo(String response) {
         assertThat(responseBody).isEqualTo(response);
         return this;
-    }
-
-    public ResponseHeaderAssertions theResponseHeaders() {
-        return new ResponseHeaderAssertions(response);
     }
 }

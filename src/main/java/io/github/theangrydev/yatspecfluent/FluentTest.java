@@ -114,11 +114,14 @@ public abstract class FluentTest<
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
         Request request = requestToSystemUnderTest();
+        if (request == null) {
+            throw new IllegalStateException(format("%s request was null", systemUnderTest));
+        }
         beforeSystemHasBeenCalled(request);
 
         Response response = callSystemUnderTest(request);
         if (response == null) {
-            throw new IllegalStateException(format("%s response was null", systemUnderTestName()));
+            throw new IllegalStateException(format("%s response was null", systemUnderTest));
         }
         afterSystemHasBeenCalled(response);
         stage = Stage.THEN;
@@ -130,7 +133,7 @@ public abstract class FluentTest<
         try {
             return systemUnderTest.request(testInfrastructure());
         } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
+            throw new RuntimeException(format("%s threw an exception when called", systemUnderTest), exception);
         }
     }
 
@@ -138,12 +141,8 @@ public abstract class FluentTest<
         try {
             return systemUnderTest.call(request, testInfrastructure());
         } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
+            throw new RuntimeException(format("%s threw an exception when called", systemUnderTest), exception);
         }
-    }
-
-    private String systemUnderTestName() {
-        return systemUnderTest.getClass().getSimpleName();
     }
 
     protected Assertions and() {

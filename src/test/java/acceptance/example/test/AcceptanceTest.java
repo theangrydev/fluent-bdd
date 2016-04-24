@@ -7,7 +7,7 @@ import org.junit.Before;
 
 public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions {
 
-    protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
+    protected final TestInfrastructure testInfrastructure = new TestInfrastructure();
 
     @Before
     public void setUp() {

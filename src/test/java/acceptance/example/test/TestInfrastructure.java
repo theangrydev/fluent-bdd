@@ -12,16 +12,10 @@ import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-public class TestInfrastructure implements ReadOnlyTestItems {
+public class TestInfrastructure {
 
     private WireMock wireMock;
     private WeatherApplication weatherApplication;
-
-    private final ReadOnlyTestItems readOnlyTestItems;
-
-    public TestInfrastructure(ReadOnlyTestItems readOnlyTestItems) {
-        this.readOnlyTestItems = readOnlyTestItems;
-    }
 
     public WireMock wireMock() {
         return wireMock;
@@ -52,15 +46,5 @@ public class TestInfrastructure implements ReadOnlyTestItems {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void addToGivens(String key, Object instance) {
-        readOnlyTestItems.addToGivens(key, instance);
-    }
-
-    @Override
-    public void addToCapturedInputsAndOutputs(String key, Object instance) {
-        readOnlyTestItems.addToGivens(key, instance);
     }
 }

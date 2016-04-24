@@ -15,10 +15,10 @@ import org.junit.runner.RunWith;
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<Request, Response> {
 
-    private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(testInfrastructure);
+    private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
     private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
     private final ThenFactory<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
-    private final WhenTheWeatherIsRequested weatherApplication = new WhenTheWeatherIsRequested(testInfrastructure, "CBS");
+    private final WhenTheWeatherIsRequested weatherApplication = new WhenTheWeatherIsRequested(this, testInfrastructure, "CBS");
 
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {

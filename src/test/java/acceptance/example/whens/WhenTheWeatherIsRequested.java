@@ -29,7 +29,7 @@ public class WhenTheWeatherIsRequested implements When<TestInfrastructure, Reque
     }
 
     @Override
-    public Response call(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
+    public Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
         Response response = testInfrastructure.execute(request);
         readOnlyTestItems.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
 

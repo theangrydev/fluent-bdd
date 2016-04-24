@@ -101,7 +101,7 @@ public abstract class FluentTest<TestInfrastructure, Request, Response> implemen
         if (request == null) {
             throw new IllegalStateException(format("%s request was null", when));
         }
-        response = when.call(request, this, testInfrastructure);
+        response = when.response(request, this, testInfrastructure);
         if (response == null) {
             throw new IllegalStateException(format("%s response was null", when));
         }

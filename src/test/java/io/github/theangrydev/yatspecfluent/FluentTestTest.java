@@ -38,7 +38,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
         }
 
         @Override
-        public Response call(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
+        public Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
             this.callTestInfrastructure = testInfrastructure;
             return response;
         }

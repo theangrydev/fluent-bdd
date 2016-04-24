@@ -2,20 +2,20 @@ package acceptance.example.test;
 
 import io.github.theangrydev.yatspecfluent.FluentTest;
 import org.assertj.core.api.WithAssertions;
+import org.junit.After;
+import org.junit.Before;
 
-public abstract class AcceptanceTest<Request, Response> extends FluentTest<TestInfrastructure, Request, Response> implements WithAssertions {
+public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions {
 
-    public AcceptanceTest() {
-        super(new TestInfrastructure());
-    }
+    protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 
-    @Override
-    protected void setUp(TestInfrastructure testInfrastructure) {
+    @Before
+    public void setUp() {
         testInfrastructure.setUp();
     }
 
-    @Override
-    protected void tearDown(TestInfrastructure testInfrastructure) {
+    @After
+    public void tearDown() {
         testInfrastructure.tearDown();
     }
 }

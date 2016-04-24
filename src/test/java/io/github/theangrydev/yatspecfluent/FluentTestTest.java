@@ -3,43 +3,27 @@ package io.github.theangrydev.yatspecfluent;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure, FluentTestTest.Request, FluentTestTest.Response> implements WithAssertions {
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTestTest.Response> implements WithAssertions {
 
     private final TestSystem testSystem = new TestSystem();
     private final ThenFactory<TestAssertions, Response> testAssertions = TestAssertions::new;
-    private final SomeDependency someDependency = new SomeDependency();
-    private TestInfrastructure testInfrastructure;
+    private final SomeDependency someDependency = mock(SomeDependency.class);
+    private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
 
-    public FluentTestTest() {
-        super(new TestInfrastructure());
-    }
-
-    @Override
-    protected void setUp(TestInfrastructure testInfrastructure) {
-        this.testInfrastructure = testInfrastructure;
-        assertThat(testInfrastructure).isInstanceOf(TestInfrastructure.class);
-    }
-
-    @Override
-    protected void tearDown(TestInfrastructure testInfrastructure) {
-        assertThat(testInfrastructure).isEqualTo(testInfrastructure);
-    }
-
-    private static class TestSystem implements When<TestInfrastructure, Request, Response> {
+    private static class TestSystem implements When<Request, Response> {
         private final Request request = new Request();
         private final Response response = new Response();
-        private TestInfrastructure requestTestInfrastructure;
-        private TestInfrastructure callTestInfrastructure;
 
         @Override
-        public Request request(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
-            this.requestTestInfrastructure = testInfrastructure;
+        public Request request() {
             return request;
         }
 
         @Override
-        public Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
-            this.callTestInfrastructure = testInfrastructure;
+        public Response response(Request request) {
             return response;
         }
     }
@@ -53,27 +37,8 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
     }
     static class Response {}
     static class Request {}
-    static class TestInfrastructure {}
-
-    private class SomeDependency implements Given<TestInfrastructure> {
-        private TestInfrastructure testInfrastructure;
-        private ReadOnlyTestItems readOnlyTestItems;
-
-        @Override
-        public void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
-            this.testInfrastructure = testInfrastructure;
-            this.readOnlyTestItems = readOnlyTestItems;
-        }
-    }
-
-    @Test
-    public void systemUnderTestIsCalledWithTestInfrastructure() {
-        given(someDependency);
-        when(testSystem);
-        then(testAssertions);
-        assertThat(testSystem.requestTestInfrastructure).isSameAs(testInfrastructure);
-        assertThat(testSystem.callTestInfrastructure).isSameAs(testInfrastructure);
-    }
+    interface SomeDependency extends Given {};
+    interface AnotherDependency extends Given {};
 
     @Test
     public void responseIsPassedToTheAssertions() {
@@ -84,12 +49,20 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestInfrastructure
     }
 
     @Test
-    public void dependencyPrimeIsCalledWithInterestingGivensPrimerAndTestInfrastructure() {
+    public void firstGivenIsPrimedAfterWhen() {
         given(someDependency);
         when(testSystem);
+        verify(someDependency).prime();
         then(testAssertions);
-        assertThat(someDependency.testInfrastructure).isSameAs(testInfrastructure);
-        assertThat(someDependency.readOnlyTestItems).isSameAs(this);
+    }
+
+    @Test
+    public void subsequentGivensArePrimedAfterThePreviousGiven() {
+        given(someDependency);
+        and(anotherDependency);
+        verify(someDependency).prime();
+        when(testSystem);
+        then(testAssertions);
     }
 
     @Test

@@ -3,6 +3,7 @@ package acceptance.example.test;
 import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,10 +12,16 @@ import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-public class TestInfrastructure {
+public class TestInfrastructure implements ReadOnlyTestItems {
 
     private WireMock wireMock;
     private WeatherApplication weatherApplication;
+
+    private final ReadOnlyTestItems readOnlyTestItems;
+
+    public TestInfrastructure(ReadOnlyTestItems readOnlyTestItems) {
+        this.readOnlyTestItems = readOnlyTestItems;
+    }
 
     public WireMock wireMock() {
         return wireMock;
@@ -45,5 +52,15 @@ public class TestInfrastructure {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void addToGivens(String key, Object instance) {
+        readOnlyTestItems.addToGivens(key, instance);
+    }
+
+    @Override
+    public void addToCapturedInputsAndOutputs(String key, Object instance) {
+        readOnlyTestItems.addToGivens(key, instance);
     }
 }

@@ -1,7 +1,6 @@
 package acceptance.example.whens;
 
 import acceptance.example.test.TestInfrastructure;
-import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
 import io.github.theangrydev.yatspecfluent.When;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -11,28 +10,29 @@ import org.assertj.core.api.WithAssertions;
 import static java.lang.String.format;
 
 
-public class WhenTheWeatherIsRequested implements When<TestInfrastructure, Request, Response>, WithAssertions {
+public class WhenTheWeatherIsRequested implements When<Request, Response>, WithAssertions {
 
+    private final TestInfrastructure testInfrastructure;
     private final String caller;
 
     private String city;
 
-    public WhenTheWeatherIsRequested(String caller) {
+    public WhenTheWeatherIsRequested(TestInfrastructure testInfrastructure, String caller) {
+        this.testInfrastructure = testInfrastructure;
         this.caller = caller;
     }
 
     @Override
-    public Request request(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
+    public Request request() {
         Request request = weatherRequest(testInfrastructure.serverBaseUrl());
-        readOnlyTestItems.addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
+        testInfrastructure.addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
         return request;
     }
 
     @Override
-    public Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure) {
+    public Response response(Request request) {
         Response response = testInfrastructure.execute(request);
-        readOnlyTestItems.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
-
+        testInfrastructure.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
         return response;
     }
 

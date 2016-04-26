@@ -44,8 +44,9 @@ public class WhenTheWeatherIsRequested implements When<Request, Response>, WithA
         return new Request.Builder().url(weatherUrl).build();
     }
 
-    public void forCity(String city) {
+    public WhenTheWeatherIsRequested forCity(String city) {
         this.city = city;
+        return this;
     }
 
     public WhenTheWeatherIsRequested requestsTheWeather() {

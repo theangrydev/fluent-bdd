@@ -20,7 +20,6 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
     private final List<Given> givens = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;
-    private When<Request, Response> when;
     private Response response;
 
     private enum Stage {
@@ -47,11 +46,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         return testState;
     }
 
-    protected <T extends Given> T and(T dependency) {
-        return given(dependency);
+    protected <T extends Given> void and(T dependency) {
+        given(dependency);
     }
 
-    protected <T extends Given> T given(T dependency) {
+    protected <T extends Given> void given(T dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 
@@ -60,37 +59,13 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency));
         }
-        if (!givens.isEmpty()) {
-            primePreviousGiven();
-        }
+        dependency.prime();
         givens.add(dependency);
-        return dependency;
     }
 
-    private void primePreviousGiven() {
-        if (!givens.isEmpty()) {
-            givens.get(givens.size() - 1).prime();
-        }
-    }
-
-    protected <T extends When<Request, Response>> T when(T when) {
-        this.when = when;
+    protected <T extends When<Request, Response>> void when(T when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
-        }
-        if (!givens.isEmpty()) {
-            primePreviousGiven();
-        }
-        stage = Stage.WHEN;
-        return when;
-    }
-
-    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
-        if (stage == Stage.GIVEN) {
-            throw new IllegalStateException("The initial 'then' should be after the 'when'");
-        }
-        if (stage == Stage.THEN) {
-            throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
         Request request = when.request();
         if (request == null) {
@@ -99,6 +74,16 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         response = when.response(request);
         if (response == null) {
             throw new IllegalStateException(format("%s response was null", when));
+        }
+        stage = Stage.WHEN;
+    }
+
+    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+        if (stage == Stage.GIVEN) {
+            throw new IllegalStateException("The initial 'then' should be after the 'when'");
+        }
+        if (stage == Stage.THEN) {
+            throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
         stage = Stage.THEN;
         return thenFactory.then(response);

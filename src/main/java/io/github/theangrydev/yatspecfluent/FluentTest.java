@@ -46,11 +46,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         return testState;
     }
 
-    protected <T extends Given> void and(T dependency) {
+    protected void and(Given dependency) {
         given(dependency);
     }
 
-    protected <T extends Given> void given(T dependency) {
+    protected void given(Given dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 

@@ -23,7 +23,7 @@
 
     <groupId>io.github.theangrydev</groupId>
     <artifactId>yatspec-fluent</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <name>yatspec-fluent</name>

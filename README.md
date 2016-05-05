@@ -1,5 +1,5 @@
 # yatspec-fluent
-Example:
+[Example:](https://github.com/theangrydev/yatspec-fluent/blob/master/src/test/java/acceptance/ExampleTest.java)
 ```java
 @Test
 public void callingGivenThenWhenThenThenThenAndIsAllowed() {

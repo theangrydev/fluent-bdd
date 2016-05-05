@@ -32,8 +32,8 @@ import static java.lang.String.format;
 
 public abstract class FluentTest<Request, Response> implements WithTestState, ReadOnlyTestItems {
 
-    private final InterestingGivens interestingGivens = new InterestingGivens();
-    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
+    protected final InterestingGivens interestingGivens = new InterestingGivens();
+    protected final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
     private final List<Given> givens = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;

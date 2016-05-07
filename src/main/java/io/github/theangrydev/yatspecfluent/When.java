@@ -17,7 +17,26 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
+/**
+ * This class represents the system under test.
+ *
+ * It should act as a builder for use in {@link FluentTest}.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
+ *
+ * @param <Request> The type of request the system accepts
+ * @param <Response> The type of response the system produces
+ */
 public interface When<Request, Response> {
+
+    /**
+     * @return The {@link Request} that will be passed to {@link #response(Response)}
+     */
     Request request();
+
+    /**
+     * @param request The {@link Request} produced by {@link #request()}
+     * @return The {@link Response} from the system under test after executing the request
+     */
     Response response(Request request);
 }

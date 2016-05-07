@@ -18,7 +18,7 @@
 package acceptance.example.whens;
 
 import acceptance.example.test.TestInfrastructure;
-import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
+import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 import io.github.theangrydev.yatspecfluent.When;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -30,14 +30,14 @@ import static java.lang.String.format;
 
 public class WhenTheWeatherIsRequested implements When<Request, Response>, WithAssertions {
 
-    private final ReadOnlyTestItems readOnlyTestItems;
+    private final WriteOnlyTestItems writeOnlyTestItems;
     private final TestInfrastructure testInfrastructure;
     private final String caller;
 
     private String city;
 
-    public WhenTheWeatherIsRequested(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure, String caller) {
-        this.readOnlyTestItems = readOnlyTestItems;
+    public WhenTheWeatherIsRequested(WriteOnlyTestItems writeOnlyTestItems, TestInfrastructure testInfrastructure, String caller) {
+        this.writeOnlyTestItems = writeOnlyTestItems;
         this.testInfrastructure = testInfrastructure;
         this.caller = caller;
     }
@@ -45,14 +45,14 @@ public class WhenTheWeatherIsRequested implements When<Request, Response>, WithA
     @Override
     public Request request() {
         Request request = weatherRequest(testInfrastructure.serverBaseUrl());
-        readOnlyTestItems.addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
         return request;
     }
 
     @Override
     public Response response(Request request) {
         Response response = testInfrastructure.execute(request);
-        readOnlyTestItems.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
         return response;
     }
 

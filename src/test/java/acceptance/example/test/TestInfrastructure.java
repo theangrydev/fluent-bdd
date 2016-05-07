@@ -20,7 +20,6 @@ package acceptance.example.test;
 import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

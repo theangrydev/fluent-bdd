@@ -17,7 +17,26 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
-public interface ReadOnlyTestItems {
+/**
+ * This class allows writing to {@link com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs}
+ * and {@link com.googlecode.yatspec.state.givenwhenthen.InterestingGivens} but
+ * does not allow reading them.
+ *
+ * This is to encourage you not to have a big bag of global state. Instead, the
+ * interesting givens and captured inputs and outputs should just be a way to
+ * highlight important information to the person reading the acceptance test.
+ */
+public interface WriteOnlyTestItems {
+
+    /**
+     * @param key The name of the interesting given
+     * @param instance The interesting given instance
+     */
     void addToGivens(String key, Object instance);
+
+    /**
+     * @param key The name of the captured input or output
+     * @param instance The captured input or output
+     */
     void addToCapturedInputsAndOutputs(String key, Object instance);
 }

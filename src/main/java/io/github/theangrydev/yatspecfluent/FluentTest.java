@@ -30,10 +30,26 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public abstract class FluentTest<Request, Response> implements WithTestState, ReadOnlyTestItems {
+/**
+ * Use this as the base class for your acceptance tests.
+ *
+ * @param <Request> The type of request passed to the {@link When}
+ * @param <Response> The type of response produced by the {@link When}
+ */
+public abstract class FluentTest<Request, Response> implements WithTestState, WriteOnlyTestItems {
 
+    /**
+     * You should aim to never access these directly, but you might need to (e.g. global shared state).
+     * Call {@link #addToGivens(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
+     */
     protected final InterestingGivens interestingGivens = new InterestingGivens();
+
+    /**
+     * You should aim to never access these directly , you shouldn't need to access these, but you might need to (e.g. sequence diagrams)
+     * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
+     */
     protected final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
+
     private final List<Given> givens = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;
@@ -63,10 +79,18 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         return testState;
     }
 
+    /**
+     * Same as {@link #given(Given)} for all givens after the first one.
+     */
     protected void and(Given given) {
         doGiven(given);
     }
 
+    /**
+     * Prime the first given immediately.
+     *
+     * @param given The first given in the acceptance test, which should be built up inside the brackets
+     */
     protected void given(Given given) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
@@ -86,6 +110,12 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         givens.add(given);
     }
 
+    /**
+     * Invoke the system under test and store the response ready for the assertions.
+     *
+     * @param when the system under test, which should be built up inside the brackets
+     * @param <T> The type of {@link When}
+     */
     protected <T extends When<Request, Response>> void when(T when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
@@ -101,6 +131,13 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         stage = Stage.WHEN;
     }
 
+    /**
+     * Perform the first assertion. Assertions should be chained outside the brackets.
+     *
+     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
+     * @param <Then> The type of fluent assertions that will be performed
+     * @return The fluent assertions instance
+     */
     protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         if (stage == Stage.GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
@@ -112,6 +149,9 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         return thenFactory.then(response);
     }
 
+    /**
+     * Same as {@link #then(ThenFactory)} but for all then steps after the first one.
+     */
     protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("The first 'then' should be a 'then' and after that you should use 'and'");

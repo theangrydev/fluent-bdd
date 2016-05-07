@@ -17,6 +17,21 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
+/**
+ * When the {@link #prime()} method is invoked, any setup necessary for this
+ * to affect the system under test should be performed immediately.
+ *
+ * For example, this could mean priming a HTTP stub with a canned response.
+ *
+ * This class should act as a builder for use in {@link FluentTest}.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
+ */
 public interface Given {
+
+    /**
+     * Prime the given immediately, which will make a change that is visible to
+     * the system under test (that is implemented in the {@link When}.
+     */
     void prime();
 }

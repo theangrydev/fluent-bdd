@@ -30,7 +30,7 @@ package io.github.theangrydev.yatspecfluent;
 public interface When<Request, Response> {
 
     /**
-     * @return The {@link Request} that will be passed to {@link #response(Response)}
+     * @return The {@link Request} that will be passed to {@link #response(Request)}
      */
     Request request();
 

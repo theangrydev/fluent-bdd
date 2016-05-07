@@ -18,10 +18,12 @@
 package io.github.theangrydev.yatspecfluent;
 
 import org.assertj.core.api.WithAssertions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static java.lang.String.format;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -29,10 +31,16 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
 
     private final ThenFactory<TestAssertions, Response> testAssertions = TestAssertions::new;
     private final TestSystem testSystem = mock(TestSystem.class);
+    private final TestSystem nullRequestTestSystem = mock(TestSystem.class);
+    private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
     private final Request request = new Request();
     private final Response response = new Response();
+
+    private boolean given;
+    private boolean when;
+    private boolean then;
 
     private static class TestAssertions {
 
@@ -53,7 +61,70 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     @Before
     public void setUp() {
         Mockito.when(testSystem.request()).thenReturn(request);
+        Mockito.when(nullResponseTestSystem.request()).thenReturn(request);
         Mockito.when(testSystem.response(request)).thenReturn(response);
+    }
+
+    @After
+    public void putTestInValidState() {
+        if (!given && !when) {
+            given(someDependency);
+        }
+        if (!when) {
+            when(testSystem);
+        }
+        if (!then) {
+            then(testAssertions);
+        }
+    }
+
+    @Override
+    protected void given(Given given) {
+        super.given(given);
+        this.given = true;
+    }
+
+    @Override
+    protected <T extends When<Request, Response>> void when(T when) {
+        super.when(when);
+        this.when = true;
+    }
+
+    @Override
+    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+        Then then = super.then(thenFactory);
+        this.then = true;
+        return then;
+    }
+
+    @Test
+    public void nullRequestIsReported() {
+        assertThatThrownBy(() -> {
+            when(nullRequestTestSystem);
+        }).hasMessage(format("'%s' request was null", nullRequestTestSystem));
+    }
+
+    @Test
+    public void nullResponseIsReported() {
+        assertThatThrownBy(() -> {
+            when(nullResponseTestSystem);
+        }).hasMessage(format("'%s' response was null", nullResponseTestSystem));
+    }
+
+    @Test
+    public void givensAfterTheFirstOneMustBeAnds() {
+        assertThatThrownBy(() -> {
+            given(someDependency);
+            given(someDependency);
+        }).hasMessage("All of the 'given' statements after the initial then should be 'and'");
+    }
+
+    @Test
+    public void firstThenShouldBeAThen() {
+        assertThatThrownBy(() -> {
+            when(testSystem);
+            and(testAssertions);
+        }).hasMessage("The first 'then' should be a 'then' and after that you should use 'and'");
     }
 
     @Test
@@ -68,8 +139,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     public void firstGivenIsPrimedAfterGiven() {
         given(someDependency);
         verify(someDependency).prime();
-        when(testSystem);
-        then(testAssertions);
     }
 
     @Test
@@ -77,8 +146,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
         given(someDependency);
         and(anotherDependency);
         verify(anotherDependency).prime();
-        when(testSystem);
-        then(testAssertions);
     }
 
     @Test
@@ -87,7 +154,14 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
         and(anotherDependency);
         when(testSystem);
         verify(testSystem).response(request);
-        then(testAssertions);
+    }
+
+    @Test
+    public void callingSameGivenTwiceIsNotAllowed() {
+        assertThatThrownBy(() -> {
+            given(someDependency);
+            and(someDependency);
+        }).hasMessage(format("The dependency '%s' has already specified a 'given' step", someDependency));
     }
 
     @Test
@@ -96,7 +170,14 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
             when(testSystem);
             given(someDependency);
         }).hasMessage("The 'given' steps must be specified before the 'when' and 'then' steps");
-        then(testAssertions);
+    }
+
+    @Test
+    public void multipleWhensAreNotAllowed() {
+        assertThatThrownBy(() -> {
+            when(testSystem);
+            when(testSystem);
+        }).hasMessage("There should only be one 'when', after the 'given' and before the 'then'");
     }
 
     @Test
@@ -111,8 +192,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     @Test
     public void callingThenBeforeWhenIsNotAllowed() {
         assertThatThrownBy(() -> then(testAssertions)).hasMessage("The initial 'then' should be after the 'when'");
-        when(testSystem);
-        then(testAssertions);
     }
 
     @Test

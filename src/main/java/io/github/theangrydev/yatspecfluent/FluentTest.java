@@ -63,21 +63,27 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         return testState;
     }
 
-    protected void and(Given dependency) {
-        given(dependency);
+    protected void and(Given given) {
+        doGiven(given);
     }
 
-    protected void given(Given dependency) {
+    protected void given(Given given) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
+        }
+        if (!givens.isEmpty()) {
+            throw new IllegalStateException("All of the 'given' statements after the initial then should be 'and'");
+        }
+        doGiven(given);
+    }
 
-        }
-        boolean alreadyHadGiven = givens.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
+    private void doGiven(Given given) {
+        boolean alreadyHadGiven = givens.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(given.getClass()));
         if (alreadyHadGiven) {
-            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency));
+            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", given));
         }
-        dependency.prime();
-        givens.add(dependency);
+        given.prime();
+        givens.add(given);
     }
 
     protected <T extends When<Request, Response>> void when(T when) {
@@ -86,11 +92,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
         }
         Request request = when.request();
         if (request == null) {
-            throw new IllegalStateException(format("%s request was null", when));
+            throw new IllegalStateException(format("'%s' request was null", when));
         }
         response = when.response(request);
         if (response == null) {
-            throw new IllegalStateException(format("%s response was null", when));
+            throw new IllegalStateException(format("'%s' response was null", when));
         }
         stage = Stage.WHEN;
     }
@@ -108,7 +114,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Re
 
     protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         if (stage != Stage.THEN) {
-            throw new IllegalStateException("All of the 'then' statements after the initial then should be 'and'");
+            throw new IllegalStateException("The first 'then' should be a 'then' and after that you should use 'and'");
         }
         return thenFactory.then(response);
     }

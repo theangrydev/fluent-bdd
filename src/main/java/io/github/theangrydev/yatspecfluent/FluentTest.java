@@ -42,7 +42,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     protected final InterestingGivens interestingGivens = new InterestingGivens();
 
     /**
-     * You should aim to never access these directly , you shouldn't need to access these, but you might need to (e.g. sequence diagrams)
+     * You should aim to never access these directly, but you might need to (e.g. sequence diagrams)
      * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
      */
     protected final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();

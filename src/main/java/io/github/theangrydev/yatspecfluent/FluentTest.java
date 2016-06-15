@@ -102,7 +102,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     }
 
     private void doGiven(Given given) {
-        boolean alreadyHadGiven = givens.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(given.getClass()));
+        boolean alreadyHadGiven = givens.contains(given);
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", given));
         }

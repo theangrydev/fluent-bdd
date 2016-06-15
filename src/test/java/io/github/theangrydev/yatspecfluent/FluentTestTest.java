@@ -34,6 +34,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     private final TestSystem nullRequestTestSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
+    private final SomeDependency someDependency2 = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
     private final Request request = new Request();
     private final Response response = new Response();
@@ -154,6 +155,14 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
         and(anotherDependency);
         when(testSystem);
         verify(testSystem).response(request);
+    }
+
+    @Test
+    public void multipleGivensOfTheSameTypeAreAllowed() {
+        given(someDependency);
+        verify(someDependency).prime();
+        and(someDependency2);
+        verify(someDependency2).prime();
     }
 
     @Test

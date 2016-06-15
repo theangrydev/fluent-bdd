@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 import static java.lang.String.format;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTestTest.Response> implements WithAssertions {
 
@@ -166,11 +167,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Test
-    public void callingSameGivenTwiceIsNotAllowed() {
-        assertThatThrownBy(() -> {
-            given(someDependency);
-            and(someDependency);
-        }).hasMessage(format("The dependency '%s' has already specified a 'given' step", someDependency));
+    public void callingSameGivenTwiceIsAllowed() {
+        given(someDependency);
+        verify(someDependency).prime();
+        and(someDependency);
+        verify(someDependency, times(2)).prime();
     }
 
     @Test

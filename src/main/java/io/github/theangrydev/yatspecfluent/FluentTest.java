@@ -25,9 +25,6 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static java.lang.String.format;
 
 /**
@@ -50,12 +47,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      */
     protected final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
 
-    private final List<Given> givens = new ArrayList<>();
-
-    private Stage stage = Stage.GIVEN;
+    private Stage stage = Stage.FIRST_GIVEN;
     private Response response;
 
     private enum Stage {
+        FIRST_GIVEN,
         GIVEN,
         WHEN,
         THEN
@@ -83,7 +79,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * Same as {@link #given(Given)} for all givens after the first one.
      */
     protected void and(Given given) {
-        doGiven(given);
+        given.prime();
     }
 
     /**
@@ -92,22 +88,14 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
     protected void given(Given given) {
-        if (stage != Stage.GIVEN) {
-            throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
-        }
-        if (!givens.isEmpty()) {
+        if (stage == Stage.GIVEN) {
             throw new IllegalStateException("All of the 'given' statements after the initial then should be 'and'");
         }
-        doGiven(given);
-    }
-
-    private void doGiven(Given given) {
-        boolean alreadyHadGiven = givens.contains(given);
-        if (alreadyHadGiven) {
-            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", given));
+        if (stage != Stage.FIRST_GIVEN) {
+            throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
+        stage = Stage.GIVEN;
         given.prime();
-        givens.add(given);
     }
 
     /**
@@ -117,7 +105,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * @param <T> The type of {@link When}
      */
     protected <T extends When<Request, Response>> void when(T when) {
-        if (stage != Stage.GIVEN) {
+        if (stage != Stage.GIVEN && stage != Stage.FIRST_GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
         Request request = when.request();
@@ -139,7 +127,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * @return The fluent assertions instance
      */
     protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
-        if (stage == Stage.GIVEN) {
+        if (stage == Stage.GIVEN || stage == Stage.FIRST_GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
         }
         if (stage == Stage.THEN) {

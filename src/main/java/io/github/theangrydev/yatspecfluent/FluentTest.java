@@ -39,13 +39,13 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * You should aim to never access these directly, but you might need to (e.g. global shared state).
      * Call {@link #addToGivens(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
      */
-    protected final InterestingGivens interestingGivens = new InterestingGivens();
+    protected final InterestingGivens doNotUseTheInterestingGivens = new InterestingGivens();
 
     /**
      * You should aim to never access these directly, but you might need to (e.g. sequence diagrams)
      * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
      */
-    protected final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
+    protected final CapturedInputAndOutputs doNotUseTheCapturedInputAndOutputs = new CapturedInputAndOutputs();
 
     private Stage stage = Stage.FIRST_GIVEN;
     private Response response;
@@ -70,8 +70,8 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     @Override
     public TestState testState() {
         TestState testState = new TestState();
-        testState.interestingGivens = interestingGivens;
-        testState.capturedInputAndOutputs = capturedInputAndOutputs;
+        testState.interestingGivens = doNotUseTheInterestingGivens;
+        testState.capturedInputAndOutputs = doNotUseTheCapturedInputAndOutputs;
         return testState;
     }
 
@@ -149,11 +149,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
 
     @Override
     public void addToGivens(String key, Object instance) {
-        interestingGivens.add(key, instance);
+        doNotUseTheInterestingGivens.add(key, instance);
     }
 
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
-        capturedInputAndOutputs.add(key, instance);
+        doNotUseTheCapturedInputAndOutputs.add(key, instance);
     }
 }

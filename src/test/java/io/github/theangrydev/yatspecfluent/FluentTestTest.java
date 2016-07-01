@@ -144,10 +144,23 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Test
+    public void firstWhenAdaptedToGivenIsPrimedAfterGiven() {
+        given(testSystem);
+        verify(testSystem).response(request);
+    }
+
+    @Test
     public void subsequentGivensArePrimedAfterThem() {
         given(someDependency);
         and(anotherDependency);
         verify(anotherDependency).prime();
+    }
+
+    @Test
+    public void subsequentWhenAdaptedToGivensArePrimedAfterThem() {
+        given(someDependency);
+        and(testSystem);
+        verify(testSystem).response(request);
     }
 
     @Test

@@ -101,7 +101,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     /**
      * Invoke the system under test and store the response ready for the assertions.
      *
-     * @param when the system under test, which should be built up inside the brackets
+     * @param when The system under test, which should be built up inside the brackets
      * @param <T> The type of {@link When}
      */
     protected <T extends When<Request, Response>> void when(T when) {
@@ -117,6 +117,25 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
             throw new IllegalStateException(format("'%s' response was null", when));
         }
         stage = Stage.WHEN;
+    }
+
+    /**
+     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint changes some state in the database.
+     * This is the equivalent of {@link #given(Given)}.
+     *
+     * @param when The 'when' to adapt to a 'given'
+     * @return A 'given' that performs the same action as the 'when' does
+     */
+    public void given(When<Request, Response> when) {
+        given(() -> when.response(when.request()));
+    }
+
+    /**
+     * Same as {@link #given(When)}.
+     * This is the equivalent of {@link #and(Given)}.
+     */
+    public void and(When<Request, Response> when) {
+        and(() -> when.response(when.request()));
     }
 
     /**

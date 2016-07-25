@@ -114,19 +114,18 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Test
-    public void givensAfterTheFirstOneMustBeAnds() {
-        assertThatThrownBy(() -> {
-            given(someDependency);
-            given(someDependency);
-        }).hasMessage("All of the 'given' statements after the initial then should be 'and'");
-    }
-
-    @Test
     public void firstThenShouldBeAThen() {
         assertThatThrownBy(() -> {
             when(testSystem);
             and(testAssertions);
-        }).hasMessage("The first 'then' should be a 'then' and after that you should use 'and'");
+        }).hasMessage("The first 'then' should be a 'then' and after that you can use 'and'");
+    }
+
+    @Test
+    public void firstGivenShouldBeAGiven() {
+        assertThatThrownBy(() -> {
+            and(someDependency);
+        }).hasMessage("The first 'given' should be a 'given' and after that you can use 'and'");
     }
 
     @Test
@@ -214,16 +213,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
 
     @Test
     public void callingThenBeforeWhenIsNotAllowed() {
-        assertThatThrownBy(() -> then(testAssertions)).hasMessage("The initial 'then' should be after the 'when'");
-    }
-
-    @Test
-    public void callingThenMoreThanOnceIsNotAllowed() {
-        assertThatThrownBy(() -> {
-            given(someDependency);
-            when(testSystem);
-            then(testAssertions);
-            then(testAssertions);
-        }).hasMessage("After the first 'then' you should use 'and'");
+        assertThatThrownBy(() -> then(testAssertions)).hasMessage("The 'then' steps should be after the 'when'");
     }
 }

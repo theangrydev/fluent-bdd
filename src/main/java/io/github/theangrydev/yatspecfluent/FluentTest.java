@@ -76,22 +76,25 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     }
 
     /**
-     * Same as {@link #given(Given)} for all givens after the first one.
+     * Same as {@link #given(Given)}.
+     * Can be used for any 'given' step after the first one. The first one must be {@link #given(Given)}.
+     *
      */
     protected void and(Given given) {
-        given.prime();
+        if (stage == Stage.FIRST_GIVEN) {
+            throw new IllegalStateException("The first 'given' should be a 'given' and after that you can use 'and'");
+        }
+        given(given);
     }
 
     /**
-     * Prime the first given immediately.
+     * Prime the given immediately.
+     * Must be used for the first 'given' step and can be used for subsequent 'given' steps too.
      *
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
     protected void given(Given given) {
-        if (stage == Stage.GIVEN) {
-            throw new IllegalStateException("All of the 'given' statements after the initial then should be 'and'");
-        }
-        if (stage != Stage.FIRST_GIVEN) {
+        if (stage != Stage.FIRST_GIVEN && stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
         stage = Stage.GIVEN;
@@ -124,7 +127,6 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * This is the equivalent of {@link #given(Given)}.
      *
      * @param when The 'when' to adapt to a 'given'
-     * @return A 'given' that performs the same action as the 'when' does
      */
     public void given(When<Request, Response> when) {
         given(() -> when.response(when.request()));
@@ -139,7 +141,8 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
     }
 
     /**
-     * Perform the first assertion. Assertions should be chained outside the brackets.
+     * Perform the assertion. Assertions should be chained outside the brackets.
+     * Must be used for the first 'given' step and can be used for subsequent 'then' steps too.
      *
      * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
      * @param <Then> The type of fluent assertions that will be performed
@@ -147,21 +150,19 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      */
     protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         if (stage == Stage.GIVEN || stage == Stage.FIRST_GIVEN) {
-            throw new IllegalStateException("The initial 'then' should be after the 'when'");
-        }
-        if (stage == Stage.THEN) {
-            throw new IllegalStateException("After the first 'then' you should use 'and'");
+            throw new IllegalStateException("The 'then' steps should be after the 'when'");
         }
         stage = Stage.THEN;
         return thenFactory.then(response);
     }
 
     /**
-     * Same as {@link #then(ThenFactory)} but for all then steps after the first one.
+     * Same as {@link #then(ThenFactory)}.
+     * Can be used for any 'then' step after the first one. The first one must be {@link #then(ThenFactory)}.
      */
     protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         if (stage != Stage.THEN) {
-            throw new IllegalStateException("The first 'then' should be a 'then' and after that you should use 'and'");
+            throw new IllegalStateException("The first 'then' should be a 'then' and after that you can use 'and'");
         }
         return thenFactory.then(response);
     }

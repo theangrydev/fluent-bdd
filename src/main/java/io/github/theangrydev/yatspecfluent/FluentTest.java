@@ -33,6 +33,7 @@ import static java.lang.String.format;
  * @param <Request> The type of request passed to the {@link When}
  * @param <Response> The type of response produced by the {@link When}
  */
+@SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
 public abstract class FluentTest<Request, Response> implements WithTestState, WriteOnlyTestItems {
 
     /**
@@ -149,7 +150,7 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * @return The fluent assertions instance
      */
     protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
-        if (stage == Stage.GIVEN || stage == Stage.FIRST_GIVEN) {
+        if (stage.compareTo(Stage.WHEN) < 0) {
             throw new IllegalStateException("The 'then' steps should be after the 'when'");
         }
         stage = Stage.THEN;

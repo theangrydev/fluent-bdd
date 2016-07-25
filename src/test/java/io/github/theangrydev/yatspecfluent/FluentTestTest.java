@@ -100,6 +100,12 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Test
+    public void hasTestState() {
+        assertThat(testState().interestingGivens).isEqualTo(doNotUseTheInterestingGivens);
+        assertThat(testState().capturedInputAndOutputs).isEqualTo(doNotUseTheCapturedInputAndOutputs);
+    }
+
+    @Test
     public void nullRequestIsReported() {
         assertThatThrownBy(() -> {
             when(nullRequestTestSystem);

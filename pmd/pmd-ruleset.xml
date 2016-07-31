@@ -46,7 +46,8 @@
     <rule ref="rulesets/java/naming.xml">
         <exclude name="LongVariable"/><!-- There is nothing wrong with long descriptive variable names! -->
         <exclude name="GenericsNaming"/><!-- Single letter generic names are not descriptive enough, especially if there are several of them -->
-        <exclude name="AbstractNaming"/><!-- Abstract classes should be called something descriptive, not just AbstractXXX -->        <exclude name="ShortClassName"/><!-- It is useful to name e.g. iadd as a short name so that there is a 1-1 mapping to the JVM spec-->
+        <exclude name="AbstractNaming"/><!-- Abstract classes should be called something descriptive, not just AbstractXXX -->
+        <exclude name="ShortClassName"/><!-- It is useful to name e.g. iadd as a short name so that there is a 1-1 mapping to the JVM spec-->
         <exclude name="ShortClassName"/><!-- It is useful to name e.g. When as a short name -->
     </rule>
     <rule ref="rulesets/java/optimizations.xml">

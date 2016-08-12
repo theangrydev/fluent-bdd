@@ -120,21 +120,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Test
-    public void firstThenShouldBeAThen() {
-        assertThatThrownBy(() -> {
-            when(testSystem);
-            and(testAssertions);
-        }).hasMessage("The first 'then' should be a 'then' and after that you can use 'and'");
-    }
-
-    @Test
-    public void firstGivenShouldBeAGiven() {
-        assertThatThrownBy(() -> {
-            and(someDependency);
-        }).hasMessage("The first 'given' should be a 'given' and after that you can use 'and'");
-    }
-
-    @Test
     public void responseIsPassedToTheAssertions() {
         given(someDependency);
         when(testSystem);

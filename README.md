@@ -16,6 +16,6 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>1.5.1</version>
+	<version>1.6.0</version>
 </dependency>
 ```

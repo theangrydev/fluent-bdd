@@ -22,3 +22,8 @@ Dependency:
 	<version>1.6.0</version>
 </dependency>
 ```
+
+## Releases
+
+### 1.0.0
+* An alternative approach to givensbuilders etc in yatspec

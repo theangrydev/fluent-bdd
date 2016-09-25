@@ -25,6 +25,9 @@ Dependency:
 
 ## Releases
 
+### 1.0.7
+* Make interesting givens and captured inputs and outputs protected because some yatspec plugins (e.g. sequence diagram generator) need to read them
+
 
 ### 1.0.6
 * Updating yatspec to 1.23

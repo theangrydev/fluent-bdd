@@ -25,6 +25,10 @@ Dependency:
 
 ## Releases
 
+### 1.2.0
+* Lots of javadoc and renamed ReadOnlyTestItems to WriteOnlyTestItems
+
+
 ### 1.1.0
 * Do not allow given given (should be given and)
 

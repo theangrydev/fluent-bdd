@@ -25,7 +25,7 @@ Dependency:
 
 ## Releases
 
-###
+### 1.6.0
 * [#1](https://github.com/theangrydev/yatspec-fluent/issues/1) Relax all the wording validation because it was just getting in the way for users rather than providing any value
 
 ### 1.5.0

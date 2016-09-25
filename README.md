@@ -25,6 +25,9 @@ Dependency:
 
 ## Releases
 
+### 1.1.0
+* Do not allow given given (should be given and)
+
 ### 1.0.7
 * Make interesting givens and captured inputs and outputs protected because some yatspec plugins (e.g. sequence diagram generator) need to read them
 

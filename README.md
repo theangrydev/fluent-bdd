@@ -25,6 +25,10 @@ Dependency:
 
 ## Releases
 
+### 1.2.1
+* Allow multiple givens of the same type, but not exactly the same one
+
+
 ### 1.2.0
 * Lots of javadoc and renamed ReadOnlyTestItems to WriteOnlyTestItems
 

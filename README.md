@@ -25,6 +25,9 @@ Dependency:
 
 ## Releases
 
+###
+* #1 Relax all the wording validation because it was just getting in the way for users rather than providing any value
+
 ### 1.5.0
 * Adapt when to given
 * Relax the constrains on when you must use 'and'. Now you are free to use 'and' and 'given' and 'and' and 'then' interchangeably, so long as the first 'given' is a 'given' not an 'and' and the first 'then' is a 'then' not an 'and'.

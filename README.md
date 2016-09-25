@@ -25,5 +25,10 @@ Dependency:
 
 ## Releases
 
+
+### 1.0.6
+* Updating yatspec to 1.23
+
+
 ### 1.0.0
 * An alternative approach to givensbuilders etc in yatspec

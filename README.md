@@ -25,6 +25,10 @@ Dependency:
 
 ## Releases
 
+### 1.5.0
+* Adapt when to given
+* Relax the constrains on when you must use 'and'. Now you are free to use 'and' and 'given' and 'and' and 'then' interchangeably, so long as the first 'given' is a 'given' not an 'and' and the first 'then' is a 'then' not an 'and'.
+
 ### 1.4.0
 * Make it clear that the raw yatspec captured inputs and outputs and interesting givens should not be used
 
@@ -34,10 +38,8 @@ Dependency:
 ### 1.2.1
 * Allow multiple givens of the same type, but not exactly the same one
 
-
 ### 1.2.0
 * Lots of javadoc and renamed ReadOnlyTestItems to WriteOnlyTestItems
-
 
 ### 1.1.0
 * Do not allow given given (should be given and)
@@ -45,10 +47,8 @@ Dependency:
 ### 1.0.7
 * Make interesting givens and captured inputs and outputs protected because some yatspec plugins (e.g. sequence diagram generator) need to read them
 
-
 ### 1.0.6
 * Updating yatspec to 1.23
-
 
 ### 1.0.0
 * An alternative approach to givensbuilders etc in yatspec

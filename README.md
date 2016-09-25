@@ -25,6 +25,9 @@ Dependency:
 
 ## Releases
 
+### 1.4.0
+* Make it clear that the raw yatspec captured inputs and outputs and interesting givens should not be used
+
 ### 1.3.0
 * Allow multiple givens of the same type, even if the given is the sam instance (this is useful for e.g. priming a rest endpoint for multiple ids)
 

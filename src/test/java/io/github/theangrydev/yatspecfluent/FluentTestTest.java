@@ -21,14 +21,22 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.model.Statement;
 import org.mockito.Mockito;
 
 import static java.lang.String.format;
+import static org.junit.runner.Description.EMPTY;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTestTest.Response> implements WithAssertions {
+    private static final Statement SUCCESSFUL_STATEMENT = new Statement() {
+        @Override
+        public void evaluate() throws Throwable {
+            // everything OK
+        }
+    };
 
     private final ThenFactory<TestAssertions, Response> testAssertions = TestAssertions::new;
     private final TestSystem testSystem = mock(TestSystem.class);
@@ -205,5 +213,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     @Test
     public void callingThenBeforeWhenIsNotAllowed() {
         assertThatThrownBy(() -> then(testAssertions)).hasMessage("The 'then' steps should be after the 'when'");
+    }
+
+    @Test
+    public void eachTestNeedsAtLeastAWhenAndAThen() {
+        assertThatThrownBy(() -> makeSureThenIsUsed.apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
+                .hasMessage("Each test needs at least a 'when' and a 'then'");
     }
 }

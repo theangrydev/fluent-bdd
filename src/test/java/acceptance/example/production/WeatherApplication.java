@@ -36,7 +36,7 @@ public class WeatherApplication {
         try {
             server.start();
         } catch (Exception e) {
-            throw new RuntimeException("Could not start the server");
+            throw new RuntimeException("Could not start the server", e);
         }
     }
 
@@ -44,7 +44,7 @@ public class WeatherApplication {
         try {
             server.stop();
         } catch (Exception e) {
-            throw new RuntimeException("Could not stop the server");
+            throw new RuntimeException("Could not stop the server", e);
         }
     }
 

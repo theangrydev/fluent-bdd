@@ -1,8 +1,11 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/yatspec-fluent/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/yatspec-fluent)
-[![Build Status](https://travis-ci.org/theangrydev/yatspec-fluent.svg?branch=master)](https://travis-ci.org/theangrydev/yatspec-fluent)
-[![codecov](https://codecov.io/gh/theangrydev/yatspec-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/theangrydev/yatspec-fluent)
 [![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev/yatspec-fluent.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev/yatspec-fluent)
 [![Gitter](https://badges.gitter.im/yatspec-fluent/Lobby.svg)](https://gitter.im/yatspec-fluent/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+[![Build Status](https://travis-ci.org/theangrydev/yatspec-fluent.svg?branch=master)](https://travis-ci.org/theangrydev/yatspec-fluent)
+[![codecov](https://codecov.io/gh/theangrydev/yatspec-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/theangrydev/yatspec-fluent)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8027156014f84fa18f413bea6213bea8)](https://www.codacy.com/app/liam-williams/yatspec-fluent?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/yatspec-fluent&amp;utm_campaign=Badge_Grade)
+[![codebeat badge](https://codebeat.co/badges/2727cf34-ac3c-4c1f-85f7-144b625303c1)](https://codebeat.co/projects/github-com-theangrydev-yatspec-fluent)
 
 # yatspec-fluent
 [Example:](https://github.com/theangrydev/yatspec-fluent/blob/master/src/test/java/acceptance/ExampleTest.java)

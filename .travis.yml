@@ -10,6 +10,7 @@ cache:
     - $HOME/.m2
 before_install:
   # Code coverage for codecy
+  - pip install --user codecov
   - curl http://www.jpm4j.org/install/script | sh
   - jpm install com.codacy:codacy-coverage-reporter:assembly
 install: mvn dependency:resolve dependency:resolve-plugins
@@ -17,4 +18,5 @@ script: mvn verify
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   # Code coverage for codecy
+  - codecov
   - codacy-coverage-reporter -l Java -r coverage.xml

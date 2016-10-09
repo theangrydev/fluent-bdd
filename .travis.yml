@@ -10,7 +10,7 @@ cache:
     - $HOME/.m2
 before_install:
   # Code coverage for codecy
-  - curl --insecure https://www.jpm4j.org/install/script | sh
+  - curl http://www.jpm4j.org/install/script | sh
   - jpm install com.codacy:codacy-coverage-reporter:assembly
 install: mvn dependency:resolve dependency:resolve-plugins
 script: mvn verify

@@ -8,7 +8,16 @@ addons:
 cache:
   directories:
     - $HOME/.m2
+before_install:
+  # Code coverage for codecy
+  - pip install --user codecy
+  - curl -sL https://bndtools.ci.cloudbees.com/job/bnd.master/lastSuccessfulBuild/artifact/biz.aQute.jpm/generated/biz.aQute.jpm.run.jar >jpm4j.jar
+  - java -jar jpm4j.jar --user init
+  - ${HOME}/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
 install: mvn dependency:resolve dependency:resolve-plugins
 script: mvn verify
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  # Code coverage for codecy
+  - codecy
+  - ${HOME}/jpm/bin/codacy-coverage-reporter -l Java -r coverage.xml

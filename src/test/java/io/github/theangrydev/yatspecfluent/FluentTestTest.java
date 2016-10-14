@@ -134,10 +134,26 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
+    public void andThenAssertionBehavesTheSameAsThen() {
+        given(someDependency);
+        when(testSystem);
+        TestAssertions then = and(testAssertions);
+        assertThat(then.testResult).isSameAs(testResult);
+    }
+
+    @Test
     public void testResultIsPassedToTheVerification() {
         given(someDependency);
         when(testSystem);
         then(testVerification);
+        assertThat(testVerification.testResult).isSameAs(testResult);
+    }
+
+    @Test
+    public void andThenVerificationBehavesTheSameAsThen() {
+        given(someDependency);
+        when(testSystem);
+        and(testVerification);
         assertThat(testVerification.testResult).isSameAs(testResult);
     }
 

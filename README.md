@@ -42,11 +42,14 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>4.0.1</version>
+	<version>4.1.0</version>
 </dependency>
 ```
 
 ## Releases
+### 4.1.0
+* Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state between them. Similarly for `ThenVerification`.
+
 ### 4.0.1
 * There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
 

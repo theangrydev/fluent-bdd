@@ -24,13 +24,12 @@ import acceptance.example.thens.ThenTheResponseHeaders;
 import acceptance.example.whens.WhenTheWeatherIsRequested;
 import com.googlecode.yatspec.junit.SpecRunner;
 import io.github.theangrydev.yatspecfluent.ThenFactory;
-import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SpecRunner.class)
-public class ExampleTest extends AcceptanceTest<Request, Response> {
+public class ExampleTest extends AcceptanceTest<Response> {
 
     private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
     private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;

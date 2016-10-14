@@ -24,8 +24,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
-
-public class WhenTheWeatherIsRequested implements When<Request, Response>, WithAssertions {
+public class WhenTheWeatherIsRequested implements When<Response>, WithAssertions {
 
     private final TestInfrastructure testInfrastructure;
     private final String caller;
@@ -38,14 +37,10 @@ public class WhenTheWeatherIsRequested implements When<Request, Response>, WithA
     }
 
     @Override
-    public Request request() {
+    public Response execute() {
         Request request = weatherRequest(testInfrastructure.serverBaseUrl());
         testInfrastructure.recordIncomingRequest(caller, request);
-        return request;
-    }
 
-    @Override
-    public Response response(Request request) {
         Response response = testInfrastructure.execute(request);
         testInfrastructure.recordOutgoingResponse(caller, response);
         return response;
@@ -64,5 +59,4 @@ public class WhenTheWeatherIsRequested implements When<Request, Response>, WithA
     public WhenTheWeatherIsRequested requestsTheWeather() {
         return this;
     }
-
 }

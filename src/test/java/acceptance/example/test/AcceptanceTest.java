@@ -29,12 +29,11 @@ import io.github.theangrydev.yatspecfluent.FluentTest;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
-
 import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
 
-public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions, WithCustomResultListeners {
+public abstract class AcceptanceTest<Response> extends FluentTest<Response> implements WithAssertions, WithCustomResultListeners {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 

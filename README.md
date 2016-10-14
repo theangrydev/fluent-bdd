@@ -35,11 +35,13 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>2.0.1</version>
+	<version>3.0.0</version>
 </dependency>
 ```
 
 ## Releases
+### 3.0.0
+* Removed `InterestingGivens` and `CapturedInputAndOutputs` fields. The `TestState` can be accessed via the interface `WithTestState` if it is really needed. This is a breaking change since the fields were visible to subclasses of `FluentTest`
 
 ### 2.0.1
 * [#4](https://github.com/theangrydev/yatspec-fluent/issues/4) Remove `Request` from `When`. This is a breaking change

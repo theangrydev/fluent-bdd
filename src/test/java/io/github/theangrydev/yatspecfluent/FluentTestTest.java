@@ -150,6 +150,16 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
+    public void notAllowedToUseTheSameThenVerificationTwice() {
+        assertThatThrownBy(() -> {
+            given(someDependency);
+            when(testSystem);
+            then(testVerification);
+            and(testVerification);
+        }).hasMessage("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", testVerification.getClass().getSimpleName(), testVerification, testVerification.getClass().getSimpleName());
+    }
+
+    @Test
     public void andThenVerificationBehavesTheSameAsThen() {
         given(someDependency);
         when(testSystem);
@@ -201,10 +211,10 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     @Test
     public void callingSameGivenTwiceIsAllowed() {
-        given(someDependency);
-        verify(someDependency).prime();
-        and(someDependency);
-        verify(someDependency, times(2)).prime();
+        assertThatThrownBy(() -> {
+            given(someDependency);
+            and(someDependency);
+        }).hasMessage(format("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", someDependency.getClass().getSimpleName(), someDependency, someDependency.getClass().getSimpleName()));
     }
 
     @Test

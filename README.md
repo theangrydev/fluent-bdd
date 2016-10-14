@@ -43,7 +43,7 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>3.0.1</version>
+	<version>4.0.0</version>
 </dependency>
 ```
 

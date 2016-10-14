@@ -106,7 +106,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
     }
 
     /**
-     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint changes some state in the database.
+     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint that changes some state in the database.
      * This is the equivalent of {@link #given(Given)}.
      *
      * @param when The 'when' to adapt to a 'given'
@@ -118,7 +118,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
     /**
      * Same as {@link #given(When)}.
      * <p>
-     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint changes some state in the database.
+     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint that changes some state in the database.
      * This is the equivalent of {@link #given(Given)}.
      *
      * @param when The 'when' to adapt to a 'given'

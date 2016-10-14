@@ -23,7 +23,7 @@
 
     <groupId>io.github.theangrydev</groupId>
     <artifactId>yatspec-fluent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>yatspec-fluent</name>
@@ -34,7 +34,7 @@
         <connection>scm:git:https://github.com/theangrydev/yatspec-fluent.git</connection>
         <developerConnection>scm:git:https://github.com/theangrydev/yatspec-fluent.git</developerConnection>
         <url>https://github.com/theangrydev/yatspec-fluent.git</url>
-        <tag>yatspec-fluent-4.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>

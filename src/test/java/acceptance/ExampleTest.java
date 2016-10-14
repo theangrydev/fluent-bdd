@@ -44,7 +44,6 @@ public class ExampleTest extends AcceptanceTest<TestResult> {
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");
         and(theResponseHeaders).contains("Content-Length").contains("Date");
-        and(theResponseHeaders).contains("Date");
     }
 
     @Test

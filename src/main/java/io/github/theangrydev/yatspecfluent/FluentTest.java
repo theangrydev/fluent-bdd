@@ -33,7 +33,7 @@ import static java.lang.String.format;
 @SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
 public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTestItems {
 
-    private final TestState testState = new TestState();
+    private final TestState state = new TestState();
 
     private Stage stage = Stage.GIVEN;
     private Response response;
@@ -61,7 +61,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      */
     @Override
     public TestState testState() {
-        return testState;
+        return state;
     }
 
     /**

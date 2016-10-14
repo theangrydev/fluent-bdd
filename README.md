@@ -81,7 +81,7 @@ Dependency:
 * Allow multiple givens of the same type, but not exactly the same one
 
 ### 1.2.0
-* Lots of javadoc and renamed ReadOnlyTestItems to WriteOnlyTestItems
+* Lots of javadoc and renamed `ReadOnlyTestItems` to `WriteOnlyTestItems`
 
 ### 1.1.0
 * Do not allow given given (should be given and)

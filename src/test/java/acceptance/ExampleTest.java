@@ -23,7 +23,7 @@ import acceptance.example.thens.ThenTheResponse;
 import acceptance.example.thens.ThenTheResponseHeaders;
 import acceptance.example.whens.WhenTheWeatherIsRequested;
 import com.googlecode.yatspec.junit.SpecRunner;
-import io.github.theangrydev.yatspecfluent.ThenFactory;
+import io.github.theangrydev.yatspecfluent.ThenAssertion;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,12 +32,12 @@ import org.junit.runner.RunWith;
 public class ExampleTest extends AcceptanceTest<Response> {
 
     private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
-    private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
-    private final ThenFactory<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
+    private final ThenAssertion<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
+    private final ThenAssertion<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
     private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
 
     @Test
-    public void exampleTest() {
+    public void assertionTest() {
         given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");

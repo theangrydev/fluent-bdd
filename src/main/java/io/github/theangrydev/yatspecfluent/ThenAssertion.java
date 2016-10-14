@@ -28,7 +28,7 @@ package io.github.theangrydev.yatspecfluent;
  * @param <TestResult> The test result that the {@link Then} operates on
  */
 @FunctionalInterface
-public interface ThenFactory<Then, TestResult> {
+public interface ThenAssertion<Then, TestResult> {
 
     /**
      * @param testResult The result from the system under test

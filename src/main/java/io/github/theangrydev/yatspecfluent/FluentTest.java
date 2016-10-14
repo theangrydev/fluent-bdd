@@ -128,31 +128,49 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
     }
 
     /**
-     * Perform the assertion. Assertions should be chained outside the brackets.
+     * Perform an assertion. Assertions should be chained outside the brackets.
      *
-     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored {@link TestResult}
+     * @param thenAssertion A {@link ThenAssertion} that will produce a {@link Then} given the stored {@link TestResult}
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then then(ThenFactory<Then, TestResult> thenFactory) {
-        if (stage.compareTo(Stage.WHEN) < 0) {
-            throw new IllegalStateException("The 'then' steps should be after the 'when'");
-        }
-        stage = Stage.THEN;
-        return thenFactory.then(testResult);
+    public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
+        checkThenIsPossible();
+        return thenAssertion.then(testResult);
     }
 
     /**
-     * Same as {@link #then(ThenFactory)}.
+     * Same as {@link #then(ThenAssertion)}.
      * <p>
-     * Perform the assertion. Assertions should be chained outside the brackets.
+     * Perform an assertion. Assertions should be chained outside the brackets.
      *
-     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored {@link TestResult}
+     * @param thenAssertion A {@link ThenAssertion} that will produce a {@link Then} given the stored {@link TestResult}
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then and(ThenFactory<Then, TestResult> thenFactory) {
-        return then(thenFactory);
+    public <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
+        return then(thenAssertion);
+    }
+
+    /**
+     * Same as {@link #then(ThenVerification)}.
+     * <p>
+     * Perform a verification, which should be built up inside the brackets.
+     *
+     * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
+     */
+    public void and(ThenVerification<TestResult> thenVerification) {
+        then(thenVerification);
+    }
+
+    /**
+     * Perform a verification, which should be built up inside the brackets.
+     *
+     * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
+     */
+    public void then(ThenVerification<TestResult> thenVerification) {
+        checkThenIsPossible();
+        thenVerification.verify(testResult);
     }
 
     @Override
@@ -163,5 +181,12 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
         testState().capturedInputAndOutputs.add(key, instance);
+    }
+
+    private void checkThenIsPossible() {
+        if (stage.compareTo(Stage.WHEN) < 0) {
+            throw new IllegalStateException("The 'then' steps should be after the 'when'");
+        }
+        stage = Stage.THEN;
     }
 }

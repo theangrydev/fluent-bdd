@@ -20,7 +20,7 @@ public class ExampleTest extends AcceptanceTest<Response> {
     private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
 
     @Test
-    public void exampleTest() {
+    public void assertionTest() {
         given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");

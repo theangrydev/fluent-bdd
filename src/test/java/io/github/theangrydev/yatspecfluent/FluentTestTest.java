@@ -38,7 +38,8 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         }
     };
 
-    private final ThenFactory<TestAssertions, TestResult> testAssertions = TestAssertions::new;
+    private final ThenAssertion<TestAssertions, TestResult> testAssertions = TestAssertions::new;
+    private final TestVerification testVerification = new TestVerification();
     private final TestSystem testSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
@@ -57,7 +58,16 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         TestAssertions(TestResult testResult) {
             this.testResult = testResult;
         }
+    }
 
+    private static class TestVerification implements ThenVerification<TestResult> {
+
+        TestResult testResult;
+
+        @Override
+        public void verify(TestResult testResult) {
+            this.testResult = testResult;
+        }
     }
 
     static class TestResult {}
@@ -96,8 +106,8 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Override
-    public <Then> Then then(ThenFactory<Then, TestResult> thenFactory) {
-        Then then = super.then(thenFactory);
+    public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
+        Then then = super.then(thenAssertion);
         this.then = true;
         return then;
     }
@@ -121,6 +131,14 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         when(testSystem);
         TestAssertions then = then(testAssertions);
         assertThat(then.testResult).isSameAs(testResult);
+    }
+
+    @Test
+    public void testResultIsPassedToTheVerification() {
+        given(someDependency);
+        when(testSystem);
+        then(testVerification);
+        assertThat(testVerification.testResult).isSameAs(testResult);
     }
 
     @Test

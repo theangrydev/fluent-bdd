@@ -17,8 +17,6 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
-import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
-import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.Rule;
@@ -35,17 +33,7 @@ import static java.lang.String.format;
 @SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
 public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTestItems {
 
-    /**
-     * You should aim to never access these directly, but you might need to (e.g. global shared state).
-     * Call {@link #addToGivens(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
-     */
-    protected final InterestingGivens doNotUseTheInterestingGivens = new InterestingGivens();
-
-    /**
-     * You should aim to never access these directly, but you might need to (e.g. sequence diagrams)
-     * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
-     */
-    protected final CapturedInputAndOutputs doNotUseTheCapturedInputAndOutputs = new CapturedInputAndOutputs();
+    private final TestState testState = new TestState();
 
     private Stage stage = Stage.GIVEN;
     private Response response;
@@ -66,11 +54,13 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
         }
     };
 
+    /**
+     * You should aim to never access the state directly, but you might need to (e.g. global shared state).
+     * Call {@link #addToGivens(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
+     * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
+     */
     @Override
     public TestState testState() {
-        TestState testState = new TestState();
-        testState.interestingGivens = doNotUseTheInterestingGivens;
-        testState.capturedInputAndOutputs = doNotUseTheCapturedInputAndOutputs;
         return testState;
     }
 
@@ -167,11 +157,11 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
 
     @Override
     public void addToGivens(String key, Object instance) {
-        doNotUseTheInterestingGivens.add(key, instance);
+        testState().interestingGivens.add(key, instance);
     }
 
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
-        doNotUseTheCapturedInputAndOutputs.add(key, instance);
+        testState().capturedInputAndOutputs.add(key, instance);
     }
 }

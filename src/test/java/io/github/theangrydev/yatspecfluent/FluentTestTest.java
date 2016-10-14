@@ -104,8 +104,8 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
 
     @Test
     public void hasTestState() {
-        assertThat(testState().interestingGivens).isEqualTo(doNotUseTheInterestingGivens);
-        assertThat(testState().capturedInputAndOutputs).isEqualTo(doNotUseTheCapturedInputAndOutputs);
+        assertThat(testState().interestingGivens).isNotNull();
+        assertThat(testState().capturedInputAndOutputs).isNotNull();
     }
 
     @Test

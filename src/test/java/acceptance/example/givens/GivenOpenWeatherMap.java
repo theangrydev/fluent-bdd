@@ -54,8 +54,11 @@ public class GivenOpenWeatherMap implements Given {
     @Override
     public void prime() {
         writeOnlyTestItems.addToGivens("City", cityName);
-        WireMock wireMock = testInfrastructure.wireMock();
-        wireMock.register(get(urlPathMatching("/data/2.5/weather")).withQueryParam("q", equalTo(cityName)).willReturn(aResponse().withStatus(200).withBody(weatherWithDescription())));
+        testInfrastructure.givenThat("OpenWeatherMap", get(urlPathMatching("/data/2.5/weather"))
+                .withQueryParam("q", equalTo(cityName))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(weatherWithDescription())));
     }
 
     private String weatherWithDescription() {

@@ -17,14 +17,26 @@
  */
 package acceptance.example.test;
 
+import com.googlecode.yatspec.junit.SpecResultListener;
+import com.googlecode.yatspec.junit.WithCustomResultListeners;
+import com.googlecode.yatspec.plugin.sequencediagram.ByNamingConventionMessageProducer;
+import com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator;
+import com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramMessage;
+import com.googlecode.yatspec.plugin.sequencediagram.SvgWrapper;
+import com.googlecode.yatspec.rendering.html.DontHighlightRenderer;
+import com.googlecode.yatspec.rendering.html.HtmlResultRenderer;
 import io.github.theangrydev.yatspecfluent.FluentTest;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions {
+import java.util.Collections;
 
-    protected final TestInfrastructure testInfrastructure = new TestInfrastructure();
+import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
+
+public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions, WithCustomResultListeners {
+
+    protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 
     @Before
     public void setUp() {
@@ -33,6 +45,20 @@ public abstract class AcceptanceTest<Request, Response> extends FluentTest<Reque
 
     @After
     public void tearDown() {
+        addSequenceDiagram();
         testInfrastructure.tearDown();
+    }
+
+    private void addSequenceDiagram() {
+        Iterable<SequenceDiagramMessage> messages = new ByNamingConventionMessageProducer().messages(testState().capturedInputAndOutputs);
+        SequenceDiagramGenerator sequenceDiagramGenerator = new SequenceDiagramGenerator();
+        addToCapturedInputsAndOutputs("Sequence Diagram", sequenceDiagramGenerator.generateSequenceDiagram(messages));
+    }
+
+    @Override
+    public Iterable<SpecResultListener> getResultListeners() throws Exception {
+        return Collections.singleton(new HtmlResultRenderer()
+                .withCustomHeaderContent(getHeaderContentForModalWindows())
+                .withCustomRenderer(SvgWrapper.class, new DontHighlightRenderer<>()));
     }
 }

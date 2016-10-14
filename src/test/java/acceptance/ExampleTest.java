@@ -35,7 +35,7 @@ public class ExampleTest extends AcceptanceTest<Request, Response> {
     private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
     private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
     private final ThenFactory<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
-    private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(this, testInfrastructure, "The User");
+    private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
 
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {

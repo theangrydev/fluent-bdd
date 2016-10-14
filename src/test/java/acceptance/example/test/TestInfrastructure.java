@@ -19,7 +19,8 @@ package acceptance.example.test;
 
 import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -27,14 +28,19 @@ import okhttp3.Response;
 import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static java.lang.String.format;
 
 public class TestInfrastructure {
 
-    private WireMock wireMock;
+    private static final String SYSTEM_NAME = "WeatherApplication";
+
+    private final WriteOnlyTestItems writeOnlyTestItems;
+
+    private WireMockServer wireMockServer;
     private WeatherApplication weatherApplication;
 
-    public WireMock wireMock() {
-        return wireMock;
+    public TestInfrastructure(WriteOnlyTestItems writeOnlyTestItems) {
+        this.writeOnlyTestItems = writeOnlyTestItems;
     }
 
     public String serverBaseUrl() {
@@ -42,17 +48,16 @@ public class TestInfrastructure {
     }
 
     public void setUp() {
-        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(1235));
+        wireMockServer = new WireMockServer(wireMockConfig().port(1235));
         wireMockServer.start();
-        wireMock = new WireMock(wireMockServer);
 
-        String wireMockServerUrl = String.format("http://localhost:%d", wireMockServer.port());
+        String wireMockServerUrl = format("http://localhost:%d", wireMockServer.port());
         weatherApplication = new WeatherApplication(1234, wireMockServerUrl);
         weatherApplication.start();
     }
 
     public void tearDown() {
-        wireMock.shutdown();
+        wireMockServer.shutdown();
         weatherApplication.stop();
     }
 
@@ -62,5 +67,31 @@ public class TestInfrastructure {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void givenThat(String dependencyName, MappingBuilder mappingBuilder) {
+        wireMockServer.givenThat(mappingBuilder);
+        wireMockServer.addMockServiceRequestListener((request, response) -> {
+            if (mappingBuilder.build().getRequest().match(request).isExactMatch()) {
+                recordOutgoingRequest(dependencyName, request);
+                recordIncomingResponse(dependencyName, response);
+            }
+        });
+    }
+
+    public void recordIncomingRequest(String caller, Request request) {
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", request.method(), caller, SYSTEM_NAME), request);
+    }
+
+    public void recordOutgoingResponse(String caller, Response response) {
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", response.code(), SYSTEM_NAME, caller), response);
+    }
+
+    public void recordOutgoingRequest(String dependencyName, com.github.tomakehurst.wiremock.http.Request request) {
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", request.getMethod().getName(), SYSTEM_NAME, dependencyName), request);
+    }
+
+    public void recordIncomingResponse(String dependencyName, com.github.tomakehurst.wiremock.http.Response response) {
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", response.getStatus(), dependencyName, SYSTEM_NAME), response);
     }
 }

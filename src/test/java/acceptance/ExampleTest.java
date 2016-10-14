@@ -17,31 +17,40 @@
  */
 package acceptance;
 
-import acceptance.example.givens.GivenOpenWeatherMap;
-import acceptance.example.test.*;
+import acceptance.example.givens.GivenTheWeatherService;
+import acceptance.example.test.AcceptanceTest;
+import acceptance.example.test.TestResult;
+import acceptance.example.thens.ThenTheWeatherServiceWasCalled;
 import acceptance.example.thens.ThenTheResponse;
 import acceptance.example.thens.ThenTheResponseHeaders;
 import acceptance.example.whens.WhenTheWeatherIsRequested;
 import com.googlecode.yatspec.junit.SpecRunner;
 import io.github.theangrydev.yatspecfluent.ThenAssertion;
-import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SpecRunner.class)
-public class ExampleTest extends AcceptanceTest<Response> {
+public class ExampleTest extends AcceptanceTest<TestResult> {
 
-    private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
-    private final ThenAssertion<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
-    private final ThenAssertion<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
+    private final GivenTheWeatherService theWeatherService = new GivenTheWeatherService(this, testInfrastructure);
+    private final ThenAssertion<ThenTheResponse, TestResult> theResponse = ThenTheResponse::new;
+    private final ThenAssertion<ThenTheResponseHeaders, TestResult> theResponseHeaders = ThenTheResponseHeaders::new;
     private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
+    private final ThenTheWeatherServiceWasCalled theWeatherServiceWasCalled = new ThenTheWeatherServiceWasCalled();
 
     @Test
     public void assertionTest() {
         given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");
-        and(theResponseHeaders).contains("Content-Length");
+        and(theResponseHeaders).contains("Content-Length").contains("Date");
         and(theResponseHeaders).contains("Date");
+    }
+
+    @Test
+    public void verificationTest() {
+        given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
+        when(theUser.requestsTheWeather().forCity("London"));
+        then(theWeatherServiceWasCalled.withCity("London"));
     }
 }

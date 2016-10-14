@@ -18,13 +18,14 @@
 package acceptance.example.whens;
 
 import acceptance.example.test.TestInfrastructure;
+import acceptance.example.test.TestResult;
 import io.github.theangrydev.yatspecfluent.When;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
-public class WhenTheWeatherIsRequested implements When<Response>, WithAssertions {
+public class WhenTheWeatherIsRequested implements When<TestResult>, WithAssertions {
 
     private final TestInfrastructure testInfrastructure;
     private final String caller;
@@ -37,13 +38,13 @@ public class WhenTheWeatherIsRequested implements When<Response>, WithAssertions
     }
 
     @Override
-    public Response execute() {
+    public TestResult execute() {
         Request request = weatherRequest(testInfrastructure.serverBaseUrl());
         testInfrastructure.recordIncomingRequest(caller, request);
 
         Response response = testInfrastructure.execute(request);
         testInfrastructure.recordOutgoingResponse(caller, response);
-        return response;
+        return new TestResult(testInfrastructure, response);
     }
 
     private Request weatherRequest(String baseUrl) {

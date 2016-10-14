@@ -12,20 +12,28 @@
 [Example:](https://github.com/theangrydev/yatspec-fluent/blob/master/src/test/java/acceptance/ExampleTest.java)
 ```java
 @RunWith(SpecRunner.class)
-public class ExampleTest extends AcceptanceTest<Response> {
+public class ExampleTest extends AcceptanceTest<TestResult> {
 
-    private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
-    private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
-    private final ThenFactory<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
+    private final GivenTheWeatherService theWeatherService = new GivenTheWeatherService(this, testInfrastructure);
+    private final ThenAssertion<ThenTheResponse, TestResult> theResponse = ThenTheResponse::new;
+    private final ThenAssertion<ThenTheResponseHeaders, TestResult> theResponseHeaders = ThenTheResponseHeaders::new;
     private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
+    private final ThenTheWeatherServiceWasCalled theWeatherServiceWasCalled = new ThenTheWeatherServiceWasCalled();
 
     @Test
     public void assertionTest() {
         given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");
-        and(theResponseHeaders).contains("Content-Length");
+        and(theResponseHeaders).contains("Content-Length").contains("Date");
         and(theResponseHeaders).contains("Date");
+    }
+
+    @Test
+    public void verificationTest() {
+        given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
+        when(theUser.requestsTheWeather().forCity("London"));
+        then(theWeatherServiceWasCalled.withCity("London"));
     }
 }
 ```

@@ -17,6 +17,7 @@
  */
 package acceptance.example.thens;
 
+import acceptance.example.test.TestResult;
 import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
 
@@ -26,8 +27,8 @@ public class ThenTheResponse implements WithAssertions {
 
     private final String responseBody;
 
-    public ThenTheResponse(Response response) {
-        responseBody = responseBody(response);
+    public ThenTheResponse(TestResult testResult) {
+        responseBody = responseBody(testResult.response);
     }
 
     private String responseBody(Response response) {

@@ -18,13 +18,12 @@
 package acceptance.example.givens;
 
 import acceptance.example.test.TestInfrastructure;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import io.github.theangrydev.yatspecfluent.Given;
 import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class GivenOpenWeatherMap implements Given {
+public class GivenTheWeatherService implements Given {
 
     private final WriteOnlyTestItems writeOnlyTestItems;
     private final TestInfrastructure testInfrastructure;
@@ -32,21 +31,21 @@ public class GivenOpenWeatherMap implements Given {
     private String description;
     private String cityName;
 
-    public GivenOpenWeatherMap(WriteOnlyTestItems writeOnlyTestItems, TestInfrastructure testInfrastructure) {
+    public GivenTheWeatherService(WriteOnlyTestItems writeOnlyTestItems, TestInfrastructure testInfrastructure) {
         this.writeOnlyTestItems = writeOnlyTestItems;
         this.testInfrastructure = testInfrastructure;
     }
 
-    public GivenOpenWeatherMap willReturn() {
+    public GivenTheWeatherService willReturn() {
         return this;
     }
 
-    public GivenOpenWeatherMap weatherDescription(String description) {
+    public GivenTheWeatherService weatherDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public GivenOpenWeatherMap forCity(String cityName) {
+    public GivenTheWeatherService forCity(String cityName) {
         this.cityName = cityName;
         return this;
     }

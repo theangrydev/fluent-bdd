@@ -20,6 +20,7 @@ package acceptance.example.test;
 import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,11 +34,16 @@ import static java.lang.String.format;
 public class TestInfrastructure {
 
     private static final String SYSTEM_NAME = "WeatherApplication";
+    private static final WireMockServer WIREMOCK;
 
     private final WriteOnlyTestItems writeOnlyTestItems;
 
-    private WireMockServer wireMockServer;
     private WeatherApplication weatherApplication;
+
+    static {
+        WIREMOCK = new WireMockServer(wireMockConfig().port(1235));
+        WIREMOCK.start();
+    }
 
     public TestInfrastructure(WriteOnlyTestItems writeOnlyTestItems) {
         this.writeOnlyTestItems = writeOnlyTestItems;
@@ -48,16 +54,13 @@ public class TestInfrastructure {
     }
 
     public void setUp() {
-        wireMockServer = new WireMockServer(wireMockConfig().port(1235));
-        wireMockServer.start();
-
-        String wireMockServerUrl = format("http://localhost:%d", wireMockServer.port());
+        WIREMOCK.resetAll();
+        String wireMockServerUrl = format("http://localhost:%d", WIREMOCK.port());
         weatherApplication = new WeatherApplication(1234, wireMockServerUrl);
         weatherApplication.start();
     }
 
     public void tearDown() {
-        wireMockServer.shutdown();
         weatherApplication.stop();
     }
 
@@ -70,8 +73,8 @@ public class TestInfrastructure {
     }
 
     public void givenThat(String dependencyName, MappingBuilder mappingBuilder) {
-        wireMockServer.givenThat(mappingBuilder);
-        wireMockServer.addMockServiceRequestListener((request, response) -> {
+        WIREMOCK.givenThat(mappingBuilder);
+        WIREMOCK.addMockServiceRequestListener((request, response) -> {
             if (mappingBuilder.build().getRequest().match(request).isExactMatch()) {
                 recordOutgoingRequest(dependencyName, request);
                 recordIncomingResponse(dependencyName, response);
@@ -93,5 +96,9 @@ public class TestInfrastructure {
 
     public void recordIncomingResponse(String dependencyName, com.github.tomakehurst.wiremock.http.Response response) {
         writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", response.getStatus(), dependencyName, SYSTEM_NAME), response);
+    }
+
+    public void verifyThat(RequestPatternBuilder requestPatternBuilder) {
+        WIREMOCK.verify(1, requestPatternBuilder);
     }
 }

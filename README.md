@@ -35,11 +35,15 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>3.0.0</version>
+	<version>3.0.1</version>
 </dependency>
 ```
 
 ## Releases
+### 3.0.1
+* Made the `FluentTest` methods public. Protected was enough, but it's clearer that they are part of the public API if they are public
+* Fixed some javadoc language issues
+
 ### 3.0.0
 * Removed `InterestingGivens` and `CapturedInputAndOutputs` fields. The `TestState` can be accessed via the interface `WithTestState` if it is really needed. This is a breaking change since the fields were visible to subclasses of `FluentTest`
 

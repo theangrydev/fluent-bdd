@@ -22,7 +22,7 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class AcceptanceTest<Request, Response> extends FluentTest<Request, Response> implements WithAssertions {
+public abstract class AcceptanceTest<Response> extends FluentTest<Response> implements WithAssertions {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure();
 

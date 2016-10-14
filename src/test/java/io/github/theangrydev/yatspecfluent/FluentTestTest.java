@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTestTest.Response> implements WithAssertions {
+public class FluentTestTest extends FluentTest<FluentTestTest.Response> implements WithAssertions {
     private static final Statement SUCCESSFUL_STATEMENT = new Statement() {
         @Override
         public void evaluate() throws Throwable {
@@ -40,12 +40,10 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
 
     private final ThenFactory<TestAssertions, Response> testAssertions = TestAssertions::new;
     private final TestSystem testSystem = mock(TestSystem.class);
-    private final TestSystem nullRequestTestSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
     private final SomeDependency someDependency2 = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
-    private final Request request = new Request();
     private final Response response = new Response();
 
     private boolean given;
@@ -63,16 +61,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     static class Response {}
-    static class Request {}
-    private interface TestSystem extends When<Request,Response> {}
+    private interface TestSystem extends When<Response> {}
     private interface SomeDependency extends Given {}
     private interface AnotherDependency extends Given {}
 
     @Before
     public void setUp() {
-        Mockito.when(testSystem.request()).thenReturn(request);
-        Mockito.when(nullResponseTestSystem.request()).thenReturn(request);
-        Mockito.when(testSystem.response(request)).thenReturn(response);
+        Mockito.when(testSystem.execute()).thenReturn(response);
     }
 
     @After
@@ -95,7 +90,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     }
 
     @Override
-    protected <T extends When<Request, Response>> void when(T when) {
+    protected <T extends When<Response>> void when(T when) {
         super.when(when);
         this.when = true;
     }
@@ -111,13 +106,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     public void hasTestState() {
         assertThat(testState().interestingGivens).isEqualTo(doNotUseTheInterestingGivens);
         assertThat(testState().capturedInputAndOutputs).isEqualTo(doNotUseTheCapturedInputAndOutputs);
-    }
-
-    @Test
-    public void nullRequestIsReported() {
-        assertThatThrownBy(() -> {
-            when(nullRequestTestSystem);
-        }).hasMessage(format("'%s' request was null", nullRequestTestSystem));
     }
 
     @Test
@@ -144,7 +132,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     @Test
     public void firstWhenAdaptedToGivenIsPrimedAfterGiven() {
         given(testSystem);
-        verify(testSystem).response(request);
+        verify(testSystem).execute();
     }
 
     @Test
@@ -158,7 +146,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
     public void subsequentWhenAdaptedToGivensArePrimedAfterThem() {
         given(someDependency);
         and(testSystem);
-        verify(testSystem).response(request);
+        verify(testSystem).execute();
     }
 
     @Test
@@ -166,7 +154,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Request, FluentTes
         given(someDependency);
         and(anotherDependency);
         when(testSystem);
-        verify(testSystem).response(request);
+        verify(testSystem).execute();
     }
 
     @Test

@@ -30,11 +30,10 @@ import static java.lang.String.format;
 /**
  * Use this as the base class for your acceptance tests.
  *
- * @param <Request> The type of request passed to the {@link When}
  * @param <Response> The type of response produced by the {@link When}
  */
 @SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
-public abstract class FluentTest<Request, Response> implements WithTestState, WriteOnlyTestItems {
+public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTestItems {
 
     /**
      * You should aim to never access these directly, but you might need to (e.g. global shared state).
@@ -101,15 +100,11 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      * @param when The system under test, which should be built up inside the brackets
      * @param <T> The type of {@link When}
      */
-    protected <T extends When<Request, Response>> void when(T when) {
+    protected <T extends When<Response>> void when(T when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        Request request = when.request();
-        if (request == null) {
-            throw new IllegalStateException(format("'%s' request was null", when));
-        }
-        response = when.response(request);
+        response = when.execute();
         if (response == null) {
             throw new IllegalStateException(format("'%s' response was null", when));
         }
@@ -122,15 +117,15 @@ public abstract class FluentTest<Request, Response> implements WithTestState, Wr
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    public void given(When<Request, Response> when) {
-        given(() -> when.response(when.request()));
+    public void given(When<Response> when) {
+        given((Given) when::execute);
     }
 
     /**
      * Same as {@link #given(When)}.
      * This is the equivalent of {@link #and(Given)}.
      */
-    public void and(When<Request, Response> when) {
+    public void and(When<Response> when) {
         given(when);
     }
 

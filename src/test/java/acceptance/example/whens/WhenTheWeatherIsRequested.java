@@ -28,7 +28,7 @@ import org.assertj.core.api.WithAssertions;
 import static java.lang.String.format;
 
 
-public class WhenTheWeatherIsRequested implements When<Request, Response>, WithAssertions {
+public class WhenTheWeatherIsRequested implements When<Response>, WithAssertions {
 
     private final WriteOnlyTestItems writeOnlyTestItems;
     private final TestInfrastructure testInfrastructure;
@@ -43,14 +43,10 @@ public class WhenTheWeatherIsRequested implements When<Request, Response>, WithA
     }
 
     @Override
-    public Request request() {
+    public Response execute() {
         Request request = weatherRequest(testInfrastructure.serverBaseUrl());
         writeOnlyTestItems.addToCapturedInputsAndOutputs(format("Request from %s to %s", caller, systemName()), request);
-        return request;
-    }
 
-    @Override
-    public Response response(Request request) {
         Response response = testInfrastructure.execute(request);
         writeOnlyTestItems.addToCapturedInputsAndOutputs(format("Response from %s to %s", systemName(), caller), response);
         return response;

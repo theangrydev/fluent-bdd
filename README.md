@@ -48,6 +48,9 @@ Dependency:
 ```
 
 ## Releases
+### 4.0.0
+* There are now two kinds of then methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
+
 ### 3.0.1
 * Made the `FluentTest` methods public. Protected was enough, but it's clearer that they are part of the public API if they are public
 * Fixed some javadoc language issues

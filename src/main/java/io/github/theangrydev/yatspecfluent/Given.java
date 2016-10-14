@@ -27,6 +27,7 @@ package io.github.theangrydev.yatspecfluent;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  */
+@FunctionalInterface
 public interface Given {
 
     /**

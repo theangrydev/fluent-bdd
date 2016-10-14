@@ -30,7 +30,7 @@ import static java.lang.String.format;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
-@SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
+@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design choice
 public abstract class FluentTest<TestResult> implements WithTestState, WriteOnlyTestItems {
 
     private final TestState state = new TestState();

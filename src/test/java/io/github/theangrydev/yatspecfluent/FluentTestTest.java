@@ -217,8 +217,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
-    public void callingThenBeforeWhenIsNotAllowed() {
+    public void callingThenAssertionBeforeWhenIsNotAllowed() {
         assertThatThrownBy(() -> then(testAssertions)).hasMessage("The 'then' steps should be after the 'when'");
+    }
+
+    @Test
+    public void callingThenVerificationBeforeWhenIsNotAllowed() {
+        assertThatThrownBy(() -> then(testVerification)).hasMessage("The 'then' steps should be after the 'when'");
     }
 
     @Test

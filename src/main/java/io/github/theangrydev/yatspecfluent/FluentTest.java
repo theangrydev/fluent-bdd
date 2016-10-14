@@ -60,7 +60,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
     public TestWatcher makeSureThenIsUsed = new TestWatcher() {
         @Override
         protected void succeeded(Description description) {
-            if (stage != Stage.THEN ) {
+            if (stage != Stage.THEN) {
                 throw new IllegalStateException("Each test needs at least a 'when' and a 'then'");
             }
         }
@@ -76,6 +76,10 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
 
     /**
      * Same as {@link #given(Given)}.
+     * <p>
+     * Prime the given immediately.
+     *
+     * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
     protected void and(Given given) {
         given(given);
@@ -98,7 +102,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * Invoke the system under test and store the response ready for the assertions.
      *
      * @param when The system under test, which should be built up inside the brackets
-     * @param <T> The type of {@link When}
+     * @param <T>  The type of {@link When}
      */
     protected <T extends When<Response>> void when(T when) {
         if (stage != Stage.GIVEN) {
@@ -123,7 +127,11 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
 
     /**
      * Same as {@link #given(When)}.
-     * This is the equivalent of {@link #and(Given)}.
+     * <p>
+     * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint changes some state in the database.
+     * This is the equivalent of {@link #given(Given)}.
+     *
+     * @param when The 'when' to adapt to a 'given'
      */
     public void and(When<Response> when) {
         given(when);
@@ -133,7 +141,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * Perform the assertion. Assertions should be chained outside the brackets.
      *
      * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
-     * @param <Then> The type of fluent assertions that will be performed
+     * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
     protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
@@ -146,6 +154,12 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
 
     /**
      * Same as {@link #then(ThenFactory)}.
+     * <p>
+     * Perform the assertion. Assertions should be chained outside the brackets.
+     *
+     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
+     * @param <Then>      The type of fluent assertions that will be performed
+     * @return The fluent assertions instance
      */
     protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         return then(thenFactory);

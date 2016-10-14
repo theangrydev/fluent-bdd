@@ -24,13 +24,13 @@ package io.github.theangrydev.yatspecfluent;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  *
- * @param <Response> The type of result the system produces
+ * @param <TestResult> The type of result the system produces
  */
 @FunctionalInterface
-public interface When<Response> {
+public interface When<TestResult> {
 
     /**
-     * @return The {@link Response} from the system under test after executing the request
+     * @return The {@link TestResult} from the system under test after executing the request
      */
-    Response execute();
+    TestResult execute();
 }

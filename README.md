@@ -69,7 +69,7 @@ Dependency:
 
 ### 1.5.0
 * Adapt when to given
-* Relax the constrains on when you must use 'and'. Now you are free to use 'and' and 'given' and 'and' and 'then' interchangeably, so long as the first 'given' is a 'given' not an 'and' and the first 'then' is a 'then' not an 'and'.
+* Relax the constrains on when you must use `and`. Now you are free to use `and` and `given` and `and` and `then` interchangeably, so long as the first `given` is a `given` not an `and` and the first `then` is a `then` not an `and`.
 
 ### 1.4.0
 * Make it clear that the raw yatspec captured inputs and outputs and interesting givens should not be used

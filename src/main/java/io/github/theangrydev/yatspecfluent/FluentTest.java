@@ -71,7 +71,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      *
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
-    protected void and(Given given) {
+    public void and(Given given) {
         given(given);
     }
 
@@ -80,7 +80,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      *
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
-    protected void given(Given given) {
+    public void given(Given given) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
@@ -94,7 +94,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * @param when The system under test, which should be built up inside the brackets
      * @param <T>  The type of {@link When}
      */
-    protected <T extends When<Response>> void when(T when) {
+    public <T extends When<Response>> void when(T when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
@@ -134,7 +134,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         if (stage.compareTo(Stage.WHEN) < 0) {
             throw new IllegalStateException("The 'then' steps should be after the 'when'");
         }
@@ -151,7 +151,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         return then(thenFactory);
     }
 

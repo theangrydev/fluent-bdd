@@ -84,19 +84,19 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
     }
 
     @Override
-    protected void given(Given given) {
+    public void given(Given given) {
         super.given(given);
         this.given = true;
     }
 
     @Override
-    protected <T extends When<Response>> void when(T when) {
+    public <T extends When<Response>> void when(T when) {
         super.when(when);
         this.when = true;
     }
 
     @Override
-    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         Then then = super.then(thenFactory);
         this.then = true;
         return then;

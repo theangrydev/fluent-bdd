@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-public class FluentTestTest extends FluentTest<FluentTestTest.Response> implements WithAssertions {
+public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implements WithAssertions {
     private static final Statement SUCCESSFUL_STATEMENT = new Statement() {
         @Override
         public void evaluate() throws Throwable {
@@ -38,13 +38,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
         }
     };
 
-    private final ThenFactory<TestAssertions, Response> testAssertions = TestAssertions::new;
+    private final ThenFactory<TestAssertions, TestResult> testAssertions = TestAssertions::new;
     private final TestSystem testSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
     private final SomeDependency someDependency2 = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
-    private final Response response = new Response();
+    private final TestResult testResult = new TestResult();
 
     private boolean given;
     private boolean when;
@@ -52,22 +52,22 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
 
     private static class TestAssertions {
 
-        final Response response;
+        final TestResult testResult;
 
-        TestAssertions(Response response) {
-            this.response = response;
+        TestAssertions(TestResult testResult) {
+            this.testResult = testResult;
         }
 
     }
 
-    static class Response {}
-    private interface TestSystem extends When<Response> {}
+    static class TestResult {}
+    private interface TestSystem extends When<TestResult> {}
     private interface SomeDependency extends Given {}
     private interface AnotherDependency extends Given {}
 
     @Before
     public void setUp() {
-        Mockito.when(testSystem.execute()).thenReturn(response);
+        Mockito.when(testSystem.execute()).thenReturn(testResult);
     }
 
     @After
@@ -90,13 +90,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
     }
 
     @Override
-    public <T extends When<Response>> void when(T when) {
+    public <T extends When<TestResult>> void when(T when) {
         super.when(when);
         this.when = true;
     }
 
     @Override
-    public <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then then(ThenFactory<Then, TestResult> thenFactory) {
         Then then = super.then(thenFactory);
         this.then = true;
         return then;
@@ -112,15 +112,15 @@ public class FluentTestTest extends FluentTest<FluentTestTest.Response> implemen
     public void nullResponseIsReported() {
         assertThatThrownBy(() -> {
             when(nullResponseTestSystem);
-        }).hasMessage(format("'%s' response was null", nullResponseTestSystem));
+        }).hasMessage(format("'%s' test result was null", nullResponseTestSystem));
     }
 
     @Test
-    public void responseIsPassedToTheAssertions() {
+    public void testResultIsPassedToTheAssertions() {
         given(someDependency);
         when(testSystem);
         TestAssertions then = then(testAssertions);
-        assertThat(then.response).isSameAs(response);
+        assertThat(then.testResult).isSameAs(testResult);
     }
 
     @Test

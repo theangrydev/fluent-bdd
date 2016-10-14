@@ -24,7 +24,7 @@ package io.github.theangrydev.yatspecfluent;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  *
- * @param <Response> The type of response the system produces
+ * @param <Response> The type of result the system produces
  */
 @FunctionalInterface
 public interface When<Response> {

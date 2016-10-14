@@ -28,15 +28,15 @@ import static java.lang.String.format;
 /**
  * Use this as the base class for your acceptance tests.
  *
- * @param <Response> The type of response produced by the {@link When}
+ * @param <TestResult> The type of test result produced by the {@link When}
  */
 @SuppressWarnings("PMD.TooManyMethods") // Maybe I will refactor this one day...
-public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTestItems {
+public abstract class FluentTest<TestResult> implements WithTestState, WriteOnlyTestItems {
 
     private final TestState state = new TestState();
 
     private Stage stage = Stage.GIVEN;
-    private Response response;
+    private TestResult testResult;
 
     private enum Stage {
         GIVEN,
@@ -89,18 +89,18 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
     }
 
     /**
-     * Invoke the system under test and store the response ready for the assertions.
+     * Invoke the system under test and store the {@link TestResult} ready for the assertions.
      *
      * @param when The system under test, which should be built up inside the brackets
      * @param <T>  The type of {@link When}
      */
-    public <T extends When<Response>> void when(T when) {
+    public <T extends When<TestResult>> void when(T when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        response = when.execute();
-        if (response == null) {
-            throw new IllegalStateException(format("'%s' response was null", when));
+        testResult = when.execute();
+        if (testResult == null) {
+            throw new IllegalStateException(format("'%s' test result was null", when));
         }
         stage = Stage.WHEN;
     }
@@ -111,7 +111,7 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    public void given(When<Response> when) {
+    public void given(When<TestResult> when) {
         given((Given) when::execute);
     }
 
@@ -123,23 +123,23 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    public void and(When<Response> when) {
+    public void and(When<TestResult> when) {
         given(when);
     }
 
     /**
      * Perform the assertion. Assertions should be chained outside the brackets.
      *
-     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
+     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored {@link TestResult}
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then then(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then then(ThenFactory<Then, TestResult> thenFactory) {
         if (stage.compareTo(Stage.WHEN) < 0) {
             throw new IllegalStateException("The 'then' steps should be after the 'when'");
         }
         stage = Stage.THEN;
-        return thenFactory.then(response);
+        return thenFactory.then(testResult);
     }
 
     /**
@@ -147,11 +147,11 @@ public abstract class FluentTest<Response> implements WithTestState, WriteOnlyTe
      * <p>
      * Perform the assertion. Assertions should be chained outside the brackets.
      *
-     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored response
+     * @param thenFactory A {@link ThenFactory} that will produce a {@link Then} given the stored {@link TestResult}
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then and(ThenFactory<Then, Response> thenFactory) {
+    public <Then> Then and(ThenFactory<Then, TestResult> thenFactory) {
         return then(thenFactory);
     }
 

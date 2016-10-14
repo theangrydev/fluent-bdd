@@ -18,21 +18,21 @@
 package io.github.theangrydev.yatspecfluent;
 
 /**
- * Implementations should produce a {@link Then} given a {@link Response}.
+ * Implementations should produce a {@link Then} given a {@link TestResult}.
  *
  * This class should provide assertion methods (ideally in the style of AssertJ).
  *
  * @see <a href="http://joel-costigliola.github.io/assertj/">AssertJ</a>
  *
  * @param <Then> The fluent assertions type
- * @param <Response> The response that the {@link Then} operates on
+ * @param <TestResult> The test result that the {@link Then} operates on
  */
 @FunctionalInterface
-public interface ThenFactory<Then, Response> {
+public interface ThenFactory<Then, TestResult> {
 
     /**
-     * @param response The response from the system under test
-     * @return A fluent assertions class that operates on the given {@link Response}
+     * @param testResult The result from the system under test
+     * @return A fluent assertions class that operates on the given {@link TestResult}
      */
-    Then then(Response response);
+    Then then(TestResult testResult);
 }

@@ -23,6 +23,9 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.String.format;
 
 /**
@@ -30,10 +33,13 @@ import static java.lang.String.format;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
-@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design choices
+@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design choice
 public abstract class FluentTest<TestResult> implements WithTestState, WriteOnlyTestItems {
 
     private final TestState state = new TestState();
+
+    private List<Given> usedGivens = new ArrayList<>();
+    private List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;
     private TestResult testResult;
@@ -84,8 +90,12 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
+        if (usedGivens.contains(given)) {
+            throw new IllegalStateException(format("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", given.getClass().getSimpleName(), given, given.getClass().getSimpleName()));
+        }
         stage = Stage.GIVEN;
         given.prime();
+        usedGivens.add(given);
     }
 
     /**
@@ -170,7 +180,11 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      */
     public void then(ThenVerification<TestResult> thenVerification) {
         checkThenIsPossible();
+        if (usedThenVerifications.contains(thenVerification)) {
+            throw new IllegalStateException(format("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", thenVerification.getClass().getSimpleName(), thenVerification, thenVerification.getClass().getSimpleName()));
+        }
         thenVerification.verify(testResult);
+        usedThenVerifications.add(thenVerification);
     }
 
     @Override

@@ -35,11 +35,15 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>1.6.0</version>
+	<version>2.0.0</version>
 </dependency>
 ```
 
 ## Releases
+
+### 2.0.0
+* [#4](https://github.com/theangrydev/yatspec-fluent/issues/4) Remove `Request` from `When`. This is a breaking change
+* Mark `Given` as a `@FunctionalInterface` since it has a single abstract method
 
 ### 1.6.0
 * [#1](https://github.com/theangrydev/yatspec-fluent/issues/1) Relax all the wording validation because it was just getting in the way for users rather than providing any value

@@ -374,6 +374,7 @@
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                         <exclude>.*yml</exclude>
+                        <exclude>sonar-project.properties</exclude>
                     </excludes>
                 </configuration>
                 <executions>

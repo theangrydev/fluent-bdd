@@ -48,7 +48,7 @@ Dependency:
 
 ## Releases
 ### 4.1.0
-* Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state between them. Similarly for `ThenVerification`.
+* Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
 
 ### 4.0.1
 * There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`

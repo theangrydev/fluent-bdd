@@ -35,12 +35,12 @@ public class ExampleTest extends AcceptanceTest<Request, Response> {
     private final GivenOpenWeatherMap theWeatherService = new GivenOpenWeatherMap(this, testInfrastructure);
     private final ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
     private final ThenFactory<ThenTheResponseHeaders, Response> theResponseHeaders = ThenTheResponseHeaders::new;
-    private final WhenTheWeatherIsRequested weatherApplication = new WhenTheWeatherIsRequested(this, testInfrastructure, "CBS");
+    private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(this, testInfrastructure, "The User");
 
     @Test
     public void callingGivenThenWhenThenThenThenAndIsAllowed() {
         given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
-        when(weatherApplication.requestsTheWeather().forCity("London"));
+        when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");
         and(theResponseHeaders).contains("Content-Length");
         and(theResponseHeaders).contains("Date");

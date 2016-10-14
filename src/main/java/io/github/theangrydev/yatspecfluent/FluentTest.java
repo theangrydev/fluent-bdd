@@ -38,8 +38,8 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
 
     private final TestState state = new TestState();
 
-    private List<Given> usedGivens = new ArrayList<>();
-    private List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
+    private final List<Given> usedGivens = new ArrayList<>();
+    private final List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;
     private TestResult testResult;

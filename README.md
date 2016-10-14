@@ -42,12 +42,12 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>4.0.0</version>
+	<version>4.0.1</version>
 </dependency>
 ```
 
 ## Releases
-### 4.0.0
+### 4.0.1
 * There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
 
 ### 3.0.1

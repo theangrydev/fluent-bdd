@@ -20,6 +20,7 @@ package acceptance.example.test;
 import acceptance.example.production.WeatherApplication;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 import okhttp3.OkHttpClient;
@@ -27,21 +28,28 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 public class TestInfrastructure {
 
     private static final String SYSTEM_NAME = "WeatherApplication";
     private static final WireMockServer WIREMOCK;
+    private static final RequestListenerHolder REQUEST_LISTENER_HOLDER = new RequestListenerHolder();
 
     private final WriteOnlyTestItems writeOnlyTestItems;
 
     private WeatherApplication weatherApplication;
 
+    private List<InteractionToListenFor> interactionsToListenFor = new ArrayList<>();
+
     static {
         WIREMOCK = new WireMockServer(wireMockConfig().port(1235));
+        WIREMOCK.addMockServiceRequestListener(REQUEST_LISTENER_HOLDER);
         WIREMOCK.start();
     }
 
@@ -55,6 +63,8 @@ public class TestInfrastructure {
 
     public void setUp() {
         WIREMOCK.resetAll();
+        REQUEST_LISTENER_HOLDER.delegate = this::recordInteraction;
+
         String wireMockServerUrl = format("http://localhost:%d", WIREMOCK.port());
         weatherApplication = new WeatherApplication(1234, wireMockServerUrl);
         weatherApplication.start();
@@ -74,12 +84,22 @@ public class TestInfrastructure {
 
     public void givenThat(String dependencyName, MappingBuilder mappingBuilder) {
         WIREMOCK.givenThat(mappingBuilder);
-        WIREMOCK.addMockServiceRequestListener((request, response) -> {
-            if (mappingBuilder.build().getRequest().match(request).isExactMatch()) {
-                recordOutgoingRequest(dependencyName, request);
-                recordIncomingResponse(dependencyName, response);
-            }
-        });
+        interactionsToListenFor.add(new InteractionToListenFor(dependencyName, mappingBuilder));
+    }
+
+    private void recordInteraction(com.github.tomakehurst.wiremock.http.Request request, com.github.tomakehurst.wiremock.http.Response response) {
+        List<InteractionToListenFor> matches = interactionsToListenFor.stream()
+                .filter(interactionToListenFor -> interactionToListenFor.matches(request))
+                .collect(toList());
+        if (matches.isEmpty()) {
+            throw new IllegalStateException(format("Found an interaction that was not listened for. Request: %s%n%nResponse: %s%n", request, response));
+        }
+        if (matches.size() > 1) {
+            throw new IllegalStateException(format("Found an interaction that was listened for multiple times. Request: %s%n%nResponse: %s%n", request, response));
+        }
+        String dependencyName = matches.get(0).dependencyName;
+        recordOutgoingRequest(dependencyName, request);
+        recordIncomingResponse(dependencyName, response);
     }
 
     public void recordIncomingRequest(String caller, Request request) {
@@ -100,5 +120,28 @@ public class TestInfrastructure {
 
     public void verifyThat(RequestPatternBuilder requestPatternBuilder) {
         WIREMOCK.verify(1, requestPatternBuilder);
+    }
+
+    private static class RequestListenerHolder implements RequestListener {
+        RequestListener delegate;
+
+        @Override
+        public void requestReceived(com.github.tomakehurst.wiremock.http.Request request, com.github.tomakehurst.wiremock.http.Response response) {
+            delegate.requestReceived(request, response);
+        }
+    }
+
+    private static class InteractionToListenFor {
+        final String dependencyName;
+        final MappingBuilder mappingBuilder;
+
+        private InteractionToListenFor(String dependencyName, MappingBuilder mappingBuilder) {
+            this.dependencyName = dependencyName;
+            this.mappingBuilder = mappingBuilder;
+        }
+
+        boolean matches(com.github.tomakehurst.wiremock.http.Request request) {
+            return mappingBuilder.build().getRequest().match(request).isExactMatch();
+        }
     }
 }

@@ -28,7 +28,6 @@ import static java.lang.String.format;
 import static org.junit.runner.Description.EMPTY;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implements WithAssertions {
     private static final Statement SUCCESSFUL_STATEMENT = new Statement() {
@@ -39,17 +38,47 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     };
 
     private final ThenAssertion<TestAssertions, TestResult> testAssertions = TestAssertions::new;
-    private final TestVerification testVerification = new TestVerification();
+    private final MutableThenAssertion mutableThenAssertion = new MutableThenAssertion();
+    private final ImmutableThenAssertion immutableThenAssertion = new ImmutableThenAssertion();
+    private final SomeThenVerification someThenVerification = mock(SomeThenVerification.class);
+    private final MutableThenVerification mutableThenVerification = new MutableThenVerification();
+    private final ImmutableThenVerification immutableThenVerification = new ImmutableThenVerification();
     private final TestSystem testSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
     private final SomeDependency someDependency = mock(SomeDependency.class);
     private final SomeDependency someDependency2 = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
+    private final ImmutableDependency immutableDependency = new ImmutableDependency();
+    private final MutableDependency mutableDependency = new MutableDependency();
     private final TestResult testResult = new TestResult();
 
     private boolean given;
     private boolean when;
     private boolean then;
+
+    private static class MutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
+
+        private int state;
+
+        @Override
+        public TestAssertions then(TestResult testResult) {
+            System.out.println("state = " + state);
+            return new TestAssertions(testResult);
+        }
+
+        public MutableThenAssertion withState(int state) {
+            this.state = state;
+            return this;
+        }
+    }
+
+    private static class ImmutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
+
+        @Override
+        public TestAssertions then(TestResult testResult) {
+            return new TestAssertions(testResult);
+        }
+    }
 
     private static class TestAssertions {
 
@@ -60,20 +89,60 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         }
     }
 
-    private static class TestVerification implements ThenVerification<TestResult> {
+    private static class MutableThenVerification implements ThenVerification<TestResult> {
 
-        TestResult testResult;
+        private int state;
 
         @Override
         public void verify(TestResult testResult) {
-            this.testResult = testResult;
+            System.out.println("state = " + state);
+        }
+
+        public MutableThenVerification withState(int state) {
+            this.state = state;
+            return this;
+        }
+    }
+
+    private static class ImmutableThenVerification implements ThenVerification<TestResult> {
+
+        @Override
+        public void verify(TestResult testResult) {
+
         }
     }
 
     static class TestResult {}
     private interface TestSystem extends When<TestResult> {}
+
     private interface SomeDependency extends Given {}
+
+    private static class ImmutableDependency implements Given {
+
+        @Override
+        public void prime() {
+
+        }
+    }
+
+    private static class MutableDependency implements Given {
+
+        private int state;
+
+        @Override
+        public void prime() {
+            System.out.println("state = " + state);
+        }
+
+        public MutableDependency withState(int state) {
+            this.state = state;
+            return this;
+        }
+    }
+
     private interface AnotherDependency extends Given {}
+
+    private interface SomeThenVerification extends ThenVerification<TestResult> {}
 
     @Before
     public void setUp() {
@@ -145,26 +214,16 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     public void testResultIsPassedToTheVerification() {
         given(someDependency);
         when(testSystem);
-        then(testVerification);
-        assertThat(testVerification.testResult).isSameAs(testResult);
-    }
-
-    @Test
-    public void notAllowedToUseTheSameThenVerificationTwice() {
-        assertThatThrownBy(() -> {
-            given(someDependency);
-            when(testSystem);
-            then(testVerification);
-            and(testVerification);
-        }).hasMessage("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", testVerification.getClass().getSimpleName());
+        then(someThenVerification);
+        verify(someThenVerification).verify(testResult);
     }
 
     @Test
     public void andThenVerificationBehavesTheSameAsThen() {
         given(someDependency);
         when(testSystem);
-        and(testVerification);
-        assertThat(testVerification.testResult).isSameAs(testResult);
+        and(someThenVerification);
+        verify(someThenVerification).verify(testResult);
     }
 
     @Test
@@ -210,14 +269,6 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
-    public void usingSameGivenInstanceTwiceIsNotAllowed() {
-        assertThatThrownBy(() -> {
-            given(someDependency);
-            and(someDependency);
-        }).hasMessage(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", someDependency.getClass().getSimpleName()));
-    }
-
-    @Test
     public void callingGivenAfterWhenIsNotAllowed() {
         assertThatThrownBy(() -> {
             when(testSystem);
@@ -249,12 +300,62 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     @Test
     public void callingThenVerificationBeforeWhenIsNotAllowed() {
-        assertThatThrownBy(() -> then(testVerification)).hasMessage("The 'then' steps should be after the 'when'");
+        assertThatThrownBy(() -> then(mutableThenVerification)).hasMessage("The 'then' steps should be after the 'when'");
     }
 
     @Test
     public void eachTestNeedsAtLeastAWhenAndAThen() {
         assertThatThrownBy(() -> verification.apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
                 .hasMessage("Each test needs at least a 'when' and a 'then'");
+    }
+
+    @Test
+    public void immutableGivenInstanceCanBeUsedMoreThanOnce() {
+        given(immutableDependency);
+        and(immutableDependency);
+    }
+
+    @Test
+    public void usingSameGivenInstanceTwiceIsNotAllowed() {
+        assertThatThrownBy(() -> {
+            given(mutableDependency.withState(20));
+            and(mutableDependency);
+        }).hasMessage(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", mutableDependency.getClass().getSimpleName()));
+    }
+
+    @Test
+    public void immutableThenAssertionInstancesCanBeUsedMoreThanOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(immutableThenAssertion);
+        and(immutableThenAssertion);
+    }
+
+    @Test
+    public void mutableThenAssertionInstancesCannotBeUsedMoreThanOnce() {
+        given(someDependency);
+        when(testSystem);
+        assertThatThrownBy(() -> {
+            then(mutableThenAssertion.withState(5));
+            and(mutableThenAssertion);
+        }).hasMessage("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", mutableThenAssertion.getClass().getSimpleName());
+    }
+
+    @Test
+    public void immutableThenVerificationInstancesCanBeUsedMoreThanOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(immutableThenVerification);
+        and(immutableThenVerification);
+    }
+
+    @Test
+    public void mutableThenVerificationInstancesCannotBeUsedMoreThanOnce() {
+        assertThatThrownBy(() -> {
+            given(someDependency);
+            when(testSystem);
+            then(mutableThenVerification.withState(11));
+            and(mutableThenVerification);
+        }).hasMessage("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", mutableThenVerification.getClass().getSimpleName());
     }
 }

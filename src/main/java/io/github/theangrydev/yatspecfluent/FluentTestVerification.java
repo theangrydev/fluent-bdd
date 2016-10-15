@@ -20,10 +20,14 @@ package io.github.theangrydev.yatspecfluent;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isStatic;
+import static java.util.Arrays.stream;
 
 class FluentTestVerification<TestResult> extends TestWatcher {
 
@@ -36,14 +40,14 @@ class FluentTestVerification<TestResult> extends TestWatcher {
     private Stage stage = Stage.GIVEN;
 
     private final List<Given> usedGivens = new ArrayList<>();
-
     private final List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
+    private final List<ThenAssertion<?, TestResult>> usedThenAssertions = new ArrayList<>();
 
     public void checkGivenIsAllowed(Given given) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
-        if (usedGivens.contains(given)) {
+        if (appearsToBeMutable(given.getClass()) && usedGivens.contains(given)) {
             throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", given.getClass().getSimpleName()));
         }
     }
@@ -68,7 +72,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
 
     public void checkThenVerificationIsAllowed(ThenVerification<TestResult> thenVerification) {
         checkThenIsAllowed();
-        if (usedThenVerifications.contains(thenVerification)) {
+        if (appearsToBeMutable(thenVerification.getClass()) && usedThenVerifications.contains(thenVerification)) {
             throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", thenVerification.getClass().getSimpleName()));
         }
     }
@@ -79,6 +83,10 @@ class FluentTestVerification<TestResult> extends TestWatcher {
 
     public <Then> void checkThenAssertionIsAllowed(ThenAssertion<Then, TestResult> thenAssertion) {
         checkThenIsAllowed();
+        if (appearsToBeMutable(thenAssertion.getClass()) && usedThenAssertions.contains(thenAssertion)) {
+            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", thenAssertion.getClass().getSimpleName()));
+        }
+        usedThenAssertions.add(thenAssertion);
     }
 
     @Override
@@ -93,5 +101,11 @@ class FluentTestVerification<TestResult> extends TestWatcher {
             throw new IllegalStateException("The 'then' steps should be after the 'when'");
         }
         stage = Stage.THEN;
+    }
+
+    private boolean appearsToBeMutable(Class<?> aClass) {
+        return stream(aClass.getDeclaredFields())
+                .mapToInt(Field::getModifiers)
+                .anyMatch(modifiers -> !(isStatic(modifiers) && isFinal(modifiers)));
     }
 }

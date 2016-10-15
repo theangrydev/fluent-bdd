@@ -42,11 +42,14 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>4.1.0</version>
+	<version>4.1.1</version>
 </dependency>
 ```
 
 ## Releases
+### 4.1.1
+* Minor changes to the validation messages
+
 ### 4.1.0
 * [#3](https://github.com/theangrydev/yatspec-fluent/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
 

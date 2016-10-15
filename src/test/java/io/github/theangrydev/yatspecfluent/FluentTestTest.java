@@ -156,7 +156,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
             when(testSystem);
             then(testVerification);
             and(testVerification);
-        }).hasMessage("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", testVerification.getClass().getSimpleName(), testVerification, testVerification.getClass().getSimpleName());
+        }).hasMessage("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", testVerification.getClass().getSimpleName());
     }
 
     @Test
@@ -210,11 +210,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
-    public void callingSameGivenTwiceIsAllowed() {
+    public void usingSameGivenInstanceTwiceIsNotAllowed() {
         assertThatThrownBy(() -> {
             given(someDependency);
             and(someDependency);
-        }).hasMessage(format("The %s instance '%s' has been used once already. To avoid accidentally sharing state, use a new %s instance.", someDependency.getClass().getSimpleName(), someDependency, someDependency.getClass().getSimpleName()));
+        }).hasMessage(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", someDependency.getClass().getSimpleName()));
     }
 
     @Test

@@ -42,11 +42,14 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>4.1.1</version>
+	<version>4.2.0</version>
 </dependency>
 ```
 
 ## Releases
+### 4.2.0
+* Check if `ThenAssertion` instances have been reused (closes #6). Also relaxed all the instance checks to classes that appear to be mutable (have at least one non static non final field)
+
 ### 4.1.1
 * Minor changes to the validation messages
 

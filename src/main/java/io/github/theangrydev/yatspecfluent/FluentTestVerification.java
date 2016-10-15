@@ -28,7 +28,7 @@ import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Arrays.stream;
 
-@SuppressWarnings("PMD.TooManyMethods") //TODO: review
+@SuppressWarnings("PMD.TooManyMethods") // Splitting this up further would be too artificial
 class FluentTestVerification<TestResult> extends TestWatcher {
 
     private enum Stage {

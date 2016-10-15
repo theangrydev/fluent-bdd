@@ -52,11 +52,13 @@ class FluentTestVerification<TestResult> extends TestWatcher {
         stage = Stage.GIVEN;
         usedGivens.add(given);
     }
+
     public void checkWhenIsAllowed() {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
     }
+
     public void recordWhen(When<TestResult> when, TestResult testResult) {
         if (testResult == null) {
             throw new IllegalStateException(format("'%s' test result was null", when));
@@ -79,17 +81,17 @@ class FluentTestVerification<TestResult> extends TestWatcher {
         checkThenIsAllowed();
     }
 
-    private void checkThenIsAllowed() {
-        if (stage.compareTo(Stage.WHEN) < 0) {
-            throw new IllegalStateException("The 'then' steps should be after the 'when'");
-        }
-        stage = Stage.THEN;
-    }
-
     @Override
     protected void succeeded(Description description) {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("Each test needs at least a 'when' and a 'then'");
         }
+    }
+
+    private void checkThenIsAllowed() {
+        if (stage.compareTo(Stage.WHEN) < 0) {
+            throw new IllegalStateException("The 'then' steps should be after the 'when'");
+        }
+        stage = Stage.THEN;
     }
 }

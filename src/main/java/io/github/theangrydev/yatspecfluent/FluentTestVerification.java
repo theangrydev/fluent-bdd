@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Arrays.stream;
 
 @SuppressWarnings("PMD.TooManyMethods") //TODO: review
@@ -99,7 +101,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
     private boolean appearsToBeMutable(Class<?> aClass) {
         return stream(aClass.getDeclaredFields())
                 .mapToInt(Field::getModifiers)
-                .anyMatch(modifiers -> !Modifiers.isConstant(modifiers));
+                .anyMatch(modifiers -> !isStatic(modifiers));
     }
 
     private <T> void checkMutableInstanceHasNotAlreadyBeenUsed(T instance, List<T> usedInstances) {

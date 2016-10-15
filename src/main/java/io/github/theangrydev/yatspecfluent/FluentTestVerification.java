@@ -47,9 +47,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
-        if (appearsToBeMutable(given.getClass()) && usedGivens.contains(given)) {
-            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", given.getClass().getSimpleName()));
-        }
+        checkMutableInstanceHasNotAlreadyBeenUsed(given, usedGivens);
     }
 
     public void recordGiven(Given given) {
@@ -72,9 +70,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
 
     public void checkThenVerificationIsAllowed(ThenVerification<TestResult> thenVerification) {
         checkThenIsAllowed();
-        if (appearsToBeMutable(thenVerification.getClass()) && usedThenVerifications.contains(thenVerification)) {
-            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", thenVerification.getClass().getSimpleName()));
-        }
+        checkMutableInstanceHasNotAlreadyBeenUsed(thenVerification, usedThenVerifications);
     }
 
     public void recordThenVerification(ThenVerification<TestResult> thenVerification) {
@@ -83,9 +79,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
 
     public <Then> void checkThenAssertionIsAllowed(ThenAssertion<Then, TestResult> thenAssertion) {
         checkThenIsAllowed();
-        if (appearsToBeMutable(thenAssertion.getClass()) && usedThenAssertions.contains(thenAssertion)) {
-            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", thenAssertion.getClass().getSimpleName()));
-        }
+        checkMutableInstanceHasNotAlreadyBeenUsed(thenAssertion, usedThenAssertions);
         usedThenAssertions.add(thenAssertion);
     }
 
@@ -107,5 +101,11 @@ class FluentTestVerification<TestResult> extends TestWatcher {
         return stream(aClass.getDeclaredFields())
                 .mapToInt(Field::getModifiers)
                 .anyMatch(modifiers -> !(isStatic(modifiers) && isFinal(modifiers)));
+    }
+
+    private <T> void checkMutableInstanceHasNotAlreadyBeenUsed(T instance, List<T> usedInstances) {
+        if (appearsToBeMutable(instance.getClass()) && usedInstances.contains(instance)) {
+            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", instance.getClass().getSimpleName()));
+        }
     }
 }

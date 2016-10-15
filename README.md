@@ -48,7 +48,7 @@ Dependency:
 
 ## Releases
 ### 4.2.0
-* Check if `ThenAssertion` instances have been reused (closes #6). Also relaxed all the instance checks to classes that appear to be mutable (have at least one non static non final field)
+* Check if `ThenAssertion` instances have been reused (closes #6). Also relaxed all the instance checks to classes that appear to be mutable (have at least one instance field)
 
 ### 4.1.1
 * Minor changes to the validation messages

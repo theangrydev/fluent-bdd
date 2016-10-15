@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.junit.runners.model.Statement;
 import org.mockito.Mockito;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static java.lang.String.format;
 import static org.junit.runner.Description.EMPTY;
 import static org.mockito.Mockito.mock;
@@ -58,7 +60,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     private static class MutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
 
-        private int state;
+        private final AtomicInteger state = new AtomicInteger();
 
         @Override
         public TestAssertions then(TestResult testResult) {
@@ -67,7 +69,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         }
 
         public MutableThenAssertion withState(int state) {
-            this.state = state;
+            this.state.set(state);
             return this;
         }
     }
@@ -94,7 +96,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     private static class MutableThenVerification implements ThenVerification<TestResult> {
 
-        private int state;
+        private final AtomicInteger state = new AtomicInteger();
 
         @Override
         public void verify(TestResult testResult) {
@@ -102,7 +104,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         }
 
         public MutableThenVerification withState(int state) {
-            this.state = state;
+            this.state.set(state);
             return this;
         }
     }
@@ -133,7 +135,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     private static class MutableDependency implements Given {
 
-        private int state;
+        private final AtomicInteger state = new AtomicInteger();
 
         @Override
         public void prime() {
@@ -141,7 +143,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
         }
 
         public MutableDependency withState(int state) {
-            this.state = state;
+            this.state.set(state);
             return this;
         }
     }

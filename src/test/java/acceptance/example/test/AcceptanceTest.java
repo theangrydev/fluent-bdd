@@ -29,6 +29,8 @@ import io.github.theangrydev.yatspecfluent.FluentTest;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
+
+import java.io.IOException;
 import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
@@ -43,7 +45,7 @@ public abstract class AcceptanceTest<Response> extends FluentTest<Response> impl
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws IOException {
         addSequenceDiagram();
         testInfrastructure.tearDown();
     }

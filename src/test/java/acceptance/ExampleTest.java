@@ -20,6 +20,7 @@ package acceptance;
 import acceptance.example.givens.GivenTheWeatherService;
 import acceptance.example.test.AcceptanceTest;
 import acceptance.example.test.TestResult;
+import acceptance.example.thens.ThenTheAccessLogLinesContaining;
 import acceptance.example.thens.ThenTheWeatherServiceWasCalled;
 import acceptance.example.thens.ThenTheResponse;
 import acceptance.example.thens.ThenTheResponseHeaders;
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith;
 public class ExampleTest extends AcceptanceTest<TestResult> {
 
     private final GivenTheWeatherService theWeatherService = new GivenTheWeatherService(this, testInfrastructure);
+    private final ThenTheAccessLogLinesContaining theAccessLogLines = new ThenTheAccessLogLinesContaining();
     private final ThenAssertion<ThenTheResponse, TestResult> theResponse = ThenTheResponse::new;
     private final ThenAssertion<ThenTheResponseHeaders, TestResult> theResponseHeaders = ThenTheResponseHeaders::new;
     private final WhenTheWeatherIsRequested theUser = new WhenTheWeatherIsRequested(testInfrastructure, "TheUser");
@@ -44,6 +46,13 @@ public class ExampleTest extends AcceptanceTest<TestResult> {
         when(theUser.requestsTheWeather().forCity("London"));
         then(theResponse).isEqualTo("There is light rain in London");
         and(theResponseHeaders).contains("Content-Length").contains("Date");
+    }
+
+    @Test
+    public void assertionBuilderTest() {
+        given(theWeatherService.willReturn().weatherDescription("light rain").forCity("London"));
+        when(theUser.requestsTheWeather().forCity("London"));
+        then(theAccessLogLines.containing("GET /weather")).hasSize(1);
     }
 
     @Test

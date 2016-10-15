@@ -28,6 +28,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,8 +72,9 @@ public class TestInfrastructure {
         weatherApplication.start();
     }
 
-    public void tearDown() {
+    public void tearDown() throws IOException {
         weatherApplication.stop();
+        Files.delete(Paths.get("access.log"));
     }
 
     public Response execute(Request request) {

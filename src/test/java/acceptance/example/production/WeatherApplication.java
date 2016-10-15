@@ -17,7 +17,11 @@
  */
 package acceptance.example.production;
 
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.RequestLogHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -26,10 +30,32 @@ public class WeatherApplication {
 
     public WeatherApplication(int port, String weatherServiceUrl) {
         server = new Server(port);
+        server.setHandler(handlers(weatherServiceUrl));
+    }
 
-        ServletHandler handler = new ServletHandler();
-        server.setHandler(handler);
-        handler.addServletWithMapping(new ServletHolder(new WeatherServlet(new OpenWeatherMapService(weatherServiceUrl))),"/weather");
+    private HandlerList handlers(String weatherServiceUrl) {
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] {requestLogHandler(), servletHandler(weatherServiceUrl)});
+        return handlers;
+    }
+
+    private ServletHandler servletHandler(String weatherServiceUrl) {
+        ServletHandler servletHandler = new ServletHandler();
+        servletHandler.addServletWithMapping(new ServletHolder(new WeatherServlet(new OpenWeatherMapService(weatherServiceUrl))),"/weather");
+        return servletHandler;
+    }
+
+    private RequestLogHandler requestLogHandler() {
+        NCSARequestLog requestLog = new NCSARequestLog("access.log");
+        requestLog.setAppend(true);
+        requestLog.setExtended(false);
+        requestLog.setLogTimeZone("GMT");
+        requestLog.setLogLatency(true);
+        requestLog.setRetainDays(90);
+
+        RequestLogHandler requestLogHandler = new RequestLogHandler();
+        requestLogHandler.setRequestLog(requestLog);
+        return requestLogHandler;
     }
 
     public void start() {

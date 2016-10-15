@@ -20,6 +20,14 @@ package acceptance.example.test;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import okhttp3.Response;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+
 /**
  * This is the complete result of a test, which includes a HTTP response and a way to verify outbound HTTP interactions.
  * If there was a database, there would be methods here exposing the database state.
@@ -36,5 +44,17 @@ public class TestResult {
 
     public void verifyThat(RequestPatternBuilder requestPatternBuilder) {
         testInfrastructure.verifyThat(requestPatternBuilder);
+    }
+
+    public List<String> accessLogLinesContaining(String term) {
+        return accessLogLines().stream().filter(line -> line.contains(term)).collect(toList());
+    }
+
+    private List<String> accessLogLines() {
+        try {
+            return Files.readAllLines(Paths.get("access.log"));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

@@ -254,7 +254,7 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     @Test
     public void eachTestNeedsAtLeastAWhenAndAThen() {
-        assertThatThrownBy(() -> makeSureThenIsUsed.apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
+        assertThatThrownBy(() -> verification.apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
                 .hasMessage("Each test needs at least a 'when' and a 'then'");
     }
 }

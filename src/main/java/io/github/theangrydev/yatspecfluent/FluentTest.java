@@ -20,13 +20,6 @@ package io.github.theangrydev.yatspecfluent;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.String.format;
 
 /**
  * Use this as the base class for your acceptance tests.
@@ -38,27 +31,10 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
 
     private final TestState state = new TestState();
 
-    private final List<Given> usedGivens = new ArrayList<>();
-    private final List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
-
-    private Stage stage = Stage.GIVEN;
     private TestResult testResult;
 
-    private enum Stage {
-        GIVEN,
-        WHEN,
-        THEN
-    }
-
     @Rule
-    public TestWatcher makeSureThenIsUsed = new TestWatcher() {
-        @Override
-        protected void succeeded(Description description) {
-            if (stage != Stage.THEN) {
-                throw new IllegalStateException("Each test needs at least a 'when' and a 'then'");
-            }
-        }
-    };
+    public final FluentTestVerification<TestResult> verification = new FluentTestVerification<>();
 
     /**
      * You should aim to never access the state directly, but you might need to (e.g. global shared state).
@@ -87,15 +63,9 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
     public void given(Given given) {
-        if (stage != Stage.GIVEN) {
-            throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
-        }
-        if (usedGivens.contains(given)) {
-            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", given.getClass().getSimpleName()));
-        }
-        stage = Stage.GIVEN;
+        verification.checkGivenIsAllowed(given);
         given.prime();
-        usedGivens.add(given);
+        verification.recordGiven(given);
     }
 
     /**
@@ -105,14 +75,9 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param <T>  The type of {@link When}
      */
     public <T extends When<TestResult>> void when(T when) {
-        if (stage != Stage.GIVEN) {
-            throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
-        }
+        verification.checkWhenIsAllowed();
         testResult = when.execute();
-        if (testResult == null) {
-            throw new IllegalStateException(format("'%s' test result was null", when));
-        }
-        stage = Stage.WHEN;
+        verification.recordWhen(when, testResult);
     }
 
     /**
@@ -145,7 +110,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @return The fluent assertions instance
      */
     public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
-        checkThenIsPossible();
+        verification.checkThenAssertionIsAllowed(thenAssertion);
         return thenAssertion.then(testResult);
     }
 
@@ -179,12 +144,9 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
      */
     public void then(ThenVerification<TestResult> thenVerification) {
-        checkThenIsPossible();
-        if (usedThenVerifications.contains(thenVerification)) {
-            throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", thenVerification.getClass().getSimpleName()));
-        }
+        verification.checkThenVerificationIsAllowed(thenVerification);
         thenVerification.verify(testResult);
-        usedThenVerifications.add(thenVerification);
+        verification.recordThenVerification(thenVerification);
     }
 
     @Override
@@ -195,12 +157,5 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
         testState().capturedInputAndOutputs.add(key, instance);
-    }
-
-    private void checkThenIsPossible() {
-        if (stage.compareTo(Stage.WHEN) < 0) {
-            throw new IllegalStateException("The 'then' steps should be after the 'when'");
-        }
-        stage = Stage.THEN;
     }
 }

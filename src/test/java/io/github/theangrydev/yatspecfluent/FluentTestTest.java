@@ -74,8 +74,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     private static class ImmutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
 
+        private static final String IMMUTABLE_FIELD = "something";
+
         @Override
         public TestAssertions then(TestResult testResult) {
+            System.out.println("IMMUTABLE_FIELD = " + IMMUTABLE_FIELD);
             return new TestAssertions(testResult);
         }
     }
@@ -106,9 +109,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     private static class ImmutableThenVerification implements ThenVerification<TestResult> {
 
+        private static final String IMMUTABLE_FIELD = "something";
+
         @Override
         public void verify(TestResult testResult) {
-
+            System.out.println("IMMUTABLE_FIELD = " + IMMUTABLE_FIELD);
         }
     }
 
@@ -118,10 +123,11 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     private interface SomeDependency extends Given {}
 
     private static class ImmutableDependency implements Given {
+        private static final String IMMUTABLE_FIELD = "something";
 
         @Override
         public void prime() {
-
+            System.out.println("IMMUTABLE_FIELD = " + IMMUTABLE_FIELD);
         }
     }
 

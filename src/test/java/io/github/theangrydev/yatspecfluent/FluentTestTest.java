@@ -316,7 +316,12 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
-    public void usingSameGivenInstanceTwiceIsNotAllowed() {
+    public void mutableGivenInstancesCanBeUsedOnce() {
+        given(mutableDependency.withState(20));
+    }
+
+    @Test
+    public void mutableGivenInstancesCannotBeUsedMoreThanOnce() {
         assertThatThrownBy(() -> {
             given(mutableDependency.withState(20));
             and(mutableDependency);
@@ -342,6 +347,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
     }
 
     @Test
+    public void mutableThenAssertionInstancesCanBeUsedOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(mutableThenAssertion.withState(5));
+    }
+
+    @Test
     public void immutableThenVerificationInstancesCanBeUsedMoreThanOnce() {
         given(someDependency);
         when(testSystem);
@@ -357,5 +369,12 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
             then(mutableThenVerification.withState(11));
             and(mutableThenVerification);
         }).hasMessage("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", mutableThenVerification.getClass().getSimpleName());
+    }
+
+    @Test
+    public void mutableThenVerificationInstancesCanBeUsedOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(mutableThenVerification.withState(11));
     }
 }

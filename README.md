@@ -50,12 +50,12 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>5.0.0</version>
+	<version>5.0.1</version>
 </dependency>
 ```
 
 ## Releases
-### 5.0.0
+### 5.0.1
 * Renamed the base class from `FluentTest` to `YatspecFluent`. This is a breaking change
 * Support for using `YatspecFluent` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   
 

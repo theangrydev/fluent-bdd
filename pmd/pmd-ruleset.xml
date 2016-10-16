@@ -30,9 +30,7 @@
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/clone.xml"/>
     <rule ref="rulesets/java/codesize.xml"/>
-    <rule ref="rulesets/java/controversial.xml">
-        <exclude name="AtLeastOneConstructor"/><!-- This is pointless if an object has no state (e.g. ValueType) -->
-    </rule>
+    <rule ref="rulesets/java/controversial.xml"/>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
         <exclude name="LawOfDemeter"/><!-- The Law of Demeter is a good thing to keep in mind, but this rule triggers too many false positives with e.g. fluent interfaces -->
@@ -47,7 +45,6 @@
         <exclude name="LongVariable"/><!-- There is nothing wrong with long descriptive variable names! -->
         <exclude name="GenericsNaming"/><!-- Single letter generic names are not descriptive enough, especially if there are several of them -->
         <exclude name="AbstractNaming"/><!-- Abstract classes should be called something descriptive, not just AbstractXXX -->
-        <exclude name="ShortClassName"/><!-- It is useful to name e.g. iadd as a short name so that there is a 1-1 mapping to the JVM spec-->
         <exclude name="ShortClassName"/><!-- It is useful to name e.g. When as a short name -->
     </rule>
     <rule ref="rulesets/java/optimizations.xml">

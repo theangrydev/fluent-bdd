@@ -30,7 +30,9 @@
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/clone.xml"/>
     <rule ref="rulesets/java/codesize.xml"/>
-    <rule ref="rulesets/java/controversial.xml"/>
+    <rule ref="rulesets/java/controversial.xml">
+        <exclude name="AtLeastOneConstructor"/><!-- This is pointless if an object does not need to set up anything -->
+    </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
         <exclude name="LawOfDemeter"/><!-- The Law of Demeter is a good thing to keep in mind, but this rule triggers too many false positives with e.g. fluent interfaces -->

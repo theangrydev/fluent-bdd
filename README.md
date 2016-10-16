@@ -57,7 +57,7 @@ Dependency:
 ## Releases
 ### 5.0.0
 * Renamed the base class from `FluentTest` to `YatspecFluent`. This is a breaking change
-* Support for using `FluentTest` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   
+* Support for using `YatspecFluent` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   
 
 ### 4.2.0
 * [#6](https://github.com/theangrydev/yatspec-fluent/issues/6) Check if `ThenAssertion` instances have been reused. Also relaxed all the instance checks to classes that appear to be mutable (have at least one instance field)

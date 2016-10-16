@@ -17,9 +17,6 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,7 @@ import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Arrays.stream;
 
 @SuppressWarnings("PMD.TooManyMethods") // Splitting this up further would be too artificial
-class FluentTestVerification<TestResult> extends TestWatcher {
+class Verification<TestResult> {
 
     private enum Stage {
         GIVEN,
@@ -83,8 +80,7 @@ class FluentTestVerification<TestResult> extends TestWatcher {
         usedThenAssertions.add(thenAssertion);
     }
 
-    @Override
-    protected void succeeded(Description description) {
+    public void checkThenHasBeenUsed() {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("Each test needs at least a 'when' and a 'then'");
         }

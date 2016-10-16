@@ -22,7 +22,7 @@ package io.github.theangrydev.yatspecfluent;
  *
  * For example, this could mean verifying a HTTP interaction took place.
  *
- * This class should act as a builder for use in {@link FluentTest}.
+ * This class should act as a builder for use in {@link YatspecFluentCommands}.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  * @param <TestResult> The test result that the {@link #verify(Object)} operates on

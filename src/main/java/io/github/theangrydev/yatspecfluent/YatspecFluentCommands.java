@@ -17,34 +17,18 @@
  */
 package io.github.theangrydev.yatspecfluent;
 
-import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
-import org.junit.Rule;
+import org.junit.rules.TestRule;
 
-/**
- * Use this as the base class for your acceptance tests.
- *
- * @param <TestResult> The type of test result produced by the {@link When}
- */
-@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design choice
-public abstract class FluentTest<TestResult> implements WithTestState, WriteOnlyTestItems {
-
-    private final TestState state = new TestState();
-
-    private TestResult testResult;
-
-    @Rule
-    public final FluentTestVerification<TestResult> verification = new FluentTestVerification<>();
+@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design
+public interface YatspecFluentCommands<TestResult> extends TestRule, WithTestState, WriteOnlyTestItems {
 
     /**
-     * You should aim to never access the state directly, but you might need to (e.g. global shared state).
-     * Call {@link #addToGivens(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
-     * Call {@link #addToCapturedInputsAndOutputs(String, Object)} when possible or make use of the {@link WriteOnlyTestItems} interface.
+     * Prime the given immediately.
+     *
+     * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
-    @Override
-    public TestState testState() {
-        return state;
-    }
+    void given(Given given);
 
     /**
      * Same as {@link #given(Given)}.
@@ -53,20 +37,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      *
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
-    public void and(Given given) {
-        given(given);
-    }
-
-    /**
-     * Prime the given immediately.
-     *
-     * @param given The first given in the acceptance test, which should be built up inside the brackets
-     */
-    public void given(Given given) {
-        verification.checkGivenIsAllowed(given);
-        given.prime();
-        verification.recordGiven(given);
-    }
+    void and(Given given);
 
     /**
      * Invoke the system under test and store the {@link TestResult} ready for the assertions.
@@ -74,11 +45,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param when The system under test, which should be built up inside the brackets
      * @param <T>  The type of {@link When}
      */
-    public <T extends When<TestResult>> void when(T when) {
-        verification.checkWhenIsAllowed();
-        testResult = when.execute();
-        verification.recordWhen(when, testResult);
-    }
+    <T extends When<TestResult>> void when(T when);
 
     /**
      * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint that changes some state in the database.
@@ -86,9 +53,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    public void given(When<TestResult> when) {
-        given((Given) when::execute);
-    }
+    void given(When<TestResult> when);
 
     /**
      * Same as {@link #given(When)}.
@@ -98,9 +63,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    public void and(When<TestResult> when) {
-        given(when);
-    }
+    void and(When<TestResult> when);
 
     /**
      * Perform an assertion. Assertions should be chained outside the brackets.
@@ -109,10 +72,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
-        verification.checkThenAssertionIsAllowed(thenAssertion);
-        return thenAssertion.then(testResult);
-    }
+    <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion);
 
     /**
      * Same as {@link #then(ThenAssertion)}.
@@ -123,9 +83,7 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    public <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
-        return then(thenAssertion);
-    }
+    <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion);
 
     /**
      * Same as {@link #then(ThenVerification)}.
@@ -134,28 +92,22 @@ public abstract class FluentTest<TestResult> implements WithTestState, WriteOnly
      *
      * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
      */
-    public void and(ThenVerification<TestResult> thenVerification) {
-        then(thenVerification);
-    }
+    void and(ThenVerification<TestResult> thenVerification);
 
     /**
      * Perform a verification, which should be built up inside the brackets.
      *
      * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
      */
-    public void then(ThenVerification<TestResult> thenVerification) {
-        verification.checkThenVerificationIsAllowed(thenVerification);
-        thenVerification.verify(testResult);
-        verification.recordThenVerification(thenVerification);
-    }
+    void then(ThenVerification<TestResult> thenVerification);
 
     @Override
-    public void addToGivens(String key, Object instance) {
+    default void addToGivens(String key, Object instance) {
         testState().interestingGivens.add(key, instance);
     }
 
     @Override
-    public void addToCapturedInputsAndOutputs(String key, Object instance) {
+    default void addToCapturedInputsAndOutputs(String key, Object instance) {
         testState().capturedInputAndOutputs.add(key, instance);
     }
 }

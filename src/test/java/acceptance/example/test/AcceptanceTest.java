@@ -25,19 +25,29 @@ import com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramMessage;
 import com.googlecode.yatspec.plugin.sequencediagram.SvgWrapper;
 import com.googlecode.yatspec.rendering.html.DontHighlightRenderer;
 import com.googlecode.yatspec.rendering.html.HtmlResultRenderer;
-import io.github.theangrydev.yatspecfluent.FluentTest;
+import io.github.theangrydev.yatspecfluent.YatspecFluent;
+import io.github.theangrydev.yatspecfluent.WithYatspecFluent;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 
 import java.io.IOException;
 import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
 
-public abstract class AcceptanceTest<Response> extends FluentTest<Response> implements WithAssertions, WithCustomResultListeners {
+public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithYatspecFluent<Response> {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
+
+    @Rule
+    public final YatspecFluent<Response> yatspecFluent = new YatspecFluent<>();
+
+    @Override
+    public YatspecFluent<Response> yatspecFluent() {
+        return yatspecFluent;
+    }
 
     @Before
     public void setUp() {

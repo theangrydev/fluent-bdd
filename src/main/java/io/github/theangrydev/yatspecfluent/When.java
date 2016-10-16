@@ -20,7 +20,7 @@ package io.github.theangrydev.yatspecfluent;
 /**
  * This class represents the system under test.
  *
- * It should act as a builder for use in {@link FluentTest}.
+ * It should act as a builder for use in {@link YatspecFluent}.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  *

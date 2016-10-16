@@ -31,7 +31,7 @@ import static org.junit.runner.Description.EMPTY;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implements WithAssertions {
+public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResult> implements WithAssertions {
     private static final Statement SUCCESSFUL_STATEMENT = new Statement() {
         @Override
         public void evaluate() throws Throwable {
@@ -313,8 +313,13 @@ public class FluentTestTest extends FluentTest<FluentTestTest.TestResult> implem
 
     @Test
     public void eachTestNeedsAtLeastAWhenAndAThen() {
-        assertThatThrownBy(() -> verification.apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
+        assertThatThrownBy(() -> apply(SUCCESSFUL_STATEMENT, EMPTY).evaluate())
                 .hasMessage("Each test needs at least a 'when' and a 'then'");
+    }
+
+    @Test
+    public void testWatcherIsThis() {
+        assertThat(testWatcher).isSameAs(this);
     }
 
     @Test

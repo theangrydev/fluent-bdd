@@ -50,11 +50,14 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
 	<artifactId>yatspec-fluent</artifactId>
-	<version>5.0.1</version>
+	<version>5.0.2</version>
 </dependency>
 ```
 
 ## Releases
+### 5.0.2
+* [#7](https://github.com/theangrydev/yatspec-fluent/issues/7) The functionality implemented in [#6](https://github.com/theangrydev/yatspec-fluent/issues/6) turned out to be a bit too strict about what it considered to be "mutable". Now the definition of "mutable" is that all the fields must be final. This allows synthetic classes (e.g. a constructor reference) to go through, which turned out to be a common way to write ThenAssertion implementations
+
 ### 5.0.1
 * Renamed the base class from `FluentTest` to `YatspecFluent`. This is a breaking change
 * Support for using `YatspecFluent` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   

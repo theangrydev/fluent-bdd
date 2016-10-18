@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.lang.reflect.Modifier.isStatic;
+import static java.lang.reflect.Modifier.isFinal;
 import static java.util.Arrays.stream;
 
 @SuppressWarnings("PMD.TooManyMethods") // Splitting this up further would be too artificial
@@ -96,7 +96,7 @@ class Verification<TestResult> {
     private boolean appearsToBeMutable(Class<?> aClass) {
         return stream(aClass.getDeclaredFields())
                 .mapToInt(Field::getModifiers)
-                .anyMatch(modifiers -> !isStatic(modifiers));
+                .anyMatch(modifiers -> !isFinal(modifiers));
     }
 
     private <T> void checkMutableInstanceHasNotAlreadyBeenUsed(T instance, List<T> usedInstances) {

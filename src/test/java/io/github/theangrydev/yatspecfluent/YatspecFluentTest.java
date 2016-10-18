@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.junit.runners.model.Statement;
 import org.mockito.Mockito;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static java.lang.String.format;
 import static org.junit.runner.Description.EMPTY;
 import static org.mockito.Mockito.mock;
@@ -39,64 +37,70 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
         }
     };
 
-    private final ThenAssertion<TestAssertions, TestResult> testAssertions = TestAssertions::new;
+    private final ThenAssertion<TestResultAssertions, TestResult> someThenAssertion = TestResultAssertions::new;
     private final MutableThenAssertion mutableThenAssertion = new MutableThenAssertion();
     private final ImmutableThenAssertion immutableThenAssertion = new ImmutableThenAssertion();
+
     private final SomeThenVerification someThenVerification = mock(SomeThenVerification.class);
     private final MutableThenVerification mutableThenVerification = new MutableThenVerification();
     private final ImmutableThenVerification immutableThenVerification = new ImmutableThenVerification();
+    private final ThenVerification<TestResult> methodReferenceThenVerification = this::verifyMethod;
+
     private final TestSystem testSystem = mock(TestSystem.class);
     private final TestSystem nullResponseTestSystem = mock(TestSystem.class);
+
     private final SomeDependency someDependency = mock(SomeDependency.class);
     private final SomeDependency someDependency2 = mock(SomeDependency.class);
     private final AnotherDependency anotherDependency = mock(AnotherDependency.class);
-    private final ImmutableDependency immutableDependency = new ImmutableDependency();
     private final MutableDependency mutableDependency = new MutableDependency();
+    private final ImmutableDependency immutableDependency = new ImmutableDependency();
+    private final Given methodReferenceGiven = this::givenMethod;
+
     private final TestResult testResult = new TestResult();
 
     private boolean given;
     private boolean when;
     private boolean then;
 
-    private static class MutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
+    private static class MutableThenAssertion implements ThenAssertion<TestResultAssertions, TestResult> {
 
-        private final AtomicInteger state = new AtomicInteger();
+        private int state;
 
         @Override
-        public TestAssertions then(TestResult testResult) {
+        public TestResultAssertions then(TestResult testResult) {
             System.out.println("state = " + state);
-            return new TestAssertions(testResult);
+            return new TestResultAssertions(testResult);
         }
 
         public MutableThenAssertion withState(int state) {
-            this.state.set(state);
+            this.state = state;
             return this;
         }
     }
 
-    private static class ImmutableThenAssertion implements ThenAssertion<TestAssertions, TestResult> {
+    private static class ImmutableThenAssertion implements ThenAssertion<TestResultAssertions, TestResult> {
 
         private static final String IMMUTABLE_FIELD = "something";
 
         @Override
-        public TestAssertions then(TestResult testResult) {
+        public TestResultAssertions then(TestResult testResult) {
             System.out.println("IMMUTABLE_FIELD = " + IMMUTABLE_FIELD);
-            return new TestAssertions(testResult);
+            return new TestResultAssertions(testResult);
         }
     }
 
-    private static class TestAssertions {
+    private static class TestResultAssertions {
 
         final TestResult testResult;
 
-        TestAssertions(TestResult testResult) {
+        TestResultAssertions(TestResult testResult) {
             this.testResult = testResult;
         }
     }
 
     private static class MutableThenVerification implements ThenVerification<TestResult> {
 
-        private final AtomicInteger state = new AtomicInteger();
+        private int state;
 
         @Override
         public void verify(TestResult testResult) {
@@ -104,7 +108,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
         }
 
         public MutableThenVerification withState(int state) {
-            this.state.set(state);
+            this.state = state;
             return this;
         }
     }
@@ -135,7 +139,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
 
     private static class MutableDependency implements Given {
 
-        private final AtomicInteger state = new AtomicInteger();
+        private int state;
 
         @Override
         public void prime() {
@@ -143,7 +147,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
         }
 
         public MutableDependency withState(int state) {
-            this.state.set(state);
+            this.state = state;
             return this;
         }
     }
@@ -166,7 +170,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
             when(testSystem);
         }
         if (!then) {
-            then(testAssertions);
+            then(someThenAssertion);
         }
     }
 
@@ -206,7 +210,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
     public void testResultIsPassedToTheAssertions() {
         given(someDependency);
         when(testSystem);
-        TestAssertions then = then(testAssertions);
+        TestResultAssertions then = then(someThenAssertion);
         assertThat(then.testResult).isSameAs(testResult);
     }
 
@@ -214,7 +218,7 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
     public void andThenAssertionBehavesTheSameAsThen() {
         given(someDependency);
         when(testSystem);
-        TestAssertions then = and(testAssertions);
+        TestResultAssertions then = and(someThenAssertion);
         assertThat(then.testResult).isSameAs(testResult);
     }
 
@@ -296,14 +300,14 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
     public void callingGivenAfterThenIsNotAllowed() {
         assertThatThrownBy(() -> {
             when(testSystem);
-            then(testAssertions);
+            then(someThenAssertion);
             given(someDependency);
         }).hasMessage("The 'given' steps must be specified before the 'when' and 'then' steps");
     }
 
     @Test
     public void callingThenAssertionBeforeWhenIsNotAllowed() {
-        assertThatThrownBy(() -> then(testAssertions)).hasMessage("The 'then' steps should be after the 'when'");
+        assertThatThrownBy(() -> then(someThenAssertion)).hasMessage("The 'then' steps should be after the 'when'");
     }
 
     @Test
@@ -329,6 +333,12 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
     }
 
     @Test
+    public void methodReferenceGivenInstanceCanBeUsedMoreThanOnce() {
+        given(methodReferenceGiven);
+        and(methodReferenceGiven);
+    }
+
+    @Test
     public void mutableGivenInstancesCanBeUsedOnce() {
         given(mutableDependency.withState(20));
     }
@@ -347,6 +357,14 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
         when(testSystem);
         then(immutableThenAssertion);
         and(immutableThenAssertion);
+    }
+
+    @Test
+    public void methodReferenceThenAssertionInstancesCanBeUsedMoreThanOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(someThenAssertion);
+        and(someThenAssertion);
     }
 
     @Test
@@ -375,6 +393,14 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
     }
 
     @Test
+    public void methodReferenceThenVerificationInstancesCanBeUsedMoreThanOnce() {
+        given(someDependency);
+        when(testSystem);
+        then(methodReferenceThenVerification);
+        and(methodReferenceThenVerification);
+    }
+
+    @Test
     public void mutableThenVerificationInstancesCannotBeUsedMoreThanOnce() {
         assertThatThrownBy(() -> {
             given(someDependency);
@@ -389,5 +415,13 @@ public class YatspecFluentTest extends YatspecFluent<YatspecFluentTest.TestResul
         given(someDependency);
         when(testSystem);
         then(mutableThenVerification.withState(11));
+    }
+
+    private void verifyMethod(TestResult testResult) {
+        assertThat(testResult).isNotNull();
+    }
+
+    private void givenMethod() {
+        System.out.println("givenMethod");
     }
 }

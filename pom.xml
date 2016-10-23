@@ -579,11 +579,4 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>repo.bodar.com</id>
-            <url>http://repo.bodar.com</url>
-        </repository>
-    </repositories>
 </project>

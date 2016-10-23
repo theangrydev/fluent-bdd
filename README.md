@@ -45,16 +45,28 @@ public class ExampleTest extends AcceptanceTest<TestResult> {
 }
 ```
 
-Dependency:
+Dependencies:
 ```xml
 <dependency>
-	<groupId>io.github.theangrydev</groupId>
-	<artifactId>fluent-bdd</artifactId>
-	<version>5.0.2</version>
+	<groupId>io.github.theangrydev.fluentbdd</groupId>
+	<artifactId>core</artifactId>
+	<version>6.0.0</version>
+</dependency>
+<dependency>
+	<groupId>io.github.theangrydev.fluentbdd</groupId>
+	<artifactId>yatspec-extensions</artifactId>
+	<version>6.0.0</version>
 </dependency>
 ```
 
 ## Releases
+### 6.0.0
+* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Renamed the library to fluent-bdd. This is a breaking change
+* The `groupId` is now `io.github.theangrydev.fluentbdd` and the `artifactId` is `core` and `yatspec-extensions`
+* The packages were changed to reflect this, there is now `io.github.theangrydev.fluentbdd.core` and `io.github.theangrydev.fluentbdd.yatspec`
+* The `YatspecFluent` class was renamed to `FluentYatspec`, similarly `WithYatspecFluent` was renamed to `WithFluentYatspec`
+* There is a `FluentBdd` class that does not require yatspec at all, with a corresponding `WithFluentBdd` interface 
+
 ### 5.0.2
 * [#7](https://github.com/theangrydev/fluent-bdd/issues/7) The functionality implemented in [#6](https://github.com/theangrydev/fluent-bdd/issues/6) turned out to be a bit too strict about what it considered to be "mutable". Now the definition of "mutable" is that all the fields must be final. This allows synthetic classes (e.g. a constructor reference) to go through, which turned out to be a common way to write ThenAssertion implementations
 

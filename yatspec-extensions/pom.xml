@@ -84,4 +84,11 @@
             <version>1.1.1</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>repo.bodar.com</id>
+            <url>http://repo.bodar.com</url>
+        </repository>
+    </repositories>
 </project>

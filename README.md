@@ -9,7 +9,7 @@
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev:fluent-bdd)
 
 # fluent-bdd
-[Example:](https://github.com/theangrydev/fluent-bdd/blob/master/src/test/java/acceptance/ExampleTest.java)
+[Example:](https://github.com/theangrydev/fluent-bdd/blob/master/yatspec-extensions/src/test/java/acceptance/ExampleTest.java)
 ```java
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<TestResult> {

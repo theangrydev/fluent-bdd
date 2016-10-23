@@ -9,10 +9,7 @@ addons:
 cache:
   directories:
     - $HOME/.m2
-before_install:
-  # Workaround for https://github.com/travis-ci/travis-ci/issues/4629
-  - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
-install: mvn dependency:resolve dependency:resolve-plugins
+install: mvn install -DskipTests=true -B -V
 script: mvn verify
 after_success:
   - bash <(curl -s https://codecov.io/bash)

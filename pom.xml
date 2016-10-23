@@ -27,7 +27,7 @@
     <packaging>jar</packaging>
 
     <name>fluent-bdd</name>
-    <description>A plugin for the yatspec acceptance test library used to write acceptance tests in a fluent way, reusing givens, whens and thens.</description>
+    <description>A BDD framework to help write tests in a fluent way, reusing givens, whens and thens.</description>
     <url>https://github.com/theangrydev/fluent-bdd</url>
 
     <scm>

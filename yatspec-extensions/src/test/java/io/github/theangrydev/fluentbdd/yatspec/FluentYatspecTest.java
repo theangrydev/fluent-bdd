@@ -35,6 +35,13 @@ public class FluentYatspecTest implements WithAssertions {
         assertThat(fluentYatspec).isInstanceOf(FluentYatspecCommands.class);
     }
 
+    @Test
+    public void hasTestState() {
+        assertThat(fluentYatspec.testState()).isNotNull();
+        assertThat(fluentYatspec.testState().interestingGivens.isEmpty());
+        assertThat(fluentYatspec.testState().capturedInputAndOutputs.isEmpty());
+    }
+
     class TestResult {
 
     }

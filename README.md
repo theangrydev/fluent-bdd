@@ -1,15 +1,15 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/yatspec-fluent/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/yatspec-fluent)
-[![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev/yatspec-fluent.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev/yatspec-fluent)
-[![Gitter](https://badges.gitter.im/yatspec-fluent/Lobby.svg)](https://gitter.im/yatspec-fluent/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/fluent-bdd/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/fluent-bdd)
+[![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev/fluent-bdd.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev/fluent-bdd)
+[![Gitter](https://badges.gitter.im/fluent-bdd/Lobby.svg)](https://gitter.im/fluent-bdd/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build Status](https://travis-ci.org/theangrydev/yatspec-fluent.svg?branch=master)](https://travis-ci.org/theangrydev/yatspec-fluent)
-[![codecov](https://codecov.io/gh/theangrydev/yatspec-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/theangrydev/yatspec-fluent)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8027156014f84fa18f413bea6213bea8)](https://www.codacy.com/app/liam-williams/yatspec-fluent?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/yatspec-fluent&amp;utm_campaign=Badge_Grade)
-[![codebeat badge](https://codebeat.co/badges/2727cf34-ac3c-4c1f-85f7-144b625303c1)](https://codebeat.co/projects/github-com-theangrydev-yatspec-fluent)
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev:yatspec-fluent)](https://sonarqube.com/dashboard/index/io.github.theangrydev:yatspec-fluent)
+[![Build Status](https://travis-ci.org/theangrydev/fluent-bdd.svg?branch=master)](https://travis-ci.org/theangrydev/fluent-bdd)
+[![codecov](https://codecov.io/gh/theangrydev/fluent-bdd/branch/master/graph/badge.svg)](https://codecov.io/gh/theangrydev/fluent-bdd)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8027156014f84fa18f413bea6213bea8)](https://www.codacy.com/app/liam-williams/fluent-bdd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/fluent-bdd&amp;utm_campaign=Badge_Grade)
+[![codebeat badge](https://codebeat.co/badges/2727cf34-ac3c-4c1f-85f7-144b625303c1)](https://codebeat.co/projects/github-com-theangrydev-fluent-bdd)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev:fluent-bdd)
 
-# yatspec-fluent
-[Example:](https://github.com/theangrydev/yatspec-fluent/blob/master/src/test/java/acceptance/ExampleTest.java)
+# fluent-bdd
+[Example:](https://github.com/theangrydev/fluent-bdd/blob/master/src/test/java/acceptance/ExampleTest.java)
 ```java
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<TestResult> {
@@ -49,30 +49,30 @@ Dependency:
 ```xml
 <dependency>
 	<groupId>io.github.theangrydev</groupId>
-	<artifactId>yatspec-fluent</artifactId>
+	<artifactId>fluent-bdd</artifactId>
 	<version>5.0.2</version>
 </dependency>
 ```
 
 ## Releases
 ### 5.0.2
-* [#7](https://github.com/theangrydev/yatspec-fluent/issues/7) The functionality implemented in [#6](https://github.com/theangrydev/yatspec-fluent/issues/6) turned out to be a bit too strict about what it considered to be "mutable". Now the definition of "mutable" is that all the fields must be final. This allows synthetic classes (e.g. a constructor reference) to go through, which turned out to be a common way to write ThenAssertion implementations
+* [#7](https://github.com/theangrydev/fluent-bdd/issues/7) The functionality implemented in [#6](https://github.com/theangrydev/fluent-bdd/issues/6) turned out to be a bit too strict about what it considered to be "mutable". Now the definition of "mutable" is that all the fields must be final. This allows synthetic classes (e.g. a constructor reference) to go through, which turned out to be a common way to write ThenAssertion implementations
 
 ### 5.0.1
 * Renamed the base class from `FluentTest` to `YatspecFluent`. This is a breaking change
 * Support for using `YatspecFluent` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   
 
 ### 4.2.0
-* [#6](https://github.com/theangrydev/yatspec-fluent/issues/6) Check if `ThenAssertion` instances have been reused. Also relaxed all the instance checks to classes that appear to be mutable (have at least one instance field)
+* [#6](https://github.com/theangrydev/fluent-bdd/issues/6) Check if `ThenAssertion` instances have been reused. Also relaxed all the instance checks to classes that appear to be mutable (have at least one instance field)
 
 ### 4.1.1
 * Minor changes to the validation messages
 
 ### 4.1.0
-* [#3](https://github.com/theangrydev/yatspec-fluent/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
+* [#3](https://github.com/theangrydev/fluent-bdd/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
 
 ### 4.0.1
-* [#5](https://github.com/theangrydev/yatspec-fluent/issues/5) There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
+* [#5](https://github.com/theangrydev/fluent-bdd/issues/5) There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
 
 ### 3.0.1
 * Made the `FluentTest` methods public. Protected was enough, but it's clearer that they are part of the public API if they are public
@@ -82,11 +82,11 @@ Dependency:
 * Removed `InterestingGivens` and `CapturedInputAndOutputs` fields. The `TestState` can be accessed via the interface `WithTestState` if it is really needed. This is a breaking change since the fields were visible to subclasses of `FluentTest`
 
 ### 2.0.1
-* [#4](https://github.com/theangrydev/yatspec-fluent/issues/4) Remove `Request` from `When`. This is a breaking change
+* [#4](https://github.com/theangrydev/fluent-bdd/issues/4) Remove `Request` from `When`. This is a breaking change
 * Mark `Given` as a `@FunctionalInterface` since it has a single abstract method
 
 ### 1.6.0
-* [#1](https://github.com/theangrydev/yatspec-fluent/issues/1) Relax all the wording validation because it was just getting in the way for users rather than providing any value
+* [#1](https://github.com/theangrydev/fluent-bdd/issues/1) Relax all the wording validation because it was just getting in the way for users rather than providing any value
 
 ### 1.5.0
 * Adapt when to given

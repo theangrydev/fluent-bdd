@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.rules.TestRule;
@@ -26,7 +26,7 @@ import org.junit.rules.TestRule;
  * @param <TestResult> The type of test result produced by the {@link When}
  */
 @SuppressWarnings("PMD.TooManyMethods") // This is part of the API design
-public interface YatspecFluentCommands<TestResult> extends TestRule, WithTestState, WriteOnlyTestItems {
+public interface FluentBddCommands<TestResult> extends TestRule, WithTestState, WriteOnlyTestItems {
 
     /**
      * Prime the given immediately.

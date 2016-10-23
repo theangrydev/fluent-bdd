@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import org.assertj.core.api.WithAssertions;
@@ -28,23 +28,23 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-public class WithYatspecFluentTest implements WithYatspecFluent<WithYatspecFluentTest.TestResult>, WithAssertions {
+public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestResult>, WithAssertions {
 
     @Override
-    public YatspecFluent<TestResult> yatspecFluent() {
-        return yatspecFluent;
+    public FluentBdd<TestResult> yatspecFluent() {
+        return fluentBdd;
     }
 
     @Test
     public void applyDelegates() {
-        Mockito.when(yatspecFluent.apply(base, description)).thenReturn(statement);
+        Mockito.when(fluentBdd.apply(base, description)).thenReturn(statement);
 
         assertThat(apply(base, description)).isEqualTo(statement);
     }
 
     @Test
     public void testStateDelegates() {
-        Mockito.when(yatspecFluent.testState()).thenReturn(testState);
+        Mockito.when(fluentBdd.testState()).thenReturn(testState);
 
         assertThat(testState()).isEqualTo(testState);
     }
@@ -53,47 +53,47 @@ public class WithYatspecFluentTest implements WithYatspecFluent<WithYatspecFluen
     public void givenGivenDelegates() {
         given(given);
 
-        Mockito.verify(yatspecFluent).given(given);
+        Mockito.verify(fluentBdd).given(given);
     }
 
     @Test
     public void andGivenDelegates() {
         and(given);
 
-        Mockito.verify(yatspecFluent).and(given);
+        Mockito.verify(fluentBdd).and(given);
     }
 
     @Test
     public void whenDelegates() {
         when(when);
 
-        Mockito.verify(yatspecFluent).when(when);
+        Mockito.verify(fluentBdd).when(when);
     }
 
     @Test
     public void givenWhenDelegates() {
         given(when);
 
-        Mockito.verify(yatspecFluent).given(when);
+        Mockito.verify(fluentBdd).given(when);
     }
 
     @Test
     public void andWhenDelegates() {
         and(when);
 
-        Mockito.verify(yatspecFluent).and(when);
+        Mockito.verify(fluentBdd).and(when);
     }
 
     @Test
     public void thenAssertionDelegates() {
-        Mockito.when(yatspecFluent.then(thenAssertion)).thenReturn(then);
+        Mockito.when(fluentBdd.then(thenAssertion)).thenReturn(then);
 
         assertThat(then(thenAssertion)).isEqualTo(then);
     }
 
     @Test
     public void andThenAssertionDelegates() {
-        Mockito.when(yatspecFluent.and(thenAssertion)).thenReturn(then);
+        Mockito.when(fluentBdd.and(thenAssertion)).thenReturn(then);
 
         assertThat(and(thenAssertion)).isEqualTo(then);
     }
@@ -102,18 +102,18 @@ public class WithYatspecFluentTest implements WithYatspecFluent<WithYatspecFluen
     public void thenVerificationDelegates() {
         then(thenVerification);
 
-        Mockito.verify(yatspecFluent).then(thenVerification);
+        Mockito.verify(fluentBdd).then(thenVerification);
     }
 
     @Test
     public void andThenVerificationDelegates() {
         and(thenVerification);
 
-        Mockito.verify(yatspecFluent).and(thenVerification);
+        Mockito.verify(fluentBdd).and(thenVerification);
     }
 
     @Mock
-    private YatspecFluent<TestResult> yatspecFluent;
+    private FluentBdd<TestResult> fluentBdd;
 
     @Mock
     private Statement statement;

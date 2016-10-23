@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 /**
  * When the {@link #verify(Object)} method is invoked, a verification should be made about the {@link TestResult}.
  *
  * For example, this could mean verifying a HTTP interaction took place.
  *
- * This class should act as a builder for use in {@link YatspecFluentCommands}.
+ * This class should act as a builder for use in {@link FluentBddCommands}.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  * @param <TestResult> The test result that the {@link #verify(Object)} operates on

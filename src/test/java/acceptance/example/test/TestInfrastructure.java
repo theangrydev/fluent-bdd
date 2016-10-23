@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
-import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
+import io.github.theangrydev.fluentbdd.WriteOnlyTestItems;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

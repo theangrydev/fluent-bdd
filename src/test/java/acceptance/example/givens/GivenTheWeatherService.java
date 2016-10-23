@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 package acceptance.example.givens;
 
 import acceptance.example.test.TestInfrastructure;
-import io.github.theangrydev.yatspecfluent.Given;
-import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
+import io.github.theangrydev.fluentbdd.Given;
+import io.github.theangrydev.fluentbdd.WriteOnlyTestItems;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 

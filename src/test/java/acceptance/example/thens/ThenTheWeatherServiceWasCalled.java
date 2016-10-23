@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 package acceptance.example.thens;
 
 import acceptance.example.test.TestResult;
-import io.github.theangrydev.yatspecfluent.ThenVerification;
+import io.github.theangrydev.fluentbdd.ThenVerification;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 

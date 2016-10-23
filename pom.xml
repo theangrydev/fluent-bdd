@@ -3,7 +3,7 @@
 
     Copyright 2016 Liam Williams <liam.williams@zoho.com>.
 
-    This file is part of yatspec-fluent.
+    This file is part of fluent-bdd.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,18 +22,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.theangrydev</groupId>
-    <artifactId>yatspec-fluent</artifactId>
+    <artifactId>fluent-bdd</artifactId>
     <version>5.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>yatspec-fluent</name>
+    <name>fluent-bdd</name>
     <description>A plugin for the yatspec acceptance test library used to write acceptance tests in a fluent way, reusing givens, whens and thens.</description>
-    <url>https://github.com/theangrydev/yatspec-fluent</url>
+    <url>https://github.com/theangrydev/fluent-bdd</url>
 
     <scm>
-        <connection>scm:git:https://github.com/theangrydev/yatspec-fluent.git</connection>
-        <developerConnection>scm:git:https://github.com/theangrydev/yatspec-fluent.git</developerConnection>
-        <url>https://github.com/theangrydev/yatspec-fluent.git</url>
+        <connection>scm:git:https://github.com/theangrydev/fluent-bdd.git</connection>
+        <developerConnection>scm:git:https://github.com/theangrydev/fluent-bdd.git</developerConnection>
+        <url>https://github.com/theangrydev/fluent-bdd.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -283,10 +283,10 @@
                     </mutators>
                     <parseSurefireConfig>false</parseSurefireConfig>
                     <targetClasses>
-                        <param>io.github.theangrydev.yatspecfluent*</param>
+                        <param>io.github.theangrydev.fluentbdd*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>io.github.theangrydev.yatspecfluent*</param>
+                        <param>io.github.theangrydev.fluentbdd*</param>
                         <param>acceptance*</param>
                     </targetTests>
                     <exportLineCoverage>true</exportLineCoverage>

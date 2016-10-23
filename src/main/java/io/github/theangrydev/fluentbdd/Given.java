@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 /**
- * This class represents the system under test.
+ * When the {@link #prime()} method is invoked, any setup necessary for this
+ * to affect the system under test should be performed immediately.
  *
- * It should act as a builder for use in {@link YatspecFluent}.
+ * For example, this could mean priming a HTTP stub with a canned response.
+ *
+ * This class should act as a builder for use in {@link FluentBddCommands}.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
- *
- * @param <TestResult> The type of result the system produces
  */
 @FunctionalInterface
-public interface When<TestResult> {
+public interface Given {
 
     /**
-     * @return The {@link TestResult} from the system under test after executing the request
+     * Prime the given immediately, which will make a change that is visible to
+     * the system under test (that is implemented in the {@link When}.
      */
-    TestResult execute();
+    void prime();
 }

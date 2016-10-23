@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import acceptance.example.thens.ThenTheResponse;
 import acceptance.example.thens.ThenTheResponseHeaders;
 import acceptance.example.whens.WhenTheWeatherIsRequested;
 import com.googlecode.yatspec.junit.SpecRunner;
-import io.github.theangrydev.yatspecfluent.ThenAssertion;
+import io.github.theangrydev.fluentbdd.ThenAssertion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

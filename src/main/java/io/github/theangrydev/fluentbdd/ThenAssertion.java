@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 /**
- * When the {@link #prime()} method is invoked, any setup necessary for this
- * to affect the system under test should be performed immediately.
+ * Implementations should produce a {@link Then} given a {@link TestResult}.
  *
- * For example, this could mean priming a HTTP stub with a canned response.
+ * This class should provide assertion methods (ideally in the style of AssertJ).
  *
- * This class should act as a builder for use in {@link YatspecFluentCommands}.
+ * @see <a href="http://joel-costigliola.github.io/assertj/">AssertJ</a>
  *
- * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
+ * @param <Then> The fluent assertions type
+ * @param <TestResult> The test result that the {@link Then} operates on
  */
 @FunctionalInterface
-public interface Given {
+public interface ThenAssertion<Then, TestResult> {
 
     /**
-     * Prime the given immediately, which will make a change that is visible to
-     * the system under test (that is implemented in the {@link When}.
+     * @param testResult The result from the system under test
+     * @return A fluent assertions class that operates on the given {@link TestResult}
      */
-    void prime();
+    Then then(TestResult testResult);
 }

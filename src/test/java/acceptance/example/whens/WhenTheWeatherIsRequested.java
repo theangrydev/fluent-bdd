@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package acceptance.example.whens;
 
 import acceptance.example.test.TestInfrastructure;
 import acceptance.example.test.TestResult;
-import io.github.theangrydev.yatspecfluent.When;
+import io.github.theangrydev.fluentbdd.When;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;

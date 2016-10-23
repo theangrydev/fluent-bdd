@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramMessage;
 import com.googlecode.yatspec.plugin.sequencediagram.SvgWrapper;
 import com.googlecode.yatspec.rendering.html.DontHighlightRenderer;
 import com.googlecode.yatspec.rendering.html.HtmlResultRenderer;
-import io.github.theangrydev.yatspecfluent.YatspecFluent;
-import io.github.theangrydev.yatspecfluent.WithYatspecFluent;
+import io.github.theangrydev.fluentbdd.FluentBdd;
+import io.github.theangrydev.fluentbdd.WithFluentBdd;
 import org.assertj.core.api.WithAssertions;
 import org.junit.After;
 import org.junit.Before;
@@ -37,16 +37,16 @@ import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
 
-public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithYatspecFluent<Response> {
+public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithFluentBdd<Response> {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 
     @Rule
-    public final YatspecFluent<Response> yatspecFluent = new YatspecFluent<>();
+    public final FluentBdd<Response> fluentBdd = new FluentBdd<>();
 
     @Override
-    public YatspecFluent<Response> yatspecFluent() {
-        return yatspecFluent;
+    public FluentBdd<Response> yatspecFluent() {
+        return fluentBdd;
     }
 
     @Before

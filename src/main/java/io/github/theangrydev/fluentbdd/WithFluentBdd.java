@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * If you do not want to extend {@link YatspecFluent} as a base class for your tests, you can alternatively use this.
- * You must implement the {@link #yatspecFluent()} method by providing a reference to a {@link YatspecFluent} that is
+ * If you do not want to extend {@link FluentBdd} as a base class for your tests, you can alternatively use this.
+ * You must implement the {@link #yatspecFluent()} method by providing a reference to a {@link FluentBdd} that is
  * a field of your test, annotated with a JUnit {@link org.junit.Rule}.
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
 @SuppressWarnings("PMD.TooManyMethods") // This is part of the API design
-public interface WithYatspecFluent<TestResult> extends YatspecFluentCommands<TestResult> {
+public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult> {
 
     /**
-     * This should be implemented by referring to a {@link YatspecFluent} field that is annotated as a JUnit {@link org.junit.Rule}.
+     * This should be implemented by referring to a {@link FluentBdd} field that is annotated as a JUnit {@link org.junit.Rule}.
      *
-     * @return The delegate {@link YatspecFluent}.
+     * @return The delegate {@link FluentBdd}.
      */
-    YatspecFluent<TestResult> yatspecFluent();
+    FluentBdd<TestResult> yatspecFluent();
 
     @Override
     default Statement apply(Statement base, Description description) {

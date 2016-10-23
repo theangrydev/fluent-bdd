@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 Liam Williams <liam.williams@zoho.com>.
  *
- * This file is part of yatspec-fluent.
+ * This file is part of fluent-bdd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.yatspecfluent;
+package io.github.theangrydev.fluentbdd;
 
 /**
- * Implementations should produce a {@link Then} given a {@link TestResult}.
+ * This class represents the system under test.
  *
- * This class should provide assertion methods (ideally in the style of AssertJ).
+ * It should act as a builder for use in {@link FluentBdd}.
  *
- * @see <a href="http://joel-costigliola.github.io/assertj/">AssertJ</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Builder_pattern#Java_example">The Builder Pattern</a>
  *
- * @param <Then> The fluent assertions type
- * @param <TestResult> The test result that the {@link Then} operates on
+ * @param <TestResult> The type of result the system produces
  */
 @FunctionalInterface
-public interface ThenAssertion<Then, TestResult> {
+public interface When<TestResult> {
 
     /**
-     * @param testResult The result from the system under test
-     * @return A fluent assertions class that operates on the given {@link TestResult}
+     * @return The {@link TestResult} from the system under test after executing the request
      */
-    Then then(TestResult testResult);
+    TestResult execute();
 }

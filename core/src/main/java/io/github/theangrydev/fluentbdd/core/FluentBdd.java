@@ -55,6 +55,14 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
         verification.checkThenHasBeenUsed();
     }
 
+    @Override
+    public TestResult theResult() {
+        if (testResult == null) {
+            throw new IllegalStateException("The 'when' has not been executed yet so there is no test result yet!");
+        }
+        return testResult;
+    }
+
     /**
      * Prime the given immediately.
      *

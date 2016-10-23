@@ -27,6 +27,8 @@ import org.junit.rules.TestRule;
 @SuppressWarnings("PMD.TooManyMethods") // This is by design
 public interface FluentBddCommands<TestResult> extends TestRule {
 
+    TestResult theResult();
+
     /**
      * Prime the given immediately.
      *
@@ -115,7 +117,7 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      * @param <Then>        The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    default  <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
+    default <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
         return then(thenAssertion);
     }
 

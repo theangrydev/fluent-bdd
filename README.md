@@ -61,7 +61,7 @@ Dependencies:
 
 ## Releases
 ### 6.0.0
-* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Renamed the library to fluent-bdd. This is a breaking change
+* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) **Renamed the library to fluent-bdd**. This is a breaking change
 * The `groupId` is now `io.github.theangrydev.fluentbdd` and the `artifactId` is `core` and `yatspec-extensions`
 * The packages were changed to reflect this, there is now `io.github.theangrydev.fluentbdd.core` and `io.github.theangrydev.fluentbdd.yatspec`
 * The `YatspecFluent` class was renamed to `FluentYatspec`, similarly `WithYatspecFluent` was renamed to `WithFluentYatspec`

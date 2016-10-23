@@ -18,7 +18,6 @@
 package io.github.theangrydev.fluentbdd.yatspec;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import io.github.theangrydev.fluentbdd.core.When;
 import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 

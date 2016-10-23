@@ -18,6 +18,7 @@
 package io.github.theangrydev.fluentbdd.yatspec;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
+import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import io.github.theangrydev.fluentbdd.core.When;
 import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 
@@ -30,11 +31,16 @@ import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
  */
 public interface WithFluentYatspec<TestResult> extends WithFluentBdd<TestResult>, FluentYatspecCommands {
 
+    /**
+     * This should be implemented by referring to a {@link FluentYatspec} field that is annotated as a JUnit {@link org.junit.Rule}.
+     *
+     * @return The delegate {@link FluentYatspec}.
+     */
+    @Override
+    FluentYatspec<TestResult> fluentBdd();
+
     @Override
     default TestState testState() {
         return fluentBdd().testState();
     }
-
-    @Override
-    FluentYatspec<TestResult> fluentBdd();
 }

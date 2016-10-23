@@ -38,8 +38,11 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
     }
 
     @Override
-    public void and(Given given) {
-        given(given);
+    public TestResult theResult() {
+        if (testResult == null) {
+            throw new IllegalStateException("The 'when' has not been executed yet so there is no test result yet!");
+        }
+        return testResult;
     }
 
     /**
@@ -62,29 +65,9 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
     }
 
     @Override
-    public void given(When<TestResult> when) {
-        given((Given) when::execute);
-    }
-
-    @Override
-    public void and(When<TestResult> when) {
-        given(when);
-    }
-
-    @Override
     public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
         verification.checkThenAssertionIsAllowed(thenAssertion);
         return thenAssertion.then(testResult);
-    }
-
-    @Override
-    public <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
-        return then(thenAssertion);
-    }
-
-    @Override
-    public void and(ThenVerification<TestResult> thenVerification) {
-        then(thenVerification);
     }
 
     @Override

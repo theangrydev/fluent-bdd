@@ -37,6 +37,11 @@ public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult>
     FluentBdd<TestResult> fluentBdd();
 
     @Override
+    default TestResult theResult() {
+        return fluentBdd().theResult();
+    }
+
+    @Override
     default Statement apply(Statement base, Description description) {
         return fluentBdd().apply(base, description);
     }

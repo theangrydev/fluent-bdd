@@ -9,6 +9,8 @@
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev:fluent-bdd)
 
 # fluent-bdd
+
+[![Join the chat at https://gitter.im/fluent-bdd/Lobby](https://badges.gitter.im/fluent-bdd/Lobby.svg)](https://gitter.im/fluent-bdd/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [Example:](https://github.com/theangrydev/fluent-bdd/blob/master/src/test/java/acceptance/ExampleTest.java)
 ```java
 @RunWith(SpecRunner.class)

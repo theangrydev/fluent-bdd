@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/theangrydev/fluent-bdd.svg?branch=master)](https://travis-ci.org/theangrydev/fluent-bdd)
 [![codecov](https://codecov.io/gh/theangrydev/fluent-bdd/branch/master/graph/badge.svg)](https://codecov.io/gh/theangrydev/fluent-bdd)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8027156014f84fa18f413bea6213bea8)](https://www.codacy.com/app/liam-williams/fluent-bdd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/fluent-bdd&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/93ca6effd928494a92b974ca585a9b2a)](https://www.codacy.com/app/liam-williams/fluent-bdd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/fluent-bdd&amp;utm_campaign=Badge_Grade)
 [![codebeat badge](https://codebeat.co/badges/d3718741-f398-41e0-a8d8-d2cb40c8a4d9)](https://codebeat.co/projects/github-com-theangrydev-fluent-bdd)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev:fluent-bdd)
 

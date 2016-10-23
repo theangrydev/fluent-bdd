@@ -18,33 +18,26 @@
 package io.github.theangrydev.fluentbdd.yatspec;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import org.assertj.core.api.WithAssertions;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 
-public class WithFluentYatspecTest implements WithFluentYatspec<WithFluentYatspecTest.TestResult>, WithAssertions {
+public class WithFluentYatspecTest implements WithFluentYatspec, WithAssertions {
 
     @Rule
     public MockitoRule mockito = MockitoJUnit.rule();
 
     @Mock
-    private FluentYatspec<TestResult> fluentYatspec;
+    private FluentYatspec fluentYatspec;
 
     @Override
-    public FluentYatspec<TestResult> fluentBdd() {
+    public FluentYatspec fluentYatspec() {
         return fluentYatspec;
-    }
-
-    @Test
-    public void extendsWithFluentBdd() {
-        assertThat(this).isInstanceOf(WithFluentBdd.class);
     }
 
     @Test
@@ -53,9 +46,5 @@ public class WithFluentYatspecTest implements WithFluentYatspec<WithFluentYatspe
         Mockito.when(fluentYatspec.testState()).thenReturn(testState);
 
         assertThat(testState()).isSameAs(testState);
-    }
-
-    class TestResult {
-
     }
 }

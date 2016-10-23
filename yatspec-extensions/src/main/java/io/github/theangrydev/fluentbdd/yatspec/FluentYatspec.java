@@ -18,15 +18,11 @@
 package io.github.theangrydev.fluentbdd.yatspec;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import io.github.theangrydev.fluentbdd.core.FluentBdd;
-import io.github.theangrydev.fluentbdd.core.When;
 
 /**
- * Use this as the base class for your acceptance tests.
- *
- * @param <TestResult> The type of test result produced by the {@link When}
+ * Use this class as a field of your tests alongside {@link WithFluentYatspec}.
  */
-public class FluentYatspec<TestResult> extends FluentBdd<TestResult> implements FluentYatspecCommands {
+public class FluentYatspec implements FluentYatspecCommands {
 
     private final TestState state = new TestState();
 

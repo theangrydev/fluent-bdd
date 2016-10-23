@@ -17,18 +17,12 @@
  */
 package io.github.theangrydev.fluentbdd.yatspec;
 
-import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 public class FluentYatspecTest implements WithAssertions {
 
-    private final FluentYatspec<TestResult> fluentYatspec = new FluentYatspec<>();
-
-    @Test
-    public void extendFluentBdd() {
-        assertThat(fluentYatspec).isInstanceOf(FluentBdd.class);
-    }
+    private final FluentYatspec fluentYatspec = new FluentYatspec();
 
     @Test
     public void implementsFluentYatspecCommands() {

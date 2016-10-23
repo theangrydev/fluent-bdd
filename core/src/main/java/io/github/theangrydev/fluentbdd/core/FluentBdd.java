@@ -22,7 +22,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 /**
- * Use this as the base class for your acceptance tests.
+ * Use this as a JUnit {@link Rule} alongside {@link WithFluentBdd}.
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
@@ -31,9 +31,6 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
     private final Verification<TestResult> verification = new Verification<>();
 
     private TestResult testResult;
-
-    @Rule
-    public final TestWatcher testWatcher = this;
 
     @Override
     protected void succeeded(Description description) {

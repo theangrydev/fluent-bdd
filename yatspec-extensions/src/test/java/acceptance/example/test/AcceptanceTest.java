@@ -25,7 +25,8 @@ import com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramMessage;
 import com.googlecode.yatspec.plugin.sequencediagram.SvgWrapper;
 import com.googlecode.yatspec.rendering.html.DontHighlightRenderer;
 import com.googlecode.yatspec.rendering.html.HtmlResultRenderer;
-import com.googlecode.yatspec.state.givenwhenthen.TestState;
+import io.github.theangrydev.fluentbdd.core.FluentBdd;
+import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import io.github.theangrydev.fluentbdd.yatspec.FluentYatspec;
 import io.github.theangrydev.fluentbdd.yatspec.WithFluentYatspec;
 import org.assertj.core.api.WithAssertions;
@@ -38,22 +39,22 @@ import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
 
-public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithFluentYatspec<Response> {
+public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithFluentBdd<Response>, WithFluentYatspec {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 
-    private final TestState testState = new TestState();
-
     @Rule
-    public final FluentYatspec<Response> fluentYatspec = new FluentYatspec<>();
+    public final FluentBdd<Response> fluentBdd = new FluentBdd<>();
+
+    private final FluentYatspec fluentYatspec = new FluentYatspec();
 
     @Override
-    public TestState testState() {
-        return testState;
+    public FluentBdd<Response> fluentBdd() {
+        return fluentBdd;
     }
 
     @Override
-    public FluentYatspec<Response> fluentBdd() {
+    public FluentYatspec fluentYatspec() {
         return fluentYatspec;
     }
 

@@ -316,11 +316,6 @@ public class FluentBddTest extends FluentBdd<FluentBddTest.TestResult> implement
     }
 
     @Test
-    public void testWatcherIsThis() {
-        assertThat(testWatcher).isSameAs(this);
-    }
-
-    @Test
     public void immutableGivenInstanceCanBeUsedMoreThanOnce() {
         given(immutableDependency);
         and(immutableDependency);

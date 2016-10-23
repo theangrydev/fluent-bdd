@@ -18,28 +18,21 @@
 package io.github.theangrydev.fluentbdd.yatspec;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import io.github.theangrydev.fluentbdd.core.When;
-import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 
 /**
- * If you do not want to extend {@link FluentYatspec} as a base class for your tests, you can alternatively use this.
- * You must implement the {@link #fluentBdd()} method by providing a reference to a {@link FluentYatspec} that is
- * a field of your test, annotated with a JUnit {@link org.junit.Rule}.
- *
- * @param <TestResult> The type of test result produced by the {@link When}
+ * Provides access to the {@link FluentYatspecCommands} via a {@link FluentYatspec} field.
  */
-public interface WithFluentYatspec<TestResult> extends WithFluentBdd<TestResult>, FluentYatspecCommands {
+public interface WithFluentYatspec extends FluentYatspecCommands {
 
     /**
-     * This should be implemented by referring to a {@link FluentYatspec} field that is annotated as a JUnit {@link org.junit.Rule}.
+     * This should be implemented by referring to a {@link FluentYatspec} field;
      *
      * @return The delegate {@link FluentYatspec}.
      */
-    @Override
-    FluentYatspec<TestResult> fluentBdd();
+    FluentYatspec fluentYatspec();
 
     @Override
     default TestState testState() {
-        return fluentBdd().testState();
+        return fluentYatspec().testState();
     }
 }

@@ -21,7 +21,6 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * If you do not want to extend {@link FluentBdd} as a base class for your tests, you can alternatively use this.
  * You must implement the {@link #fluentBdd()} method by providing a reference to a {@link FluentBdd} that is
  * a field of your test, annotated with a JUnit {@link org.junit.Rule}.
  *

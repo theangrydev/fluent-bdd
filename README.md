@@ -1,5 +1,5 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/fluent-bdd/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/fluent-bdd)
-[![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev/fluent-bdd.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev/fluent-bdd)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/fluent-bdd/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev/fluent-bdd)
+[![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev.fluentbdd/fluent-bdd.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev/fluent-bdd)
 [![Gitter](https://badges.gitter.im/fluent-bdd/Lobby.svg)](https://gitter.im/fluent-bdd/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [![Build Status](https://travis-ci.org/theangrydev/fluent-bdd.svg?branch=master)](https://travis-ci.org/theangrydev/fluent-bdd)

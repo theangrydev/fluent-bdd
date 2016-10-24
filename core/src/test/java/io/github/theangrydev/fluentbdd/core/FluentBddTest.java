@@ -201,6 +201,19 @@ public class FluentBddTest extends FluentBdd<FluentBddTest.TestResult> implement
     }
 
     @Test
+    public void theResultIsNotAvailableBeforeWhen() {
+        assertThatThrownBy(this::theResult)
+                .hasMessage("The 'when' has not been executed yet so there is no test result yet!");
+    }
+
+    @Test
+    public void theResultIsAvailableAfterWhen() {
+        given(someDependency);
+        when(testSystem);
+        assertThat(theResult()).isSameAs(testResult);
+    }
+
+    @Test
     public void testResultIsPassedToTheAssertions() {
         given(someDependency);
         when(testSystem);

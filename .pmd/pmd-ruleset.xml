@@ -36,6 +36,7 @@
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
         <exclude name="LawOfDemeter"/><!-- The Law of Demeter is a good thing to keep in mind, but this rule triggers too many false positives with e.g. fluent interfaces -->
+        <exclude name="CallSuperInConstructor"/><!-- This is pointless if all you are going to do is call super() -->
     </rule>
     <rule ref="rulesets/java/design.xml"/>
     <rule ref="rulesets/java/empty.xml"/>

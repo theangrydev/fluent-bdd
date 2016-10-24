@@ -17,9 +17,6 @@
  */
 package io.github.theangrydev.fluentbdd.core;
 
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
 /**
  * You must implement the {@link #fluentBdd()} method by providing a reference to a {@link FluentBdd} that is
  * a field of your test, annotated with a JUnit {@link org.junit.Rule}.

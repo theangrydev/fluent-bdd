@@ -335,15 +335,6 @@
                         <copyright.year>2016</copyright.year>
                         <copyright.project.name>fluent-bdd</copyright.project.name>
                     </properties>
-                    <excludes>
-                        <exclude>README.md</exclude>
-                        <exclude>LICENSE.txt</exclude>
-                        <exclude>.license-header/**</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>.*yml</exclude>
-                        <exclude>sonar-project.properties</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -351,8 +342,19 @@
                         <phase>process-sources</phase>
                         <goals>
                             <goal>format</goal>
+                            <goal>check</goal>
                         </goals>
                         <configuration>
+                            <excludes>
+                                <exclude>NOTICE.txt</exclude>
+                                <exclude>README.md</exclude>
+                                <exclude>LICENSE.txt</exclude>
+                                <exclude>.license-header/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>.*yml</exclude>
+                                <exclude>sonar-project.properties</exclude>
+                            </excludes>
                             <header>${user.dir}/.license-header/license-header.txt</header>
                             <mapping>
                                 <java>SLASHSTAR_STYLE</java>
@@ -364,6 +366,7 @@
                         <phase>process-sources</phase>
                         <goals>
                             <goal>format</goal>
+                            <goal>check</goal>
                         </goals>
                         <configuration>
                             <header>${user.dir}/.license-header/notice-header.txt</header>

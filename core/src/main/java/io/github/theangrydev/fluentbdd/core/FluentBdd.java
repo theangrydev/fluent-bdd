@@ -49,16 +49,13 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
      */
     @Override
     public void given(Given given) {
-        verification.checkGivenIsAllowed(given);
-        given.prime();
         verification.recordGiven(given);
+        given.prime();
     }
 
     @Override
     public <T extends When<TestResult>> void when(T when) {
-        verification.checkWhenIsAllowed();
-        testResult = when.execute();
-        verification.recordWhen(when, testResult);
+        testResult = verification.recordWhen(when);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
 
     @Override
     public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
-        verification.checkThenAssertionIsAllowed(thenAssertion);
+        verification.recordThen(thenAssertion);
         return thenAssertion.then(testResult);
     }
 
@@ -89,8 +86,7 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
 
     @Override
     public void then(ThenVerification<TestResult> thenVerification) {
-        verification.checkThenVerificationIsAllowed(thenVerification);
+        verification.recordThen(thenVerification);
         thenVerification.verify(testResult);
-        verification.recordThenVerification(thenVerification);
     }
 }

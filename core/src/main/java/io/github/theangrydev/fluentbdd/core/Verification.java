@@ -25,7 +25,6 @@ import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isFinal;
 import static java.util.Arrays.stream;
 
-@SuppressWarnings("PMD.TooManyMethods") // Splitting this up further would be too artificial
 class Verification<TestResult> {
 
     private enum Stage {
@@ -36,48 +35,36 @@ class Verification<TestResult> {
 
     private Stage stage = Stage.GIVEN;
 
-    private final List<Given> usedGivens = new ArrayList<>();
-    private final List<ThenVerification<TestResult>> usedThenVerifications = new ArrayList<>();
-    private final List<ThenAssertion<?, TestResult>> usedThenAssertions = new ArrayList<>();
+    private final List<Object> usedInstances = new ArrayList<>();
 
-    public void checkGivenIsAllowed(Given given) {
+    public void recordGiven(Object given) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
         }
-        checkMutableInstanceHasNotAlreadyBeenUsed(given, usedGivens);
-    }
-
-    public void recordGiven(Given given) {
+        checkMutableInstanceHasNotAlreadyBeenUsed(given);
         stage = Stage.GIVEN;
-        usedGivens.add(given);
+        usedInstances.add(given);
     }
 
-    public void checkWhenIsAllowed() {
+    public TestResult recordWhen(When<TestResult> when) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-    }
-
-    public void recordWhen(When<TestResult> when, TestResult testResult) {
+        TestResult testResult = when.execute();
         if (testResult == null) {
             throw new IllegalStateException(format("'%s' test result was null", when));
         }
         stage = Stage.WHEN;
+        return testResult;
     }
 
-    public void checkThenVerificationIsAllowed(ThenVerification<TestResult> thenVerification) {
-        checkThenIsAllowed();
-        checkMutableInstanceHasNotAlreadyBeenUsed(thenVerification, usedThenVerifications);
-    }
-
-    public void recordThenVerification(ThenVerification<TestResult> thenVerification) {
-        usedThenVerifications.add(thenVerification);
-    }
-
-    public <Then> void checkThenAssertionIsAllowed(ThenAssertion<Then, TestResult> thenAssertion) {
-        checkThenIsAllowed();
-        checkMutableInstanceHasNotAlreadyBeenUsed(thenAssertion, usedThenAssertions);
-        usedThenAssertions.add(thenAssertion);
+    public void recordThen(Object then) {
+        if (stage.compareTo(Stage.WHEN) < 0) {
+            throw new IllegalStateException("The 'then' steps should be after the 'when'");
+        }
+        stage = Stage.THEN;
+        checkMutableInstanceHasNotAlreadyBeenUsed(then);
+        usedInstances.add(then);
     }
 
     public void checkThenHasBeenUsed() {
@@ -86,20 +73,13 @@ class Verification<TestResult> {
         }
     }
 
-    private void checkThenIsAllowed() {
-        if (stage.compareTo(Stage.WHEN) < 0) {
-            throw new IllegalStateException("The 'then' steps should be after the 'when'");
-        }
-        stage = Stage.THEN;
-    }
-
     private boolean appearsToBeMutable(Class<?> aClass) {
         return stream(aClass.getDeclaredFields())
                 .mapToInt(Field::getModifiers)
                 .anyMatch(modifiers -> !isFinal(modifiers));
     }
 
-    private <T> void checkMutableInstanceHasNotAlreadyBeenUsed(T instance, List<T> usedInstances) {
+    private void checkMutableInstanceHasNotAlreadyBeenUsed(Object instance) {
         if (appearsToBeMutable(instance.getClass()) && usedInstances.contains(instance)) {
             throw new IllegalStateException(format("This '%s' instance has been used once already. To avoid accidentally sharing state, use a new instance.", instance.getClass().getSimpleName()));
         }

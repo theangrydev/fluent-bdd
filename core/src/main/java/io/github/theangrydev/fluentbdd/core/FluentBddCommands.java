@@ -27,8 +27,6 @@ import org.junit.rules.TestRule;
 @SuppressWarnings("PMD.TooManyMethods") // This is by design
 public interface FluentBddCommands<TestResult> extends TestRule {
 
-    TestResult theResult();
-
     /**
      * Prime the given immediately.
      *

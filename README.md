@@ -50,16 +50,26 @@ Dependencies:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>core</artifactId>
-	<version>6.0.0</version>
+	<version>7.0.0</version>
+</dependency>
+<dependency>
+	<groupId>io.github.theangrydev.fluentbdd</groupId>
+	<artifactId>mockito-extensions</artifactId>
+	<version>7.0.0</version>
 </dependency>
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>yatspec-extensions</artifactId>
-	<version>6.0.0</version>
+	<version>7.0.0</version>
 </dependency>
 ```
 
 ## Releases
+### 7.0.0
+* Removed the concept of having a base class, instead encouraging using fields that are exposed via the `With*` interfaces
+* New module: `mockito-extensions` that integrates with [Mockito](http://site.mockito.org/)
+* New JUnit `@Rule` `FluentMockito` to use in conjunction with `FluentBdd`, along with `WithFluentMockito`
+  
 ### 6.0.0
 * [#8](https://github.com/theangrydev/fluent-bdd/issues/8) **Renamed the library to fluent-bdd**. This is a breaking change
 * The `groupId` is now `io.github.theangrydev.fluentbdd` and the `artifactId` is `core` and `yatspec-extensions`

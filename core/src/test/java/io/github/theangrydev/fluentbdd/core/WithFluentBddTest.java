@@ -22,6 +22,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
@@ -52,7 +54,7 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
     public void andGivenDelegates() {
         and(given);
 
-        Mockito.verify(fluentBdd).and(given);
+        Mockito.verify(fluentBdd).given(given);
     }
 
     @Test
@@ -66,14 +68,18 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
     public void givenWhenDelegates() {
         given(when);
 
-        Mockito.verify(fluentBdd).given(when);
+        Mockito.verify(fluentBdd).given(givenArgumentCaptor.capture());
+        givenArgumentCaptor.getValue().prime();
+        Mockito.verify(when).execute();
     }
 
     @Test
     public void andWhenDelegates() {
         and(when);
 
-        Mockito.verify(fluentBdd).and(when);
+        Mockito.verify(fluentBdd).given(givenArgumentCaptor.capture());
+        givenArgumentCaptor.getValue().prime();
+        Mockito.verify(when).execute();
     }
 
     @Test
@@ -85,7 +91,7 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
 
     @Test
     public void andThenAssertionDelegates() {
-        Mockito.when(fluentBdd.and(thenAssertion)).thenReturn(then);
+        Mockito.when(fluentBdd.then(thenAssertion)).thenReturn(then);
 
         assertThat(and(thenAssertion)).isEqualTo(then);
     }
@@ -101,7 +107,7 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
     public void andThenVerificationDelegates() {
         and(thenVerification);
 
-        Mockito.verify(fluentBdd).and(thenVerification);
+        Mockito.verify(fluentBdd).then(thenVerification);
     }
 
     @Mock
@@ -130,6 +136,9 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
 
     @Mock
     private Then then;
+
+    @Captor
+    private ArgumentCaptor<Given> givenArgumentCaptor;
 
     @Rule
     public MockitoRule mockito = MockitoJUnit.rule();

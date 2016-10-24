@@ -37,11 +37,6 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
         verification.checkThenHasBeenUsed();
     }
 
-    @Override
-    public void and(Given given) {
-        given(given);
-    }
-
     /**
      * Prime the given immediately.
      *
@@ -59,29 +54,9 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
     }
 
     @Override
-    public void given(When<TestResult> when) {
-        given((Given) when::execute);
-    }
-
-    @Override
-    public void and(When<TestResult> when) {
-        given(when);
-    }
-
-    @Override
     public <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
         verification.recordThen(thenAssertion);
         return thenAssertion.then(testResult);
-    }
-
-    @Override
-    public <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
-        return then(thenAssertion);
-    }
-
-    @Override
-    public void and(ThenVerification<TestResult> thenVerification) {
-        then(thenVerification);
     }
 
     @Override

@@ -26,7 +26,6 @@ import org.junit.runners.model.Statement;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
-@SuppressWarnings("PMD.TooManyMethods") // This is part of the API design
 public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult> {
 
     /**
@@ -47,38 +46,13 @@ public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult>
     }
 
     @Override
-    default void and(Given given) {
-        fluentBdd().and(given);
-    }
-
-    @Override
     default <T extends When<TestResult>> void when(T when) {
         fluentBdd().when(when);
     }
 
     @Override
-    default void given(When<TestResult> when) {
-        fluentBdd().given(when);
-    }
-
-    @Override
-    default void and(When<TestResult> when) {
-        fluentBdd().and(when);
-    }
-
-    @Override
     default <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion) {
         return fluentBdd().then(thenAssertion);
-    }
-
-    @Override
-    default <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
-        return fluentBdd().and(thenAssertion);
-    }
-
-    @Override
-    default void and(ThenVerification<TestResult> thenVerification) {
-        fluentBdd().and(thenVerification);
     }
 
     @Override

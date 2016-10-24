@@ -40,7 +40,9 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      *
      * @param given The first given in the acceptance test, which should be built up inside the brackets
      */
-    void and(Given given);
+    default void and(Given given) {
+        given(given);
+    }
 
     /**
      * Invoke the system under test and store the {@link TestResult} ready for the assertions.
@@ -56,7 +58,9 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    void given(When<TestResult> when);
+    default void given(When<TestResult> when) {
+        given((Given) when::execute);
+    }
 
     /**
      * Same as {@link #given(When)}.
@@ -66,7 +70,9 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      *
      * @param when The 'when' to adapt to a 'given'
      */
-    void and(When<TestResult> when);
+    default void and(When<TestResult> when) {
+        given(when);
+    }
 
     /**
      * Perform an assertion. Assertions should be chained outside the brackets.
@@ -86,7 +92,16 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      * @param <Then>      The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
-    <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion);
+    default  <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {
+        return then(thenAssertion);
+    }
+
+    /**
+     * Perform a verification, which should be built up inside the brackets.
+     *
+     * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
+     */
+    void then(ThenVerification<TestResult> thenVerification);
 
     /**
      * Same as {@link #then(ThenVerification)}.
@@ -95,12 +110,7 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      *
      * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
      */
-    void and(ThenVerification<TestResult> thenVerification);
-
-    /**
-     * Perform a verification, which should be built up inside the brackets.
-     *
-     * @param thenVerification A {@link ThenVerification}, which should be built up inside the brackets
-     */
-    void then(ThenVerification<TestResult> thenVerification);
+    default void and(ThenVerification<TestResult> thenVerification) {
+        then(thenVerification);
+    }
 }

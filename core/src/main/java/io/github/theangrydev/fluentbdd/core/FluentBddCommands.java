@@ -24,6 +24,7 @@ import org.junit.rules.TestRule;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
+@SuppressWarnings("PMD.TooManyMethods") // This is by design
 public interface FluentBddCommands<TestResult> extends TestRule {
 
     /**
@@ -53,6 +54,28 @@ public interface FluentBddCommands<TestResult> extends TestRule {
     <T extends When<TestResult>> void when(T when);
 
     /**
+     * Invoke the system under test. The {@link TestResult} is assumed to have been passed in already in the
+     * {@link FluentBdd} constructor, which is useful to use the test class instance as the {@link TestResult}.
+     * <p>
+     * That way, many {@link org.junit.Test} methods can have different results and store them in the test class.
+     *
+     * @param whenWithoutResult The system under test, which should be built up inside the brackets
+     */
+    default void whenCalling(WhenWithoutResult whenWithoutResult) {
+        when(() -> {
+            whenWithoutResult.execute();
+            return theResult();
+        });
+    }
+
+    /**
+     * Fetch the result, if it has been computed yet.
+     *
+     * @return The {@link TestResult}.
+     */
+    TestResult theResult();
+
+    /**
      * Adapt the 'when' to a 'given'. This is a common pattern when e.g. calling an endpoint that changes some state in the database.
      * This is the equivalent of {@link #given(Given)}.
      *
@@ -78,7 +101,7 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      * Perform an assertion. Assertions should be chained outside the brackets.
      *
      * @param thenAssertion A {@link ThenAssertion} that will produce a {@link Then} given the stored {@link TestResult}
-     * @param <Then>      The type of fluent assertions that will be performed
+     * @param <Then>        The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
     <Then> Then then(ThenAssertion<Then, TestResult> thenAssertion);
@@ -89,7 +112,7 @@ public interface FluentBddCommands<TestResult> extends TestRule {
      * Perform an assertion. Assertions should be chained outside the brackets.
      *
      * @param thenAssertion A {@link ThenAssertion} that will produce a {@link Then} given the stored {@link TestResult}
-     * @param <Then>      The type of fluent assertions that will be performed
+     * @param <Then>        The type of fluent assertions that will be performed
      * @return The fluent assertions instance
      */
     default  <Then> Then and(ThenAssertion<Then, TestResult> thenAssertion) {

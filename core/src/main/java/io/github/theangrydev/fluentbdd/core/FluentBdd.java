@@ -28,9 +28,27 @@ import org.junit.runner.Description;
  */
 public class FluentBdd<TestResult> extends TestWatcher implements FluentBddCommands<TestResult> {
 
-    private final Verification<TestResult> verification = new Verification<>();
+    public final Verification<TestResult> verification = new Verification<>();
 
     private TestResult testResult;
+
+    /**
+     * Constructs a {@link FluentBdd} without an initial {@link TestResult}.
+     */
+    public FluentBdd() {
+        this(null);
+    }
+
+    /**
+     * Constructs a {@link FluentBdd} with an initial {@link TestResult}.
+     * This is useful when used in conjunction with {@link #whenCalling(WhenWithoutResult)}, for example when the
+     * {@link TestResult} type is the test class and the {@link WhenWithoutResult} sets a field in the test.
+     *
+     * @param testResult The initial {@link TestResult}.
+     */
+    public FluentBdd(TestResult testResult) {
+        this.testResult = testResult;
+    }
 
     @Override
     protected void succeeded(Description description) {
@@ -51,6 +69,14 @@ public class FluentBdd<TestResult> extends TestWatcher implements FluentBddComma
     @Override
     public <T extends When<TestResult>> void when(T when) {
         testResult = verification.recordWhen(when);
+    }
+
+    @Override
+    public TestResult theResult() {
+        if (testResult == null) {
+            throw new IllegalStateException("The 'when' has not been executed yet so there is no test result yet!");
+        }
+        return testResult;
     }
 
     @Override

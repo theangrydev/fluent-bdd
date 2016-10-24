@@ -37,6 +37,14 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
     }
 
     @Test
+    public void theResultDelegates() {
+        TestResult testResult = new TestResult();
+        Mockito.when(fluentBdd.theResult()).thenReturn(testResult);
+
+        assertThat(theResult()).isEqualTo(testResult);
+    }
+
+    @Test
     public void applyDelegates() {
         Mockito.when(fluentBdd.apply(base, description)).thenReturn(statement);
 

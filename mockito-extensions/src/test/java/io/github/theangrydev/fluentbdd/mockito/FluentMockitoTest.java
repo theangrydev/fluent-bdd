@@ -23,9 +23,11 @@ import io.github.theangrydev.fluentbdd.core.WhenWithoutResult;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.exceptions.verification.VerificationInOrderFailure;
 
 import static org.mockito.Mockito.mock;
 
+//TODO: rewrite these tests, they are crap and just for coverage at the moment
 public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, WithAssertions {
 
     @Rule
@@ -35,7 +37,8 @@ public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, 
     public final FluentMockito<FluentMockitoTest> fluentMockito = new FluentMockito<>(fluentBdd);
 
     private Dependency dependency = mock(Dependency.class);
-    private StupidCode stupidCode = new StupidCode(dependency);
+    private AnotherDependency anotherDependency = mock(AnotherDependency.class);
+    private StupidCode stupidCode = new StupidCode(dependency, anotherDependency);
     private int thing;
 
     @Override
@@ -49,12 +52,33 @@ public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, 
     }
 
     @Test
+    public void givenAfterWhen() {
+        assertThatThrownBy(() -> {
+            whenCalling(this::voidThing);
+            given(dependency).willReturn(10).when().someMethod("thing");
+        }).hasMessage("The 'given' steps must be specified before the 'when' and 'then' steps");
+
+        // TODO: look at FluentBddTest and see if there is something common that can be extracted around making the test green when in a bad state
+        // Just to make the other validation steps pass
+        thenVerify(dependency).someMethod("thing");
+    }
+
+    @Test(expected = VerificationInOrderFailure.class)
+    public void inOrderFailure() {
+        whenCalling(this::voidThing);
+        thenVerify(dependency).someMethod("thing");
+        andVerify(dependency).anotherMethod("bing");
+        andVerify(anotherDependency).boringMethod();
+    }
+
+    @Test
     public void givenVoidMock() {
         given(dependency).willReturn(10).when().someMethod("thing");
         and(dependency).willReturn(10).when().anotherMethod("bing");
         and(dependency).willDoNothing().when().voidMethod("bing");
         whenCalling(this::voidThing);
         thenVerify(dependency).someMethod("thing");
+        andVerify(anotherDependency).boringMethod();
         andVerify(dependency).anotherMethod("bing");
     }
 

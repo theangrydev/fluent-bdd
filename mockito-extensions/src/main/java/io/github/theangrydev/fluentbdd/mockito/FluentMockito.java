@@ -24,6 +24,7 @@ import org.junit.runners.model.Statement;
 import org.mockito.BDDMockito;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
+import org.mockito.MockitoFramework;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.listeners.MockCreationListener;
@@ -33,19 +34,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 //TODO: document
-public class FluentMockito<TestResult> implements MethodRule, FluentMockitoCommands<TestResult>, MockCreationListener  {
+public class FluentMockito<TestResult> implements MethodRule, FluentMockitoCommands<TestResult>, MockCreationListener {
 
-    private final MockitoRule mockitoRule = MockitoJUnit.rule();
+    private final MockitoFramework mockitoFramework;
+    private final MockitoRule mockitoRule;
+
+    private final FluentBdd<TestResult> fluentBdd;
 
     private final Set<Object> mocks = new HashSet<>();
-    private final FluentBdd<TestResult> fluentBdd;
 
     private InOrder inOrder;
 
     public FluentMockito(FluentBdd<TestResult> fluentBdd) {
-        this.fluentBdd = fluentBdd;
+        this(Mockito.framework(), MockitoJUnit.rule(), fluentBdd);
+    }
 
-        Mockito.framework().addListener(this);
+    // Only visible for testing to inject MockitoFramework and MockitoRule
+    FluentMockito(MockitoFramework mockitoFramework, MockitoRule mockitoRule, FluentBdd<TestResult> fluentBdd) {
+        this.mockitoRule = mockitoRule;
+        this.fluentBdd = fluentBdd;
+        this.mockitoFramework = mockitoFramework;
+        mockitoFramework.addListener(this);
     }
 
     //TODO: look into ThreadSafeMockingProgress to see if that can improve this API?
@@ -81,7 +90,7 @@ public class FluentMockito<TestResult> implements MethodRule, FluentMockitoComma
         try {
             return mockitoRule.apply(base, method, target);
         } finally {
-            Mockito.framework().removeListener(this);
+            mockitoFramework.removeListener(this);
         }
     }
 

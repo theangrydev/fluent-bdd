@@ -20,13 +20,16 @@ package io.github.theangrydev.fluentbdd.mockito;
 public class StupidCode {
 
     private final Dependency dependency;
+    private final AnotherDependency anotherDependency;
 
-    public StupidCode(Dependency dependency) {
+    public StupidCode(Dependency dependency, AnotherDependency anotherDependency) {
         this.dependency = dependency;
+        this.anotherDependency = anotherDependency;
     }
 
     public void voidThingToTest() {
         dependency.someMethod("thing");
+        anotherDependency.boringMethod();
         dependency.anotherMethod("bing");
     }
 

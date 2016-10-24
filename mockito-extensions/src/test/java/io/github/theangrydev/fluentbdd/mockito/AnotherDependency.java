@@ -17,17 +17,6 @@
  */
 package io.github.theangrydev.fluentbdd.mockito;
 
-//TODO: document
-public interface WithFluentMockito<TestResult> extends FluentMockitoCommands<TestResult> {
-    FluentMockito<TestResult> fluentMockito();
-
-    @Override
-    default <Mock> FluentMockitoGiven<Mock> given(Mock mock) {
-        return fluentMockito().given(mock);
-    }
-
-    @Override
-    default <Mock> Mock thenVerify(Mock mock) {
-        return fluentMockito().thenVerify(mock);
-    }
+interface AnotherDependency {
+    void boringMethod();
 }

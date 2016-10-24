@@ -41,11 +41,6 @@ public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult>
     }
 
     @Override
-    default Statement apply(Statement base, Description description) {
-        return fluentBdd().apply(base, description);
-    }
-
-    @Override
     default void given(Given given) {
         fluentBdd().given(given);
     }

@@ -18,13 +18,24 @@
 package io.github.theangrydev.fluentbdd.mockito;
 
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
+import org.junit.rules.MethodRule;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 import org.mockito.BDDMockito;
 import org.mockito.InOrder;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.listeners.MockCreationListener;
+import org.mockito.mock.MockCreationSettings;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class FluentMockito<TestResult> implements FluentMockitoCommands<TestResult> {
+//TODO: document
+public class FluentMockito<TestResult> implements MethodRule, FluentMockitoCommands<TestResult>, MockCreationListener  {
+
+    private final MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private final Set<Object> mocks = new HashSet<>();
     private final FluentBdd<TestResult> fluentBdd;
@@ -33,13 +44,17 @@ public class FluentMockito<TestResult> implements FluentMockitoCommands<TestResu
 
     public FluentMockito(FluentBdd<TestResult> fluentBdd) {
         this.fluentBdd = fluentBdd;
+
+        Mockito.framework().addListener(this);
     }
 
+    //TODO: look into ThreadSafeMockingProgress to see if that can improve this API?
     //TODO: talk to the verification here to make sure the FluentMockitoGiven is not reused
     @Override
     public <Mock> FluentMockitoGiven<Mock> given(Mock mock) {
-        mocks.add(mock);
-        return new FluentMockitoGiven<>(mock);
+        FluentMockitoGiven<Mock> given = new FluentMockitoGiven<>(mock);
+        fluentBdd.verification.recordGiven(given);
+        return given;
     }
 
     @Override
@@ -59,5 +74,19 @@ public class FluentMockito<TestResult> implements FluentMockitoCommands<TestResu
     @Override
     public FluentBdd<TestResult> fluentBdd() {
         return fluentBdd;
+    }
+
+    @Override
+    public Statement apply(Statement base, FrameworkMethod method, Object target) {
+        try {
+            return mockitoRule.apply(base, method, target);
+        } finally {
+            Mockito.framework().removeListener(this);
+        }
+    }
+
+    @Override
+    public void onMockCreated(Object mock, MockCreationSettings settings) {
+        mocks.add(mock);
     }
 }

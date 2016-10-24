@@ -19,20 +19,20 @@ package io.github.theangrydev.fluentbdd.mockito;
 
 import org.mockito.BDDMockito;
 
+//TODO: document
 public class FluentMockitoGiven<Mock> {
     private final Mock mock;
-    private Object result;
 
-    public FluentMockitoGiven(Mock mock) {
+    FluentMockitoGiven(Mock mock) {
         this.mock = mock;
     }
 
-    public FluentMockitoGiven<Mock> willReturn(Object result) {
-        this.result = result;
-        return this;
+    //TODO: will do nothing will throw etc use BDDStubber at this point
+    public FluentMockitoGivenCommand<Mock> willReturn(Object result) {
+        return new FluentMockitoGivenCommand<>(mock, BDDMockito.willReturn(result));
     }
 
-    public Mock when() {
-        return BDDMockito.willReturn(result).given(mock);
+    public FluentMockitoGivenCommand<Mock> willDoNothing() {
+        return new FluentMockitoGivenCommand<>(mock, BDDMockito.willDoNothing());
     }
 }

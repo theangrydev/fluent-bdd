@@ -19,18 +19,20 @@ package io.github.theangrydev.fluentbdd.mockito;
 
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import io.github.theangrydev.fluentbdd.core.ThenVerification;
-import io.github.theangrydev.fluentbdd.core.When;
+import io.github.theangrydev.fluentbdd.core.WhenWithoutResult;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
-import org.assertj.core.api.WithAssertions;
 
 public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, WithAssertions {
 
     @Rule
-    public final FluentBdd<FluentMockitoTest> fluentBdd = new FluentBdd<>();
-    private final FluentMockito<FluentMockitoTest> fluentMockito = new FluentMockito<>(fluentBdd);
+    public final FluentBdd<FluentMockitoTest> fluentBdd = new FluentBdd<>(this);
+
+    @Rule
+    public final FluentMockito<FluentMockitoTest> fluentMockito = new FluentMockito<>(fluentBdd);
 
     private Dependency dependency = mock(Dependency.class);
     private StupidCode stupidCode = new StupidCode(dependency);
@@ -46,42 +48,46 @@ public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, 
         return fluentBdd;
     }
 
-    //TODO: what about void whens? what about multiple tests with different results, e.g. verification state plus a method return value??
     @Test
     public void givenVoidMock() {
         given(dependency).willReturn(10).when().someMethod("thing");
         and(dependency).willReturn(10).when().anotherMethod("bing");
-        when(voidThingIsCalled());
+        and(dependency).willDoNothing().when().voidMethod("bing");
+        whenCalling(this::voidThing);
         thenVerify(dependency).someMethod("thing");
-        andThenVerify(dependency).anotherMethod("bing");
+        andVerify(dependency).anotherMethod("bing");
     }
 
     @Test
     public void givenMock() {
         given(dependency).willReturn(10).when().someMethod("thing");
         and(dependency).willReturn(10).when().anotherMethod("bing");
-        when(notVoidThingToTest());
+        whenCalling(theStupidCode().withBar());
         thenVerify(dependency).someMethod("thing");
-        andThenVerify(dependency).anotherMethod("bing");
+        andVerify(dependency).anotherMethod("bing");
         and(someAssertion());
+    }
+
+    private MyWhenWithoutResult theStupidCode() {
+        return new MyWhenWithoutResult();
     }
 
     private ThenVerification<FluentMockitoTest> someAssertion() {
         return fluentMockitoTest -> assertThat(thing).isLessThan(100);
     }
 
-    private When<FluentMockitoTest> voidThingIsCalled() {
-        return () -> {
-            stupidCode.voidThingToTest();
-            return FluentMockitoTest.this;
-        };
+    private void voidThing() {
+        stupidCode.voidThingToTest();
     }
 
-    private When<FluentMockitoTest> notVoidThingToTest() {
-        return () -> {
-            FluentMockitoTest.this.thing = stupidCode.thingToTest();
-            return FluentMockitoTest.this;
-        };
-    }
+    private class MyWhenWithoutResult implements WhenWithoutResult {
+        @Override
+        public void execute() {
+            thing = stupidCode.thingToTest();
+        }
 
+        public MyWhenWithoutResult withBar() {
+            return this;
+        }
+    }
 }

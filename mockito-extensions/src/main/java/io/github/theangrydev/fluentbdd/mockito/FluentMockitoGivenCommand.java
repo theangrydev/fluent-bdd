@@ -17,8 +17,20 @@
  */
 package io.github.theangrydev.fluentbdd.mockito;
 
-interface Dependency {
-    int someMethod(String argument);
-    int anotherMethod(String argument);
-    void voidMethod(String argument);
+import org.mockito.BDDMockito;
+
+//TODO: document
+public class FluentMockitoGivenCommand<Mock> {
+
+    private final Mock mock;
+    private final BDDMockito.BDDStubber stubber;
+
+    FluentMockitoGivenCommand(Mock mock, BDDMockito.BDDStubber stubber) {
+        this.mock = mock;
+        this.stubber = stubber;
+    }
+
+    public Mock when() {
+        return stubber.given(mock);
+    }
 }

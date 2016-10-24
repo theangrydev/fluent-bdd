@@ -25,7 +25,7 @@ import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isFinal;
 import static java.util.Arrays.stream;
 
-class Verification<TestResult> {
+public class Verification<TestResult> {
 
     private enum Stage {
         GIVEN,

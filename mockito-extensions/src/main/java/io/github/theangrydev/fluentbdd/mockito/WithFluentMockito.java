@@ -17,8 +17,16 @@
  */
 package io.github.theangrydev.fluentbdd.mockito;
 
-public interface WithFluentMockito<TestClass> extends FluentMockitoCommands<TestClass> {
-    FluentMockito<TestClass> fluentMockito();
+import io.github.theangrydev.fluentbdd.core.WhenWithoutResult;
+
+//TODO: document
+public interface WithFluentMockito<TestResult> extends FluentMockitoCommands<TestResult> {
+    FluentMockito<TestResult> fluentMockito();
+
+    @Override
+    default void whenCalling(WhenWithoutResult whenWithoutResult) {
+        fluentMockito().whenCalling(whenWithoutResult);
+    }
 
     @Override
     default <Mock> FluentMockitoGiven<Mock> given(Mock mock) {

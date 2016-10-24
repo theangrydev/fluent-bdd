@@ -17,15 +17,13 @@
  */
 package io.github.theangrydev.fluentbdd.core;
 
-import org.junit.rules.TestRule;
-
 /**
  * These are the BDD methods that are used to write tests.
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
 @SuppressWarnings("PMD.TooManyMethods") // This is by design
-public interface FluentBddCommands<TestResult> extends TestRule {
+public interface FluentBddCommands<TestResult> {
 
     /**
      * Prime the given immediately.

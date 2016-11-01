@@ -45,26 +45,20 @@ public class ExampleTest extends AcceptanceTest<TestResult> {
 }
 ```
 
-Dependencies:
+Dependency:
 ```xml
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
-	<artifactId>core</artifactId>
-	<version>7.0.0</version>
-</dependency>
-<dependency>
-	<groupId>io.github.theangrydev.fluentbdd</groupId>
-	<artifactId>mockito-extensions</artifactId>
-	<version>7.0.0</version>
-</dependency>
-<dependency>
-	<groupId>io.github.theangrydev.fluentbdd</groupId>
-	<artifactId>yatspec-extensions</artifactId>
-	<version>7.0.0</version>
+	<artifactId>all</artifactId>
+	<version>7.1.0</version>
 </dependency>
 ```
+You can also depend on the modules `core`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
+### 7.1.0
+* Added an `all` convenience dependency that pulls in all the other modules
+
 ### 7.0.0
 * Removed the concept of having a base class, instead encouraging using fields that are exposed via the `With*` interfaces
 * New module: `mockito-extensions` that integrates with [Mockito](http://site.mockito.org/)

@@ -10,7 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="core" />
+    <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:core:7.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-core:2.2.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.bytebuddy:byte-buddy:1.4.33" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.bytebuddy:byte-buddy-agent:1.4.33" level="project" />

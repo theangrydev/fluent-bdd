@@ -45,5 +45,10 @@
             <artifactId>yatspec-extensions</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.theangrydev.fluentbdd</groupId>
+            <artifactId>assertj-extensions</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

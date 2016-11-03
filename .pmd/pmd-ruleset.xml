@@ -33,6 +33,9 @@
     <rule ref="rulesets/java/controversial.xml">
         <exclude name="AtLeastOneConstructor"/><!-- This is pointless if an object does not need to set up anything -->
         <exclude name="CallSuperInConstructor"/><!-- This is pointless if all you are going to do is call super() -->
+        <exclude name="OnlyOneReturn"/><!-- Multiple returns can prevent arrow code -->
+        <exclude name="DataflowAnomalyAnalysis"/><!-- Too many false positives -->
+        <exclude name="AvoidLiteralsInIfCondition"/><!-- Sometimes this is useful (e.g. checking list size is 1) -->
     </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->

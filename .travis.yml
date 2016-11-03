@@ -9,7 +9,7 @@ addons:
 cache:
   directories:
     - $HOME/.m2
-install: mvn install -DskipTests=true -B -V
+install: mvn install -DskipTests=true -B -V -X -e
 script: mvn verify -X -e
 after_success:
   - bash <(curl -s https://codecov.io/bash)

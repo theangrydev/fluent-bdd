@@ -79,7 +79,7 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
     private static final String SUPPRESS_WARNINGS_UNCHECKED = "@SuppressWarnings(\"unchecked\")";
 
     /**
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      * @readonly
      */

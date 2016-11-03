@@ -14,7 +14,6 @@
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:core:7.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:mockito-extensions:7.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:yatspec-extensions:7.1.1-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="assertj-extensions" />
     <orderEntry type="module" module-name="core" />
     <orderEntry type="module" module-name="mockito-extensions" />
     <orderEntry type="module" module-name="yatspec-extensions" />

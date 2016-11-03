@@ -232,7 +232,7 @@
                 <inherited>true</inherited>
                 <configuration>
                     <skip>${skipTests}</skip>
-                    <threads>1</threads>
+                    <threads>5</threads>
                     <maxSurviving>1</maxSurviving>
                     <withHistory>false</withHistory>
                     <timestampedReports>false</timestampedReports>

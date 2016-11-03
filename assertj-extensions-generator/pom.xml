@@ -73,6 +73,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
                 <configuration>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
@@ -81,6 +82,7 @@
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <version>${duplicate.finder.plugin.version}</version>
                 <configuration>
                     <ignoredResourcePatterns>
                         <ignoredResourcePattern>about.html</ignoredResourcePattern><!-- Some org.eclipse.aether artifacts all have different copies of this file -->

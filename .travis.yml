@@ -10,7 +10,7 @@ cache:
   directories:
     - $HOME/.m2
 install: mvn install -DskipTests=true -B -V
-script: mvn verify
+script: mvn verify -X -e
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN; fi

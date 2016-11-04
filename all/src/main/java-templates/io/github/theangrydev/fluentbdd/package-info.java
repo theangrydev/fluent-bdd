@@ -17,8 +17,8 @@
  */
 /**
  * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/core/${project.version}/core-${project.version}-javadoc.jar/!/index.html">core</a>
- * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/assertj-extensions/${project.version}/assertj-extensions-${project.version}-javadoc.jar/!/index.html">core</a>
- * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/mockito-extensions/${project.version}/mockito-extensions-${project.version}-javadoc.jar/!/index.html">core</a>
- * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/yatspec-extensions/${project.version}/yatspec-extensions-${project.version}-javadoc.jar/!/index.html">core</a>
+ * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/assertj-extensions/${project.version}/assertj-extensions-${project.version}-javadoc.jar/!/index.html">assertj-extensions</a>
+ * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/mockito-extensions/${project.version}/mockito-extensions-${project.version}-javadoc.jar/!/index.html">mockito-extensions</a>
+ * @see <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/io/github/theangrydev/fluentbdd/yatspec-extensions/${project.version}/yatspec-extensions-${project.version}-javadoc.jar/!/index.html">yatspec-extensions</a>
  */
 package io.github.theangrydev.fluentbdd;

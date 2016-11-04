@@ -14,8 +14,7 @@
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<TestResult> {
 
-    private final GivenTheWeatherService theWeatherService = new GivenTheWeat
-    herService(this, testInfrastructure);
+    private final GivenTheWeatherService theWeatherService = new GivenTheWeatherService(this, testInfrastructure);
     private final ThenTheAccessLogLinesContaining theAccessLogLines = new ThenTheAccessLogLinesContaining();
     private final ThenAssertion<ThenTheResponse, TestResult> theResponse = ThenTheResponse::new;
     private final ThenAssertion<ThenTheResponseHeaders, TestResult> theResponseHeaders = ThenTheResponseHeaders::new;

@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/core/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/all/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/corehttps://maven-badges.herokuapp.com/maven-central/io.github.theangrydev.fluentbdd/all)
 [![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev.fluentbdd/core.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev.fluentbdd/core)
 [![Gitter](https://badges.gitter.im/fluent-bdd/Lobby.svg)](https://gitter.im/fluent-bdd/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 

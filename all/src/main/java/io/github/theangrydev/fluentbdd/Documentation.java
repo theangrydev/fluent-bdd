@@ -18,7 +18,7 @@
 package io.github.theangrydev.fluentbdd;
 
 /**
- * This class only exists so that a javadoc JAR can be generated with links javadoc of the other modules.
+ * This class only exists so that a javadoc JAR can be generated with links to javadoc of the other modules.
  */
 @SuppressWarnings("unused")
 public class Documentation {}

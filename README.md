@@ -50,13 +50,16 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>all</artifactId>
-	<version>8.0.0</version>
+	<version>8.1.0</version>
 </dependency>
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
 The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
+
+### 8.1.0
+* Added some javadoc to the `all` module with links to javadoc of the other modules.
 
 ### 8.0.0
 * [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This change is not backwards compatible

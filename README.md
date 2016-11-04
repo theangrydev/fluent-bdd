@@ -59,7 +59,7 @@ You can also depend on the modules `core`, `assertj-extensions`, `mockito-extens
 The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
 
 ### 8.0.0
-* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This is a breaking change
+* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This change is not backwards compatible
  
 ### 7.2.2
 * Updated transitive dependency versions
@@ -78,7 +78,7 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 * New JUnit `@Rule` `FluentMockito` to use in conjunction with `FluentBdd`, along with `WithFluentMockito`
   
 ### 6.0.0
-* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) **Renamed the library to fluent-bdd**. This is a breaking change
+* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) **Renamed the library to fluent-bdd**. This change is not backwards compatible
 * The `groupId` is now `io.github.theangrydev.fluentbdd` and the `artifactId` is `core` and `yatspec-extensions`
 * The packages were changed to reflect this, there is now `io.github.theangrydev.fluentbdd.core` and `io.github.theangrydev.fluentbdd.yatspec`
 * The `YatspecFluent` class was renamed to `FluentYatspec`, similarly `WithYatspecFluent` was renamed to `WithFluentYatspec`
@@ -88,7 +88,7 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 * [#7](https://github.com/theangrydev/fluent-bdd/issues/7) The functionality implemented in [#6](https://github.com/theangrydev/fluent-bdd/issues/6) turned out to be a bit too strict about what it considered to be "mutable". Now the definition of "mutable" is that all the fields must be final. This allows synthetic classes (e.g. a constructor reference) to go through, which turned out to be a common way to write ThenAssertion implementations
 
 ### 5.0.1
-* Renamed the base class from `FluentTest` to `YatspecFluent`. This is a breaking change
+* Renamed the base class from `FluentTest` to `YatspecFluent`. This change is not backwards compatible
 * Support for using `YatspecFluent` as a JUnit `@Rule` alongside a `WithYatspecFluent` interface for the BDD methods if you do not want to extend `YatspecFluent` as the base class for your tests   
 
 ### 4.2.0
@@ -101,17 +101,17 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 * [#3](https://github.com/theangrydev/fluent-bdd/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
 
 ### 4.0.1
-* [#5](https://github.com/theangrydev/fluent-bdd/issues/5) There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This is a breaking change since `Then` was renamed to `ThenAssertion`
+* [#5](https://github.com/theangrydev/fluent-bdd/issues/5) There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This change is not backwards compatible since `Then` was renamed to `ThenAssertion`
 
 ### 3.0.1
 * Made the `FluentTest` methods public. Protected was enough, but it's clearer that they are part of the public API if they are public
 * Fixed some javadoc language issues
 
 ### 3.0.0
-* Removed `InterestingGivens` and `CapturedInputAndOutputs` fields. The `TestState` can be accessed via the interface `WithTestState` if it is really needed. This is a breaking change since the fields were visible to subclasses of `FluentTest`
+* Removed `InterestingGivens` and `CapturedInputAndOutputs` fields. The `TestState` can be accessed via the interface `WithTestState` if it is really needed. This change is not backwards compatible since the fields were visible to subclasses of `FluentTest`
 
 ### 2.0.1
-* [#4](https://github.com/theangrydev/fluent-bdd/issues/4) Remove `Request` from `When`. This is a breaking change
+* [#4](https://github.com/theangrydev/fluent-bdd/issues/4) Remove `Request` from `When`. This change is not backwards compatible
 * Mark `Given` as a `@FunctionalInterface` since it has a single abstract method
 
 ### 1.6.0

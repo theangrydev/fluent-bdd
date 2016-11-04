@@ -11,6 +11,7 @@
 //
 package io.github.theangrydev.fluentbdd.assertj;
 
+import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -104,7 +105,7 @@ import org.assertj.core.groups.Tuple;
  *
  */
 @SuppressWarnings("PMD")
-public interface WithFluentAssertJ {
+public interface WithFluentAssertJ<TestResult> extends WithFluentBdd<TestResult> {
 	DelegateWithAssertions DELEGATE = new DelegateWithAssertions();
 
 	/**
@@ -168,6 +169,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(T[])}
 	 */
 	default <T> AbstractObjectArrayAssert<?, T> then(T[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -175,6 +177,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(T[])}
 	 */
 	default <T> AbstractObjectArrayAssert<?, T> and(T[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -182,6 +185,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(AssertDelegateTarget)}
 	 */
 	default <T extends AssertDelegateTarget> T then(T assertion) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(assertion);
 	}
 
@@ -189,6 +193,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(AssertDelegateTarget)}
 	 */
 	default <T extends AssertDelegateTarget> T and(T assertion) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(assertion);
 	}
 
@@ -196,6 +201,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Map)}
 	 */
 	default <K, V> AbstractMapAssert<?, ? extends Map<K, V>, K, V> then(Map<K, V> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -203,6 +209,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Map)}
 	 */
 	default <K, V> AbstractMapAssert<?, ? extends Map<K, V>, K, V> and(Map<K, V> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -210,6 +217,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(short)}
 	 */
 	default AbstractShortAssert<?> then(short actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -217,6 +225,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(short)}
 	 */
 	default AbstractShortAssert<?> and(short actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -224,6 +233,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(long)}
 	 */
 	default AbstractLongAssert<?> then(long actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -231,6 +241,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(long)}
 	 */
 	default AbstractLongAssert<?> and(long actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -238,6 +249,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Long)}
 	 */
 	default AbstractLongAssert<?> then(Long actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -245,6 +257,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Long)}
 	 */
 	default AbstractLongAssert<?> and(Long actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -252,6 +265,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(long[])}
 	 */
 	default AbstractLongArrayAssert<?> then(long[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -259,6 +273,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(long[])}
 	 */
 	default AbstractLongArrayAssert<?> and(long[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -266,6 +281,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(T)}
 	 */
 	default <T> AbstractObjectAssert<?, T> then(T actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -273,6 +289,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(T)}
 	 */
 	default <T> AbstractObjectAssert<?, T> and(T actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -280,6 +297,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(String)}
 	 */
 	default AbstractCharSequenceAssert<?, String> then(String actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -287,6 +305,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(String)}
 	 */
 	default AbstractCharSequenceAssert<?, String> and(String actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -294,6 +313,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Date)}
 	 */
 	default AbstractDateAssert<?> then(Date actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -301,6 +321,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Date)}
 	 */
 	default AbstractDateAssert<?> and(Date actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -308,6 +329,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Throwable)}
 	 */
 	default AbstractThrowableAssert<?, ? extends Throwable> then(Throwable actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -315,6 +337,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Throwable)}
 	 */
 	default AbstractThrowableAssert<?, ? extends Throwable> and(Throwable actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -322,6 +345,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(BigDecimal)}
 	 */
 	default AbstractBigDecimalAssert<?> then(BigDecimal actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -329,6 +353,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(BigDecimal)}
 	 */
 	default AbstractBigDecimalAssert<?> and(BigDecimal actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -336,6 +361,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(CharSequence)}
 	 */
 	default AbstractCharSequenceAssert<?, ? extends CharSequence> then(CharSequence actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -343,6 +369,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(CharSequence)}
 	 */
 	default AbstractCharSequenceAssert<?, ? extends CharSequence> and(CharSequence actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -350,6 +377,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(short[])}
 	 */
 	default AbstractShortArrayAssert<?> then(short[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -357,6 +385,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(short[])}
 	 */
 	default AbstractShortArrayAssert<?> and(short[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -364,6 +393,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Short)}
 	 */
 	default AbstractShortAssert<?> then(Short actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -371,6 +401,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Short)}
 	 */
 	default AbstractShortAssert<?> and(Short actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -378,6 +409,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Class)}
 	 */
 	default AbstractClassAssert<?> then(Class<?> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -385,6 +417,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Class)}
 	 */
 	default AbstractClassAssert<?> and(Class<?> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -392,6 +425,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Character)}
 	 */
 	default AbstractCharacterAssert<?> then(Character actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -399,6 +433,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Character)}
 	 */
 	default AbstractCharacterAssert<?> and(Character actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -406,6 +441,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(char[])}
 	 */
 	default AbstractCharArrayAssert<?> then(char[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -413,6 +449,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(char[])}
 	 */
 	default AbstractCharArrayAssert<?> and(char[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -420,6 +457,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(char)}
 	 */
 	default AbstractCharacterAssert<?> then(char actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -427,6 +465,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(char)}
 	 */
 	default AbstractCharacterAssert<?> and(char actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -434,6 +473,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Comparable)}
 	 */
 	default <T extends Comparable<? super T>> AbstractComparableAssert<?, T> then(T actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -441,6 +481,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Comparable)}
 	 */
 	default <T extends Comparable<? super T>> AbstractComparableAssert<?, T> and(T actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -448,6 +489,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Iterable)}
 	 */
 	default <T> AbstractIterableAssert<?, Iterable<? extends T>, T, ObjectAssert<T>> then(Iterable<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -455,6 +497,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Iterable)}
 	 */
 	default <T> AbstractIterableAssert<?, Iterable<? extends T>, T, ObjectAssert<T>> and(Iterable<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -462,6 +505,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Iterator)}
 	 */
 	default <T> AbstractIterableAssert<?, Iterable<? extends T>, T, ObjectAssert<T>> then(Iterator<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -469,6 +513,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Iterator)}
 	 */
 	default <T> AbstractIterableAssert<?, Iterable<? extends T>, T, ObjectAssert<T>> and(Iterator<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -476,6 +521,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Boolean)}
 	 */
 	default AbstractBooleanAssert<?> then(Boolean actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -483,6 +529,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Boolean)}
 	 */
 	default AbstractBooleanAssert<?> and(Boolean actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -490,6 +537,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(boolean)}
 	 */
 	default AbstractBooleanArrayAssert<?> then(boolean[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -497,6 +545,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(boolean)}
 	 */
 	default AbstractBooleanArrayAssert<?> and(boolean[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -504,6 +553,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(byte)}
 	 */
 	default AbstractByteAssert<?> then(byte actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -511,6 +561,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(byte)}
 	 */
 	default AbstractByteAssert<?> and(byte actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -518,6 +569,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Byte)}
 	 */
 	default AbstractByteAssert<?> then(Byte actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -525,6 +577,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Byte)}
 	 */
 	default AbstractByteAssert<?> and(Byte actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -532,6 +585,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(byte[])}
 	 */
 	default AbstractByteArrayAssert<?> then(byte[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -539,6 +593,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(byte[])}
 	 */
 	default AbstractByteArrayAssert<?> and(byte[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -546,6 +601,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(boolean)}
 	 */
 	default AbstractBooleanAssert<?> then(boolean actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -553,6 +609,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(boolean)}
 	 */
 	default AbstractBooleanAssert<?> and(boolean actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -560,6 +617,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(float)}
 	 */
 	default AbstractFloatAssert<?> then(float actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -567,6 +625,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(float)}
 	 */
 	default AbstractFloatAssert<?> and(float actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -574,6 +633,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(InputStream)}
 	 */
 	default AbstractInputStreamAssert<?, ? extends InputStream> then(InputStream actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -581,6 +641,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(InputStream)}
 	 */
 	default AbstractInputStreamAssert<?, ? extends InputStream> and(InputStream actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -588,6 +649,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(File)}
 	 */
 	default AbstractFileAssert<?> then(File actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -595,6 +657,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(File)}
 	 */
 	default AbstractFileAssert<?> and(File actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -602,6 +665,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(int[])}
 	 */
 	default AbstractIntArrayAssert<?> then(int[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -609,6 +673,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(int[])}
 	 */
 	default AbstractIntArrayAssert<?> and(int[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -616,6 +681,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Float)}
 	 */
 	default AbstractFloatAssert<?> then(Float actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -623,6 +689,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Float)}
 	 */
 	default AbstractFloatAssert<?> and(Float actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -630,6 +697,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(int)}
 	 */
 	default AbstractIntegerAssert<?> then(int actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -637,6 +705,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(int)}
 	 */
 	default AbstractIntegerAssert<?> and(int actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -644,6 +713,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(float[])}
 	 */
 	default AbstractFloatArrayAssert<?> then(float[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -651,6 +721,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(float[])}
 	 */
 	default AbstractFloatArrayAssert<?> and(float[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -658,6 +729,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Integer)}
 	 */
 	default AbstractIntegerAssert<?> then(Integer actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -665,6 +737,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Integer)}
 	 */
 	default AbstractIntegerAssert<?> and(Integer actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -672,6 +745,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(double)}
 	 */
 	default AbstractDoubleAssert<?> then(double actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -679,6 +753,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(double)}
 	 */
 	default AbstractDoubleAssert<?> and(double actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -686,6 +761,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Double)}
 	 */
 	default AbstractDoubleAssert<?> then(Double actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -693,6 +769,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Double)}
 	 */
 	default AbstractDoubleAssert<?> and(Double actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -700,6 +777,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(List)}
 	 */
 	default <T> AbstractListAssert<?, List<? extends T>, T, ObjectAssert<T>> then(List<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -707,6 +785,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(List)}
 	 */
 	default <T> AbstractListAssert<?, List<? extends T>, T, ObjectAssert<T>> and(List<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -714,6 +793,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(List)}
 	 */
 	default <T> AbstractListAssert<?, ? extends List<? extends T>, T, ObjectAssert<T>> then(Stream<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -721,6 +801,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(List)}
 	 */
 	default <T> AbstractListAssert<?, ? extends List<? extends T>, T, ObjectAssert<T>> and(Stream<? extends T> actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -728,6 +809,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(double[])}
 	 */
 	default AbstractDoubleArrayAssert<?> then(double[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -735,6 +817,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(double[])}
 	 */
 	default AbstractDoubleArrayAssert<?> and(double[] actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -897,6 +980,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(ZonedDateTime)}
 	 */
 	default AbstractZonedDateTimeAssert<?> then(ZonedDateTime actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -904,6 +988,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(ZonedDateTime)}
 	 */
 	default AbstractZonedDateTimeAssert<?> and(ZonedDateTime actual) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(actual);
 	}
 
@@ -911,6 +996,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(CompletableFuture)}
 	 */
 	default <T> CompletableFutureAssert<T> then(CompletableFuture<T> future) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(future);
 	}
 
@@ -918,6 +1004,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(CompletableFuture)}
 	 */
 	default <T> CompletableFutureAssert<T> and(CompletableFuture<T> future) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(future);
 	}
 
@@ -925,6 +1012,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Optional)}
 	 */
 	default <T> OptionalAssert<T> then(Optional<T> optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -932,6 +1020,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(Optional)}
 	 */
 	default <T> OptionalAssert<T> and(Optional<T> optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -939,6 +1028,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalDouble)}
 	 */
 	default OptionalDoubleAssert then(OptionalDouble optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -946,6 +1036,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalDouble)}
 	 */
 	default OptionalDoubleAssert and(OptionalDouble optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -953,6 +1044,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalInt)}
 	 */
 	default OptionalIntAssert then(OptionalInt optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -960,6 +1052,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalInt)}
 	 */
 	default OptionalIntAssert and(OptionalInt optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -967,6 +1060,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalLong)}
 	 */
 	default OptionalLongAssert then(OptionalLong optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -974,6 +1068,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(java.util.OptionalLong)}
 	 */
 	default OptionalLongAssert and(OptionalLong optional) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(optional);
 	}
 
@@ -981,6 +1076,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalDateTime)}
 	 */
 	default AbstractLocalDateTimeAssert<?> then(LocalDateTime localDateTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localDateTime);
 	}
 
@@ -988,6 +1084,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalDateTime)}
 	 */
 	default AbstractLocalDateTimeAssert<?> and(LocalDateTime localDateTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localDateTime);
 	}
 
@@ -995,6 +1092,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalDate)}
 	 */
 	default AbstractLocalDateAssert<?> then(LocalDate localDate) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localDate);
 	}
 
@@ -1002,6 +1100,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalDate)}
 	 */
 	default AbstractLocalDateAssert<?> and(LocalDate localDate) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localDate);
 	}
 
@@ -1009,6 +1108,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalTime)}
 	 */
 	default AbstractLocalTimeAssert<?> then(LocalTime localTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localTime);
 	}
 
@@ -1016,6 +1116,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(LocalTime)}
 	 */
 	default AbstractLocalTimeAssert<?> and(LocalTime localTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(localTime);
 	}
 
@@ -1023,6 +1124,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(OffsetTime)}
 	 */
 	default AbstractOffsetTimeAssert<?> then(OffsetTime offsetTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(offsetTime);
 	}
 
@@ -1030,6 +1132,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(OffsetTime)}
 	 */
 	default AbstractOffsetTimeAssert<?> and(OffsetTime offsetTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(offsetTime);
 	}
 
@@ -1037,6 +1140,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(OffsetDateTime)}
 	 */
 	default AbstractOffsetDateTimeAssert<?> then(OffsetDateTime offsetDateTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(offsetDateTime);
 	}
 
@@ -1044,6 +1148,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThat(OffsetDateTime)}
 	 */
 	default AbstractOffsetDateTimeAssert<?> and(OffsetDateTime offsetDateTime) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThat(offsetDateTime);
 	}
 
@@ -1051,6 +1156,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThatThrownBy(ThrowingCallable)}
 	 */
 	default AbstractThrowableAssert<?, ? extends Throwable> thenThrownBy(ThrowingCallable shouldRaiseThrowable) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThatThrownBy(shouldRaiseThrowable);
 	}
 
@@ -1058,6 +1164,7 @@ public interface WithFluentAssertJ {
 	 * Delegate call to {@link org.assertj.core.api.Assertions#assertThatThrownBy(ThrowingCallable)}
 	 */
 	default AbstractThrowableAssert<?, ? extends Throwable> andThrownBy(ThrowingCallable shouldRaiseThrowable) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThatThrownBy(shouldRaiseThrowable);
 	}
 
@@ -1081,6 +1188,7 @@ public interface WithFluentAssertJ {
 	 * @return the created {@link ThrowableTypeAssert}.
 	 */
 	default <T extends Throwable> ThrowableTypeAssert<T> thenExceptionOfType(Class<? extends T> exceptionType) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThatExceptionOfType(exceptionType);
 	}
 
@@ -1097,6 +1205,7 @@ public interface WithFluentAssertJ {
 	 * @return the created {@link ThrowableTypeAssert}.
 	 */
 	default <T extends Throwable> ThrowableTypeAssert<T> andExceptionOfType(Class<? extends T> exceptionType) {
+		fluentBdd().verification.recordThen(this);
 		return DELEGATE.assertThatExceptionOfType(exceptionType);
 	}
 

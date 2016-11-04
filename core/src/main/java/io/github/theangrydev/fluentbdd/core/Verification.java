@@ -18,8 +18,8 @@
 package io.github.theangrydev.fluentbdd.core;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isFinal;
@@ -35,7 +35,7 @@ public class Verification<TestResult> {
 
     private Stage stage = Stage.GIVEN;
 
-    private final List<Object> usedInstances = new ArrayList<>();
+    private final Set<Object> usedInstances = new HashSet<>();
 
     public void recordGiven(Object given) {
         if (stage != Stage.GIVEN) {

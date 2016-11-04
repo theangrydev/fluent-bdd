@@ -17,8 +17,8 @@
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:core:7.2.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:mockito-extensions:7.2.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:yatspec-extensions:7.2.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:core:7.2.2-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: io.github.theangrydev.fluentbdd:mockito-extensions:7.2.2-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="core" />
+    <orderEntry type="module" module-name="mockito-extensions" />
     <orderEntry type="module" module-name="yatspec-extensions" />
     <orderEntry type="library" name="Maven: com.googlecode.yatspec:yatspec:1.23" level="project" />
     <orderEntry type="module" module-name="assertj-extensions" />

@@ -14,7 +14,8 @@
 @RunWith(SpecRunner.class)
 public class ExampleTest extends AcceptanceTest<TestResult> {
 
-    private final GivenTheWeatherService theWeatherService = new GivenTheWeatherService(this, testInfrastructure);
+    private final GivenTheWeatherService theWeatherService = new GivenTheWeat
+    herService(this, testInfrastructure);
     private final ThenTheAccessLogLinesContaining theAccessLogLines = new ThenTheAccessLogLinesContaining();
     private final ThenAssertion<ThenTheResponse, TestResult> theResponse = ThenTheResponse::new;
     private final ThenAssertion<ThenTheResponseHeaders, TestResult> theResponseHeaders = ThenTheResponseHeaders::new;
@@ -50,12 +51,17 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>all</artifactId>
-	<version>7.2.2</version>
+	<version>8.0.0</version>
 </dependency>
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
+The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
+
+### 8.0.0
+* [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This is a breaking change
+ 
 ### 7.2.2
 * Updated transitive dependency versions
 * Marked the transitive dependency `yatspec-zohhak-plugin` as `test` scope not `compile` scope

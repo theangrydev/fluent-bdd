@@ -24,7 +24,7 @@
     <parent>
         <artifactId>fluent-bdd</artifactId>
         <groupId>io.github.theangrydev.fluentbdd</groupId>
-        <version>8.0.0</version>
+        <version>8.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>core</artifactId>
 </project>

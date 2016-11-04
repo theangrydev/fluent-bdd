@@ -50,12 +50,16 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>all</artifactId>
-	<version>7.2.1</version>
+	<version>7.2.2</version>
 </dependency>
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
+### 7.2.2
+* Updated transitive dependency versions
+* Marked the transitive dependency test `yatspec-zohhak-plugin` as `test` scope not `compile` scope
+
 ### 7.2.1
 * New module: `assertj-extensions` delegates to the `WithAssertions` [AssertJ](http://joel-costigliola.github.io/assertj/) convenience methods
 * New module: `assertj-extensions-generator`, that produces a plugin that is used to generate the source code for `assertj-extensions`

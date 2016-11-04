@@ -15,9 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.theangrydev.assertj;
+package io.github.theangrydev.fluentbdd.assertj;
 
-import io.github.theangrydev.fluentbdd.assertj.WithFluentAssertJ;
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import io.github.theangrydev.fluentbdd.core.Given;
 import org.junit.Rule;

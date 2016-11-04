@@ -24,7 +24,7 @@
     <parent>
         <artifactId>fluent-bdd</artifactId>
         <groupId>io.github.theangrydev.fluentbdd</groupId>
-        <version>7.2.2</version>
+        <version>7.2.3-SNAPSHOT</version>
     </parent>
     <artifactId>yatspec-extensions</artifactId>
 

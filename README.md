@@ -58,7 +58,7 @@ You can also depend on the modules `core`, `assertj-extensions`, `mockito-extens
 ## Releases
 ### 7.2.2
 * Updated transitive dependency versions
-* Marked the transitive dependency test `yatspec-zohhak-plugin` as `test` scope not `compile` scope
+* Marked the transitive dependency `yatspec-zohhak-plugin` as `test` scope not `compile` scope
 
 ### 7.2.1
 * New module: `assertj-extensions` delegates to the `WithAssertions` [AssertJ](http://joel-costigliola.github.io/assertj/) convenience methods

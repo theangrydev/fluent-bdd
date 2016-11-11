@@ -39,17 +39,17 @@ import java.util.Collections;
 
 import static com.googlecode.yatspec.plugin.sequencediagram.SequenceDiagramGenerator.getHeaderContentForModalWindows;
 
-public abstract class AcceptanceTest<Response> implements WithAssertions, WithCustomResultListeners, WithFluentBdd<Response>, WithFluentYatspec {
+public abstract class AcceptanceTest<TestResult> implements WithAssertions, WithCustomResultListeners, WithFluentBdd<TestResult>, WithFluentYatspec {
 
     protected final TestInfrastructure testInfrastructure = new TestInfrastructure(this);
 
     @Rule
-    public final FluentBdd<Response> fluentBdd = new FluentBdd<>();
+    public final FluentBdd<TestResult> fluentBdd = new FluentBdd<>();
 
     private final FluentYatspec fluentYatspec = new FluentYatspec();
 
     @Override
-    public FluentBdd<Response> fluentBdd() {
+    public FluentBdd<TestResult> fluentBdd() {
         return fluentBdd;
     }
 

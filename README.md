@@ -65,7 +65,7 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 * Added some javadoc to the `all` module with links to javadoc of the other modules
 
 ### 8.0.0
-* [15](https://github.com/theangrydev/fluent-bdd/issues/15) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This change is not backwards compatible
+* [#15](https://github.com/theangrydev/fluent-bdd/issues/15) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This change is not backwards compatible
  
 ### 7.2.2
 * Updated transitive dependency versions

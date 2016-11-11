@@ -57,10 +57,6 @@ public class GivenTheWeatherService implements Given {
                 .withQueryParam("q", equalTo(cityName))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(weatherWithDescription())));
-    }
-
-    private String weatherWithDescription() {
-        return "{\"weather\":[{\"description\":\"" + description + "\"}]}";
+                        .withBody("{\"weather\":[{\"description\":\"" + description + "\"}]}")));
     }
 }

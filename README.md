@@ -50,7 +50,7 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>all</artifactId>
-	<version>8.1.2</version>
+	<version>8.2.0</version>
 </dependency>
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `hamcrest-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.

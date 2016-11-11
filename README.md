@@ -53,13 +53,16 @@ Dependency:
 	<version>8.1.2</version>
 </dependency>
 ```
-You can also depend on the modules `core`, `assertj-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
+You can also depend on the modules `core`, `assertj-extensions`, `hamcrest-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
 The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
 
+### 8.2.0
+* [#11](https://github.com/theangrydev/fluent-bdd/issues/11) New module: `hamcrest-extensions` that acts as a bridge for using [Hamcrest](http://hamcrest.org/) matchers as `then` assertions
+
 ### 8.1.2
-* Added some javadoc to the `all` module with links to javadoc of the other modules.
+* Added some javadoc to the `all` module with links to javadoc of the other modules
 
 ### 8.0.0
 * [#8](https://github.com/theangrydev/fluent-bdd/issues/8) Fixed by making `WithFluentAssertJ<TestResult>` extend `WithFluentBdd<TestResult>` and calling `recordThen` in each `then` and `and` method. This change is not backwards compatible
@@ -101,7 +104,7 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 * Minor changes to the validation messages
 
 ### 4.1.0
-* [#3](https://github.com/theangrydev/fluent-bdd/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`.
+* [#3](https://github.com/theangrydev/fluent-bdd/issues/3) Check that the same `Given` instance is not used more than once. This is to make it harder to accidentally share state by using the same builder style instance more than once. Similarly for `ThenVerification`
 
 ### 4.0.1
 * [#5](https://github.com/theangrydev/fluent-bdd/issues/5) There are now two kinds of `then` methods. `ThenAssertion` is used for chained assertions. `ThenVerification` is used for a blob verification that is built up. See the `ExampleTest` for example usage. This change is not backwards compatible since `Then` was renamed to `ThenAssertion`
@@ -122,7 +125,7 @@ The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), t
 
 ### 1.5.0
 * Adapt when to given
-* Relax the constrains on when you must use `and`. Now you are free to use `and` and `given` and `and` and `then` interchangeably, so long as the first `given` is a `given` not an `and` and the first `then` is a `then` not an `and`.
+* Relax the constrains on when you must use `and`. Now you are free to use `and` and `given` and `and` and `then` interchangeably, so long as the first `given` is a `given` not an `and` and the first `then` is a `then` not an `and`
 
 ### 1.4.0
 * Make it clear that the raw yatspec captured inputs and outputs and interesting givens should not be used

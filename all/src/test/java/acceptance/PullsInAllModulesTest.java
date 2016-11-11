@@ -20,6 +20,7 @@ package acceptance;
 import io.github.theangrydev.fluentbdd.Documentation;
 import io.github.theangrydev.fluentbdd.assertj.WithFluentAssertJ;
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
+import io.github.theangrydev.fluentbdd.hamcrest.WithFluentHamcrest;
 import io.github.theangrydev.fluentbdd.mockito.FluentMockito;
 import io.github.theangrydev.fluentbdd.yatspec.FluentYatspec;
 import org.junit.Test;
@@ -34,6 +35,7 @@ public class PullsInAllModulesTest {
         assertNotNull(FluentMockito.class);
         assertNotNull(FluentYatspec.class);
         assertNotNull(WithFluentAssertJ.class);
+        assertNotNull(WithFluentHamcrest.class);
         assertNotNull(Documentation.class);
     }
 }

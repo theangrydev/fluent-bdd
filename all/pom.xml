@@ -49,6 +49,11 @@
             <artifactId>assertj-extensions</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.theangrydev.fluentbdd</groupId>
+            <artifactId>hamcrest-extensions</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

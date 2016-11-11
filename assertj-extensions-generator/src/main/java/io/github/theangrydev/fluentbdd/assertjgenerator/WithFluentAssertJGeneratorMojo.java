@@ -194,7 +194,7 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
 
     private String packageName(ImportDeclaration importDeclaration) {
         String[] nameParts = nameParts(importDeclaration);
-        return stream(nameParts).limit(nameParts.length - 1).collect(joining("."));
+        return stream(nameParts).limit(nameParts.length - 1L).collect(joining("."));
     }
 
     private String[] nameParts(ImportDeclaration importDeclaration) {

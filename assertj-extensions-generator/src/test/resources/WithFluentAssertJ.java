@@ -106,7 +106,7 @@ import org.assertj.core.groups.Tuple;
  */
 @SuppressWarnings("PMD")
 public interface WithFluentAssertJ<TestResult> extends WithFluentBdd<TestResult> {
-	DelegateWithAssertions DELEGATE = new DelegateWithAssertions();
+	WithAssertions DELEGATE = new DelegateWithAssertions();
 
 	/**
 	 * Delegate call to {@link org.assertj.core.api.Assertions#offset(Float)}

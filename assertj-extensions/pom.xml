@@ -40,6 +40,13 @@
             <artifactId>assertj-core</artifactId>
             <version>${assertj.core.version}</version>
         </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -53,7 +60,6 @@
                 </configuration>
             </plugin>
 
-            <!-- TODO: why is this not running? -->
             <plugin>
                 <groupId>io.github.theangrydev.fluentbdd</groupId>
                 <artifactId>assertj-extensions-generator</artifactId>
@@ -67,14 +73,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <configuration combine.self="override">
-                    <skip>true</skip><!-- TODO: remove and add test coverage -->
-                </configuration>
             </plugin>
         </plugins>
     </build>

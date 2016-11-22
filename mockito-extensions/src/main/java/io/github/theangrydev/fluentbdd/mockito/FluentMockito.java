@@ -57,8 +57,6 @@ public class FluentMockito<TestResult> implements MethodRule, FluentMockitoComma
         mockitoFramework.addListener(this);
     }
 
-    //TODO: look into ThreadSafeMockingProgress to see if that can improve this API?
-    //TODO: talk to the verification here to make sure the FluentMockitoGiven is not reused
     @Override
     public <Mock> FluentMockitoGiven<Mock> given(Mock mock) {
         FluentMockitoGiven<Mock> given = new FluentMockitoGiven<>(mock);

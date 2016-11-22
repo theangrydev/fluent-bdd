@@ -19,7 +19,6 @@ package io.github.theangrydev.fluentbdd.mockito;
 
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
 import io.github.theangrydev.fluentbdd.core.When;
-import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;

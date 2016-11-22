@@ -50,13 +50,16 @@ Dependency:
 <dependency>
 	<groupId>io.github.theangrydev.fluentbdd</groupId>
 	<artifactId>all</artifactId>
-	<version>8.2.0</version>
+	<version>8.2.1</version>
 </dependency>
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `hamcrest-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
 ## Releases
 The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
+
+### 8.2.1
+* Improving the documentation of the `fluent-mockito` module
 
 ### 8.2.0
 * [#11](https://github.com/theangrydev/fluent-bdd/issues/11) New module: `hamcrest-extensions` that acts as a bridge for using [Hamcrest](http://hamcrest.org/) matchers as `then` assertions

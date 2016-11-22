@@ -20,7 +20,6 @@ package io.github.theangrydev.fluentbdd.assertjgenerator;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.TypeParameter;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -43,11 +42,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.stream;
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.*;
 import static javax.lang.model.element.Modifier.*;
 
@@ -100,6 +97,8 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
      * @required
      */
     String outputPackage;
+
+    private final PackageNameByClassName packageNameByClassName = new PackageNameByClassName();
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -157,9 +156,7 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
     private TypeSpec withFluentAssertJ(CompilationUnit compilationUnit) throws ParseException, ClassNotFoundException {
         TypeDeclaration typeDeclaration = typeDeclaration(compilationUnit);
 
-        Map<String, String> packageNameByClassName = compilationUnit.getImports().stream()
-                .filter(importDeclaration -> !importDeclaration.isStatic())
-                .collect(toMap(this::className, this::packageName));
+        Map<String, String> packageNameByClassName = this.packageNameByClassName.packageNameByClassName(compilationUnit);
 
         FieldSpec delegateField = FieldSpec.builder(
                 ClassName.get(outputPackage, DELEGATE_WITH_ASSERTIONS_CLASS_NAME), DELEGATE, PUBLIC, STATIC, FINAL)
@@ -187,31 +184,17 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
         return builder.build();
     }
 
-    private String className(ImportDeclaration importDeclaration) {
-        String[] nameParts = nameParts(importDeclaration);
-        return nameParts[nameParts.length - 1];
-    }
-
-    private String packageName(ImportDeclaration importDeclaration) {
-        String[] nameParts = nameParts(importDeclaration);
-        return stream(nameParts).limit(nameParts.length - 1L).collect(joining("."));
-    }
-
-    private String[] nameParts(ImportDeclaration importDeclaration) {
-        String name = importDeclaration.getName().toString();
-        return name.split("\\.");
-    }
-
     private MethodSpec methodSpec(Map<String, String> packageNames, MethodDeclaration methodDeclaration, String thenMethodPrefix) throws ClassNotFoundException {
         List<TypeVariableName> rawTypeVariableNames = methodDeclaration.getTypeParameters().stream()
                 .map(typeParameter -> TypeVariableName.get(typeParameter.getName()))
                 .collect(toList());
+        TypeNameDetermination typeNameDetermination = new TypeNameDetermination(rawTypeVariableNames, packageNames, ASSERTJ_API_PACKAGE);
 
         List<TypeVariableName> boundTypeVariableNames = methodDeclaration.getTypeParameters().stream()
-                .map(typeParameter -> typeVariableName(packageNames, rawTypeVariableNames, typeParameter))
+                .map(typeParameter -> typeVariableName(typeParameter, typeNameDetermination))
                 .collect(toList());
 
-        TypeName returnTypeName = typeName(packageNames, boundTypeVariableNames, methodDeclaration.getType());
+        TypeName returnTypeName = typeNameDetermination.determineTypeName(methodDeclaration.getType());
         String methodName = methodDeclaration.getName().replace(ASSERT_THAT_METHOD_PREFIX, thenMethodPrefix);
         MethodSpec.Builder builder = MethodSpec.methodBuilder(methodName)
                 .addModifiers(PUBLIC, DEFAULT)
@@ -226,7 +209,7 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
         }
 
         for (Parameter parameter : methodDeclaration.getParameters()) {
-            builder.addParameter(typeName(packageNames, boundTypeVariableNames, parameter.getType()), parameter.getName());
+            builder.addParameter(typeNameDetermination.determineTypeName(parameter.getType()), parameter.getName());
         }
         return builder.build();
     }
@@ -235,10 +218,10 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
         return parameter.getAnnotations().stream().anyMatch(annotation -> annotation.toString().equals(SUPPRESS_WARNINGS_UNCHECKED_STRING));
     }
 
-    private TypeVariableName typeVariableName(Map<String, String> packageName, List<TypeVariableName> typeVariableNames, TypeParameter typeParameter) {
+    private TypeVariableName typeVariableName(TypeParameter typeParameter, TypeNameDetermination typeNameDetermination) {
         List<ClassOrInterfaceType> typeBounds = typeParameter.getTypeBound();
         TypeName[] typeNames = typeBounds.stream()
-                .map(typeBound -> typeName(packageName, typeVariableNames, typeBound))
+                .map(typeNameDetermination::determineTypeName)
                 .toArray(TypeName[]::new);
 
         return TypeVariableName.get(typeParameter.getName(), typeNames);
@@ -281,84 +264,6 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
 
     private String removeStars(String line) {
         return line.trim().replaceFirst("^\\*", "").trim();
-    }
-
-    private TypeName typeName(Map<String, String> packageName, List<TypeVariableName> typeVariableNames, Type type) {
-        if (type instanceof VoidType) {
-            return TypeName.VOID;
-        }
-        if (type instanceof ClassOrInterfaceType) {
-            ClassOrInterfaceType classOrInterfaceType = (ClassOrInterfaceType) type;
-            Optional<TypeVariableName> typeVariableName = typeVariableNames.stream()
-                    .filter(name -> name.name.equals(classOrInterfaceType.getName()))
-                    .findFirst();
-            if (typeVariableName.isPresent()) {
-                return typeVariableName.get();
-            }
-            ClassName rawType = ClassName.get(packageName(packageName, classOrInterfaceType.getName()), classOrInterfaceType.getName());
-
-            List<Type> typeArgs = classOrInterfaceType.getTypeArgs();
-            if (typeArgs.isEmpty()) {
-                return rawType;
-            }
-
-            TypeName[] typeNames = typeArgs.stream().map(typeArg -> typeName(packageName, typeVariableNames, typeArg)).toArray(TypeName[]::new);
-            return ParameterizedTypeName.get(rawType, typeNames);
-        }
-        if (type instanceof WildcardType) {
-            WildcardType wildcardType = (WildcardType) type;
-            if (wildcardType.getExtends() != null) {
-                return WildcardTypeName.subtypeOf(typeName(packageName, typeVariableNames, wildcardType.getExtends()));
-            }
-            if (wildcardType.getSuper() != null) {
-                return WildcardTypeName.supertypeOf(typeName(packageName, typeVariableNames, wildcardType.getSuper()));
-            }
-            return WildcardTypeName.subtypeOf(Object.class);
-        }
-        if (type instanceof PrimitiveType) {
-            PrimitiveType primitiveType = (PrimitiveType) type;
-            return primitiveType(primitiveType);
-        }
-        if (type instanceof ReferenceType) {
-            ReferenceType referenceType = (ReferenceType) type;
-            if (referenceType.getArrayCount() == 0) {
-                return typeName(packageName, typeVariableNames, referenceType.getType());
-            } else {
-                return ArrayTypeName.of(typeName(packageName, typeVariableNames, referenceType.getType()));
-            }
-        }
-        throw new UnsupportedOperationException("Unsupported type: " + type);
-    }
-
-    private TypeName primitiveType(PrimitiveType primitiveType) {
-        switch (primitiveType.getType()) {
-            case Boolean:
-                return TypeName.BOOLEAN;
-            case Char:
-                return TypeName.CHAR;
-            case Byte:
-                return TypeName.BYTE;
-            case Short:
-                return TypeName.SHORT;
-            case Int:
-                return TypeName.INT;
-            case Long:
-                return TypeName.LONG;
-            case Float:
-                return TypeName.FLOAT;
-            case Double:
-                return TypeName.DOUBLE;
-            default:
-                throw new UnsupportedOperationException("Unknown type: " + primitiveType.getType());
-        }
-    }
-
-    private String packageName(Map<String, String> packageName, String name) {
-        try {
-            return Class.forName("java.lang." + name).getPackage().getName();
-        } catch (ClassNotFoundException e) {
-            return ofNullable(packageName.get(name)).orElse(ASSERTJ_API_PACKAGE);
-        }
     }
 
     private List<MethodDeclaration> methodDeclarations(TypeDeclaration typeDeclaration) throws ParseException {

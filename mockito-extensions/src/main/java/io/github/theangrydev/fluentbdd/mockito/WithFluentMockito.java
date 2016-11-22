@@ -17,8 +17,21 @@
  */
 package io.github.theangrydev.fluentbdd.mockito;
 
-//TODO: document
+import io.github.theangrydev.fluentbdd.core.When;
+
+/**
+ * You must implement the {@link #fluentMockito()} method by providing a reference to a {@link FluentMockito} that is
+ * a field of your test, annotated with a JUnit {@link org.junit.Rule}.
+ *
+ * @param <TestResult> The type of test result produced by the {@link When}
+ */
 public interface WithFluentMockito<TestResult> extends FluentMockitoCommands<TestResult> {
+
+    /**
+     * This should be implemented by referring to a {@link FluentMockito} field that is annotated as a JUnit {@link org.junit.Rule}.
+     *
+     * @return The delegate {@link FluentMockito}.
+     */
     FluentMockito<TestResult> fluentMockito();
 
     @Override

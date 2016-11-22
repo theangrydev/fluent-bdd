@@ -18,6 +18,9 @@
 package io.github.theangrydev.fluentbdd.mockito;
 
 import io.github.theangrydev.fluentbdd.core.FluentBdd;
+import io.github.theangrydev.fluentbdd.core.When;
+import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
+import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
@@ -33,7 +36,11 @@ import org.mockito.mock.MockCreationSettings;
 import java.util.HashSet;
 import java.util.Set;
 
-//TODO: document
+/**
+ * Use this as a JUnit {@link Rule} alongside {@link WithFluentMockito}.
+ *
+ * @param <TestResult> The type of test result produced by the {@link When}
+ */
 public class FluentMockito<TestResult> implements MethodRule, FluentMockitoCommands<TestResult>, MockCreationListener {
 
     private final MockitoFramework mockitoFramework;
@@ -45,6 +52,9 @@ public class FluentMockito<TestResult> implements MethodRule, FluentMockitoComma
 
     private InOrder inOrder;
 
+    /**
+     * @param fluentBdd The JUnit {@link FluentBdd} {@link Rule} that this class will integrate with
+     */
     public FluentMockito(FluentBdd<TestResult> fluentBdd) {
         this(Mockito.framework(), MockitoJUnit.rule(), fluentBdd);
     }

@@ -17,16 +17,59 @@
  */
 package io.github.theangrydev.fluentbdd.mockito;
 
+import io.github.theangrydev.fluentbdd.core.When;
 import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 
-//TODO: document
-public interface FluentMockitoCommands<TestClass> extends WithFluentBdd<TestClass> {
+/**
+ * These are the Mockito BDD extension methods that are used to write tests.
+ *
+ * @param <TestResult> The type of test result produced by the {@link When}
+ */
+public interface FluentMockitoCommands<TestResult> extends WithFluentBdd<TestResult> {
+
+    /**
+     * Start to prime a {@link org.mockito.Mockito#mock(Class)}.
+     *
+     * @param mock   The mock to be primed
+     * @param <Mock> The type of mock to be primed
+     * @return The start of the fluent given chain
+     *
+     * @see FluentMockitoGiven
+     * @see FluentMockitoGivenCommand
+     */
     <Mock> FluentMockitoGiven<Mock> given(Mock mock);
+
+    /**
+     * Same as {@link #given(Object) given(Mock)}.
+     *
+     * @param mock   The mock to be primed
+     * @param <Mock> The type of mock to be primed
+     * @return The start of the fluent given chain
+     *
+     * @see FluentMockitoGiven
+     * @see FluentMockitoGivenCommand
+     */
     default <Mock> FluentMockitoGiven<Mock> and(Mock mock) {
         return given(mock);
     }
 
+    /**
+     * This performs an {@link org.mockito.Mockito#inOrder(Object...)} verification on the given mock, considering all
+     * the mocks that have been constructed in this test.
+     *
+     * @param mock   The mock to be verified
+     * @param <Mock> The type of mock to be verified
+     * @return The mock verification chain
+     */
     <Mock> Mock thenVerify(Mock mock);
+
+    /**
+     * Same as {@link #thenVerify(Object) thenVerify(Mock)}.
+     *
+     * @param mock   The mock to be verified
+     * @param <Mock> The type of mock to be verified
+     * @return The mock verification chain
+     */
     default <Mock> Mock andVerify(Mock mock) {
         return thenVerify(mock);
     }

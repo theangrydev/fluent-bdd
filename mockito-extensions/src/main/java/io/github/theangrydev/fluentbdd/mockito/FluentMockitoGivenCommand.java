@@ -19,7 +19,15 @@ package io.github.theangrydev.fluentbdd.mockito;
 
 import org.mockito.BDDMockito;
 
-//TODO: document
+/**
+ * This is part of a fluent chain to prime a mock that allows writing for example:
+ * {@code given(mock).willReturn(42).when().methodIsCalled()}.
+ *
+ * @param <Mock> The type of mock being primed
+ *
+ * @see FluentMockitoCommands#given(Object) given(Mock)
+ * @see FluentMockitoGiven
+ */
 public class FluentMockitoGivenCommand<Mock> {
 
     private final Mock mock;
@@ -30,6 +38,12 @@ public class FluentMockitoGivenCommand<Mock> {
         this.stubber = stubber;
     }
 
+    /**
+     * The method call expected should be specified using the result of this method.
+     * This delegates to {@link org.mockito.BDDMockito.BDDStubber#given(Object)}.
+     *
+     * @return The mock that is being primed
+     */
     public Mock when() {
         return stubber.given(mock);
     }

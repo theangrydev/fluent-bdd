@@ -30,7 +30,7 @@ import java.nio.file.Paths;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.mock;
 
-// TODO: @Test is not working for some strange reason...
+// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
 public class WithFluentAssertJGeneratorMojoTest extends TestCase {
 
     public void testGeneratesWithFluentAssertJFile() throws MojoFailureException, MojoExecutionException, IOException {

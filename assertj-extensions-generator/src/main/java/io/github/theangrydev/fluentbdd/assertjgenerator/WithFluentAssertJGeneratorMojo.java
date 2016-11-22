@@ -55,7 +55,7 @@ import static javax.lang.model.element.Modifier.*;
  * @goal generate-sources
  * @phase generate-sources
  */
-// TODO: remove PMD suppression
+// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove PMD suppression
 @SuppressWarnings({"JavaDoc", "WeakerAccess", "PMD"}) // These are the maven plugin conventions...
 public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
 

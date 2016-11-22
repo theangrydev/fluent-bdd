@@ -27,7 +27,7 @@ import org.mockito.exceptions.verification.VerificationInOrderFailure;
 
 import static org.mockito.Mockito.mock;
 
-//TODO: rewrite these tests, they are crap and just for coverage at the moment
+//TODO: https://github.com/theangrydev/fluent-bdd/issues/13 rewrite these tests, they are crap and just for coverage at the moment
 public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, WithAssertions {
 
     @Rule

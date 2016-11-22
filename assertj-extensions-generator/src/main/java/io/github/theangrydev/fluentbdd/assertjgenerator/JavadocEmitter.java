@@ -33,9 +33,6 @@ public class JavadocEmitter {
     }
 
     public String javadoc(String thenMethodPrefix, JavadocComment javaDoc) {
-        if (javaDoc == null) {
-            return "";
-        }
         return javadoc(javaDoc.getContent(), thenMethodPrefix);
     }
 

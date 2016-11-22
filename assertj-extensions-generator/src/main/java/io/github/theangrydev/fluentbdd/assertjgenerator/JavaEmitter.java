@@ -30,10 +30,10 @@ import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import org.assertj.core.api.WithAssertions;
 
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
+import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsFactory.suppressWarnings;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.*;
 
@@ -120,7 +120,7 @@ public final class JavaEmitter {
                 .initializer(NEW_DELEGATE_WITH_ASSERTIONS)
                 .build();
 
-        TypeDeclaration typeDeclaration = typeDeclaration(compilationUnit);
+        TypeDeclaration typeDeclaration = compilationUnit.getTypes().get(0);
 
         TypeVariableName testResult = TypeVariableName.get(TEST_RESULT_TYPE_NAME);
         TypeSpec.Builder builder = TypeSpec.interfaceBuilder(OUTPUT_CLASS_NAME)
@@ -193,28 +193,5 @@ public final class JavaEmitter {
                 .filter(MethodDeclaration.class::isInstance)
                 .map(MethodDeclaration.class::cast)
                 .collect(toList());
-    }
-
-    private TypeDeclaration typeDeclaration(CompilationUnit compilationUnit) {
-        List<TypeDeclaration> types = compilationUnit.getTypes();
-        if (types.size() != 1) {
-            throw new UnsupportedOperationException("Expected " + ASSERTJ_ASSERTIONS_JAVA_FILE + " to have one type but found: " + types);
-        }
-        return types.get(0);
-    }
-
-    private static SuppressWarnings suppressWarnings(final String... value) {
-        return new SuppressWarnings() {
-
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return SuppressWarnings.class;
-            }
-
-            @Override
-            public String[] value() {
-                return value;
-            }
-        };
     }
 }

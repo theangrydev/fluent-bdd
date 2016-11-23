@@ -18,22 +18,49 @@
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 
 @SuppressWarnings("PMD.UseUtilityClass")
 public class SuppressWarningsFactory {
 
     public static SuppressWarnings suppressWarnings(final String... value) {
-        return new SuppressWarnings() {
+        return new SuppressWarningsImplementation(value);
+    }
 
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return SuppressWarnings.class;
-            }
+    @SuppressWarnings("ClassExplicitlyAnnotation")
+    private static class SuppressWarningsImplementation implements SuppressWarnings {
 
-            @Override
-            public String[] value() {
-                return value;
+        private final String[] value;
+
+        SuppressWarningsImplementation(String... value) {
+            this.value = value;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return SuppressWarnings.class;
+        }
+
+        @Override
+        public String[] value() {
+            return value;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
             }
-        };
+            if (other == null || getClass() != other.getClass()) {
+                return false;
+            }
+            SuppressWarningsImplementation that = (SuppressWarningsImplementation) other;
+            return Arrays.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(value);
+        }
     }
 }

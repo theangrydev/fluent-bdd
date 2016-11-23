@@ -101,6 +101,7 @@ public class FluentMockito<TestResult> implements MethodRule, FluentMockitoComma
         }
     }
 
+    @SuppressWarnings("rawtypes") // The MockCreationListener interface forces this
     @Override
     public void onMockCreated(Object mock, MockCreationSettings settings) {
         mocks.add(mock);

@@ -19,13 +19,14 @@ package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import junit.framework.TestCase;
 
+import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsAnnotation.suppressWarnings;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
 public class SuppressWarningsFactoryTest extends TestCase {
 
     public void testSuppressWarnings() {
-        SuppressWarnings unused = SuppressWarningsFactory.suppressWarnings("unused");
+        SuppressWarnings unused = suppressWarnings("unused");
 
         assertThat(unused.annotationType()).isEqualTo(SuppressWarnings.class);
         assertThat(unused.value()).containsExactly("unused");

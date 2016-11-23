@@ -33,7 +33,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsFactory.suppressWarnings;
+import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsAnnotation.suppressWarnings;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.*;
 

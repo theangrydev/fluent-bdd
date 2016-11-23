@@ -114,7 +114,7 @@ public final class JavaEmitter {
                 .build();
     }
 
-    private TypeSpec withFluentAssertJTypeSpec(String outputPackage, CompilationUnit compilationUnit) throws ParseException, ClassNotFoundException {
+    private TypeSpec withFluentAssertJTypeSpec(String outputPackage, CompilationUnit compilationUnit) throws ClassNotFoundException {
         FieldSpec delegateField = FieldSpec.builder(
                 ClassName.get(outputPackage, DELEGATE_WITH_ASSERTIONS_CLASS_NAME), DELEGATE_FIELD_NAME, PUBLIC, STATIC, FINAL)
                 .initializer(NEW_DELEGATE_WITH_ASSERTIONS)
@@ -188,7 +188,7 @@ public final class JavaEmitter {
         return TypeVariableName.get(typeParameter.getName(), typeNames);
     }
 
-    private List<MethodDeclaration> methodDeclarations(TypeDeclaration typeDeclaration) throws ParseException {
+    private List<MethodDeclaration> methodDeclarations(TypeDeclaration typeDeclaration) {
         return typeDeclaration.getMembers().stream()
                 .filter(MethodDeclaration.class::isInstance)
                 .map(MethodDeclaration.class::cast)

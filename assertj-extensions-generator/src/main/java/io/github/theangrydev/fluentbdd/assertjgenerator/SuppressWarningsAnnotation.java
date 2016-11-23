@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 @SuppressWarnings("ClassExplicitlyAnnotation")
-public class SuppressWarningsAnnotation implements SuppressWarnings {
+public final class SuppressWarningsAnnotation implements SuppressWarnings {
 
     private final String[] value;
 

@@ -43,7 +43,7 @@ public class SuppressWarningsFactory {
 
         @Override
         public String[] value() {
-            return value;
+            return value.clone();
         }
 
         @Override

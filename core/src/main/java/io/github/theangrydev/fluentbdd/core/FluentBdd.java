@@ -26,11 +26,7 @@ import org.junit.runner.Description;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
-@SuppressWarnings({
-    // TODO: review this, it makes me think that those interfaces should be abstract classes instead to force a proper implementation
-    "overloads", // The intended implementation of e.g. ThenAssertion and ThenVerification is a full class not a lambda
-    "FunctionalInterfaceClash" // The intended implementation of e.g. ThenAssertion and ThenVerification is a full class not a lambda
-})
+@SuppressWarnings("FunctionalInterfaceClash") // This is unfortunate, but seems like the lesser evil than having many method names
 public class FluentBdd<TestResult> extends TestWatcher implements FluentBddCommands<TestResult> {
 
     public final Verification<TestResult> verification = new Verification<>();

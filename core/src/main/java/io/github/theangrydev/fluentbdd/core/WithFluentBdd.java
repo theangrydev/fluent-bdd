@@ -23,11 +23,7 @@ package io.github.theangrydev.fluentbdd.core;
  *
  * @param <TestResult> The type of test result produced by the {@link When}
  */
-@SuppressWarnings({
-    // TODO: review this, it makes me think that those interfaces should be abstract classes instead to force a proper implementation
-    "overloads", // The intended implementation of e.g. ThenAssertion and ThenVerification is a full class not a lambda
-    "FunctionalInterfaceClash" // The intended implementation of e.g. ThenAssertion and ThenVerification is a full class not a lambda
-})
+@SuppressWarnings("FunctionalInterfaceClash") // This is unfortunate, but seems like the lesser evil than having many method names
 public interface WithFluentBdd<TestResult> extends FluentBddCommands<TestResult> {
 
     /**

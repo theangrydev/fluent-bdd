@@ -64,7 +64,8 @@ public final class TypeNameDetermination extends GenericVisitorAdapter<TypeName,
         if (typeVariableName.isPresent()) {
             return typeVariableName.get();
         }
-        ClassName rawType = ClassName.get(packageNameByClassName.packageName(classOrInterfaceType.getName()), classOrInterfaceType.getName());
+        String packageName = packageNameByClassName.packageName(classOrInterfaceType.getName());
+        ClassName rawType = ClassName.get(packageName, classOrInterfaceType.getName());
 
         List<Type> typeArgs = classOrInterfaceType.getTypeArgs();
         if (typeArgs.isEmpty()) {

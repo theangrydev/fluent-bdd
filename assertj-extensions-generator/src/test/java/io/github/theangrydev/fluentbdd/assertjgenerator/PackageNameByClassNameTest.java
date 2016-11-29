@@ -34,11 +34,20 @@ public class PackageNameByClassNameTest {
     private static final String DEFAULT_PACKAGE_NAME = "default";
 
     @Test
-    public void testStaticImportsAreFilteredOut() {
-        ImportDeclaration staticImport = new ImportDeclaration(UNKNOWN, new NameExpr("import static java.util.Collections.singletonList;"), true, false);
+    public void staticImportsAreFilteredOut() {
+        ImportDeclaration staticImport = new ImportDeclaration(UNKNOWN, new NameExpr("static java.util.Collections.singletonList"), true, false);
 
         CompilationUnit compilationUnit = new CompilationUnit(new PackageDeclaration(new NameExpr("io.github.theangrydev.fluentbdd.assertjgenerator")), singletonList(staticImport), emptyList());
 
         assertThat(packageNameByClassName(compilationUnit, DEFAULT_PACKAGE_NAME).packageName("singletonList")).isEqualTo(DEFAULT_PACKAGE_NAME);
+    }
+
+    @Test
+    public void canLookUpPackageNameByClassName() {
+        ImportDeclaration staticImport = new ImportDeclaration(UNKNOWN, new NameExpr("org.assertj.core.api.filter.Filters"), false, false);
+
+        CompilationUnit compilationUnit = new CompilationUnit(new PackageDeclaration(new NameExpr("io.github.theangrydev.fluentbdd.assertjgenerator")), singletonList(staticImport), emptyList());
+
+        assertThat(packageNameByClassName(compilationUnit, DEFAULT_PACKAGE_NAME).packageName("Filters")).isEqualTo("org.assertj.core.api.filter");
     }
 }

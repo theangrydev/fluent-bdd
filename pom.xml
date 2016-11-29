@@ -145,6 +145,7 @@
                                 <arg>-Werror</arg>
                                 <arg>-Xlint:all</arg>
                                 <arg>-Xlint:-serial</arg>
+                                <arg>-Xlint:-processing</arg>
                                 <arg>-Xep:ClassCanBeStatic:OFF</arg>
                             </compilerArgs>
                         </configuration>

@@ -19,17 +19,18 @@ package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import com.github.javaparser.ast.type.Type;
 import junit.framework.TestCase;
+import org.junit.Test;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.TypeNameDetermination.typeNameDetermination;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
-public class TypeNameDeterminationTest extends TestCase {
+public class TypeNameDeterminationTest {
 
     private final TypeNameDetermination typeNameDetermination = typeNameDetermination(emptyList(), mock(PackageNameByClassName.class));
 
+    @Test
     public void testUnsupportedType() {
         assertThatThrownBy(() -> typeNameDetermination.determineTypeName(mock(Type.class)))
                 .isInstanceOf(UnsupportedOperationException.class);

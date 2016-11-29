@@ -21,7 +21,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.NameExpr;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import static com.github.javaparser.Range.UNKNOWN;
 import static io.github.theangrydev.fluentbdd.assertjgenerator.PackageNameByClassName.packageNameByClassName;
@@ -29,11 +29,11 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
-public class PackageNameByClassNameTest extends TestCase {
+public class PackageNameByClassNameTest {
 
     private static final String DEFAULT_PACKAGE_NAME = "default";
 
+    @Test
     public void testStaticImportsAreFilteredOut() {
         ImportDeclaration staticImport = new ImportDeclaration(UNKNOWN, new NameExpr("import static java.util.Collections.singletonList;"), true, false);
 

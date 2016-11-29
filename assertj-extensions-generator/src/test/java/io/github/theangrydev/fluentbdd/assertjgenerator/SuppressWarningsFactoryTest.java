@@ -17,15 +17,15 @@
  */
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
-import junit.framework.TestCase;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.Test;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsAnnotation.suppressWarnings;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
-public class SuppressWarningsFactoryTest extends TestCase {
+public class SuppressWarningsFactoryTest {
 
+    @Test
     public void testSuppressWarnings() {
         SuppressWarnings unused = suppressWarnings("unused");
 
@@ -33,6 +33,7 @@ public class SuppressWarningsFactoryTest extends TestCase {
         assertThat(unused.value()).containsExactly("unused");
     }
 
+    @Test
     public void testEqualsAndHashCode() {
         EqualsVerifier.forClass(SuppressWarningsAnnotation.class).verify();
     }

@@ -17,10 +17,10 @@
  */
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
-import junit.framework.TestCase;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,11 +28,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 @Test is not working for some strange reason...
-public class WithFluentAssertJGeneratorMojoTest extends TestCase {
+public class WithFluentAssertJGeneratorMojoTest {
 
+    @Test
     public void testGeneratesWithFluentAssertJFile() throws MojoFailureException, MojoExecutionException, IOException {
         Path tempDirectory = Files.createTempDirectory(getClass().getName());
 

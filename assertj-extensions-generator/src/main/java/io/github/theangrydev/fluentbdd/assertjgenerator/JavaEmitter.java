@@ -31,9 +31,9 @@ import org.assertj.core.api.WithAssertions;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsAnnotation.suppressWarnings;
+import static io.github.theangrydev.fluentbdd.assertjgenerator.TypeNameDetermination.typeNameDetermination;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.*;
 
@@ -65,13 +65,11 @@ public final class JavaEmitter {
     private static final SuppressWarnings SUPPRESS_WARNINGS_UNCHECKED = suppressWarnings("unchecked");
     private static final SuppressWarnings SUPPRESS_WARNINGS_PMD = suppressWarnings("PMD");
 
-    private final PackageNameByClassName packageNameByClassName;
     private final ThenMethodCodeEmitter thenMethodCodeEmitter;
     private final JavadocEmitter javadocEmitter;
     private final CompilationUnit compilationUnit;
 
-    private JavaEmitter(PackageNameByClassName packageNameByClassName, ThenMethodCodeEmitter thenMethodCodeEmitter, JavadocEmitter javadocEmitter, CompilationUnit compilationUnit) {
-        this.packageNameByClassName = packageNameByClassName;
+    private JavaEmitter(ThenMethodCodeEmitter thenMethodCodeEmitter, JavadocEmitter javadocEmitter, CompilationUnit compilationUnit) {
         this.thenMethodCodeEmitter = thenMethodCodeEmitter;
         this.javadocEmitter = javadocEmitter;
         this.compilationUnit = compilationUnit;
@@ -81,9 +79,8 @@ public final class JavaEmitter {
         InputStream assertionsSource = JavaEmitter.class.getClassLoader().getResourceAsStream(ASSERTJ_ASSERTIONS_JAVA_FILE_RESOURCE_PATH);
         CompilationUnit compilationUnit = parse(assertionsSource);
         JavadocEmitter javadocEmitter = new JavadocEmitter(ASSERT_THAT_METHOD_PREFIX);
-        PackageNameByClassName packageNameByClassName = new PackageNameByClassName();
         ThenMethodCodeEmitter thenMethodCodeEmitter = new ThenMethodCodeEmitter(DELEGATE_FIELD_NAME);
-        return new JavaEmitter(packageNameByClassName, thenMethodCodeEmitter, javadocEmitter, compilationUnit);
+        return new JavaEmitter(thenMethodCodeEmitter, javadocEmitter, compilationUnit);
     }
 
     public JavaFile delegateWithAssertions(String outputPackage) {
@@ -144,12 +141,12 @@ public final class JavaEmitter {
     }
 
     private MethodSpec methodSpec(MethodDeclaration methodDeclaration, String thenMethodPrefix) throws ClassNotFoundException {
-        Map<String, String> packageNames = this.packageNameByClassName.packageNameByClassName(compilationUnit);
+        PackageNameByClassName packageNames = PackageNameByClassName.packageNameByClassName(compilationUnit, ASSERTJ_API_PACKAGE);
 
         List<TypeVariableName> rawTypeVariableNames = methodDeclaration.getTypeParameters().stream()
                 .map(typeParameter -> TypeVariableName.get(typeParameter.getName()))
                 .collect(toList());
-        TypeNameDetermination typeNameDetermination = new TypeNameDetermination(rawTypeVariableNames, packageNames, ASSERTJ_API_PACKAGE);
+        TypeNameDetermination typeNameDetermination = typeNameDetermination(rawTypeVariableNames, packageNames);
 
         List<TypeVariableName> boundTypeVariableNames = methodDeclaration.getTypeParameters().stream()
                 .map(typeParameter -> typeVariableName(typeParameter, typeNameDetermination))

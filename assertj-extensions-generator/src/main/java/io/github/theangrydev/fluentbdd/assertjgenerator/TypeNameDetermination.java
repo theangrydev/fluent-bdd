@@ -18,6 +18,7 @@
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import com.github.javaparser.ast.type.*;
+import com.github.javaparser.ast.visitor.GenericVisitorAdapter;
 import com.squareup.javapoet.*;
 
 import java.util.List;
@@ -25,77 +26,78 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove PMD suppression
-@SuppressWarnings("PMD")
-public class TypeNameDetermination {
+public final class TypeNameDetermination extends GenericVisitorAdapter<TypeName, Type> {
 
-    private final List<TypeVariableName> typeVariableNames;
-    private final Map<String, String> packageNameByClassName;
-    private final String defaultPackageName;
+    private final Map<String, TypeVariableName> typeVariableNames;
+    private final PackageNameByClassName packageNameByClassName;
 
-    public TypeNameDetermination(List<TypeVariableName> typeVariableNames, Map<String, String> packageNameByClassName, String defaultPackageName) {
+    private TypeNameDetermination(Map<String, TypeVariableName> typeVariableNames, PackageNameByClassName packageNameByClassName) {
         this.typeVariableNames = typeVariableNames;
         this.packageNameByClassName = packageNameByClassName;
-        this.defaultPackageName = defaultPackageName;
+    }
+
+    public static TypeNameDetermination typeNameDetermination(List<TypeVariableName> typeVariableNames, PackageNameByClassName packageNameByClassName) {
+        Map<String, TypeVariableName> typeVariableNameByName = typeVariableNames.stream()
+                .collect(toMap(typeVariableName -> typeVariableName.name, identity()));
+        return new TypeNameDetermination(typeVariableNameByName, packageNameByClassName);
     }
 
     public TypeName determineTypeName(Type type) {
-        if (type instanceof VoidType) {
-            return TypeName.VOID;
+        TypeName typeName = type.accept(this, type);
+        if (typeName == null) {
+            throw new UnsupportedOperationException("Unsupported type: " + type);
         }
-        if (type instanceof ClassOrInterfaceType) {
-            ClassOrInterfaceType classOrInterfaceType = (ClassOrInterfaceType) type;
-            Optional<TypeVariableName> typeVariableName = typeVariableNames.stream()
-                    .filter(name -> name.name.equals(classOrInterfaceType.getName()))
-                    .findFirst();
-            if (typeVariableName.isPresent()) {
-                return typeVariableName.get();
-            }
-            ClassName rawType = ClassName.get(packageName(packageNameByClassName, classOrInterfaceType.getName()), classOrInterfaceType.getName());
-
-            List<Type> typeArgs = classOrInterfaceType.getTypeArgs();
-            if (typeArgs.isEmpty()) {
-                return rawType;
-            }
-
-            TypeName[] typeNames = typeArgs.stream().map(this::determineTypeName).toArray(TypeName[]::new);
-            return ParameterizedTypeName.get(rawType, typeNames);
-        }
-        if (type instanceof WildcardType) {
-            WildcardType wildcardType = (WildcardType) type;
-            if (wildcardType.getExtends() != null) {
-                return WildcardTypeName.subtypeOf(determineTypeName(wildcardType.getExtends()));
-            }
-            if (wildcardType.getSuper() != null) {
-                return WildcardTypeName.supertypeOf(determineTypeName(wildcardType.getSuper()));
-            }
-            return WildcardTypeName.subtypeOf(Object.class);
-        }
-        if (type instanceof PrimitiveType) {
-            PrimitiveType primitiveType = (PrimitiveType) type;
-            return primitiveTypeToTypeName(primitiveType);
-        }
-        if (type instanceof ReferenceType) {
-            ReferenceType referenceType = (ReferenceType) type;
-            if (referenceType.getArrayCount() == 0) {
-                return determineTypeName(referenceType.getType());
-            } else {
-                return ArrayTypeName.of(determineTypeName(referenceType.getType()));
-            }
-        }
-        throw new UnsupportedOperationException("Unsupported type: " + type);
+        return typeName;
     }
 
-    private String packageName(Map<String, String> packageName, String name) {
-        try {
-            return Class.forName("java.lang." + name).getPackage().getName();
-        } catch (ClassNotFoundException e) {
-            return ofNullable(packageName.get(name)).orElse(defaultPackageName);
+    @Override
+    public TypeName visit(VoidType voidType, Type type) {
+        return TypeName.VOID;
+    }
+
+    @Override
+    public TypeName visit(ClassOrInterfaceType classOrInterfaceType, Type type) {
+        Optional<TypeVariableName> typeVariableName = ofNullable(typeVariableNames.get(classOrInterfaceType.getName()));
+        if (typeVariableName.isPresent()) {
+            return typeVariableName.get();
+        }
+        ClassName rawType = ClassName.get(packageNameByClassName.packageName(classOrInterfaceType.getName()), classOrInterfaceType.getName());
+
+        List<Type> typeArgs = classOrInterfaceType.getTypeArgs();
+        if (typeArgs.isEmpty()) {
+            return rawType;
+        }
+        TypeName[] typeNames = typeArgs.stream()
+                .map(typeArg -> typeArg.accept(this, type))
+                .toArray(TypeName[]::new);
+        return ParameterizedTypeName.get(rawType, typeNames);
+    }
+
+    @Override
+    public TypeName visit(WildcardType wildcardType, Type type) {
+        if (wildcardType.getExtends() != null) {
+            return WildcardTypeName.subtypeOf(determineTypeName(wildcardType.getExtends()));
+        }
+        if (wildcardType.getSuper() != null) {
+            return WildcardTypeName.supertypeOf(determineTypeName(wildcardType.getSuper()));
+        }
+        return WildcardTypeName.subtypeOf(Object.class);
+    }
+
+    @Override
+    public TypeName visit(ReferenceType referenceType, Type type) {
+        if (referenceType.getArrayCount() == 0) {
+            return determineTypeName(referenceType.getType());
+        } else {
+            return ArrayTypeName.of(determineTypeName(referenceType.getType()));
         }
     }
 
-    private TypeName primitiveTypeToTypeName(PrimitiveType primitiveType) {
+    @Override
+    public TypeName visit(PrimitiveType primitiveType, Type type) {
         switch (primitiveType.getType()) {
             case Boolean:
                 return TypeName.BOOLEAN;

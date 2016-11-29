@@ -23,28 +23,46 @@ import com.github.javaparser.ast.ImportDeclaration;
 import java.util.Map;
 
 import static java.util.Arrays.stream;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
 
-public class PackageNameByClassName {
+public final class PackageNameByClassName {
 
-    public Map<String, String> packageNameByClassName(CompilationUnit compilationUnit) {
-        return compilationUnit.getImports().stream()
-                .filter(importDeclaration -> !importDeclaration.isStatic())
-                .collect(toMap(this::className, this::packageName));
+    private final Map<String, String> packageNames;
+    private final String defaultPackageName;
+
+    private PackageNameByClassName(Map<String, String> packageNames, String defaultPackageName) {
+        this.packageNames = packageNames;
+        this.defaultPackageName = defaultPackageName;
     }
 
-    private String className(ImportDeclaration importDeclaration) {
+    public static PackageNameByClassName packageNameByClassName(CompilationUnit compilationUnit, String defaultPackageName) {
+        Map<String, String> packageNames = compilationUnit.getImports().stream()
+                .filter(importDeclaration -> !importDeclaration.isStatic())
+                .collect(toMap(PackageNameByClassName::className, PackageNameByClassName::packageName));
+        return new PackageNameByClassName(packageNames, defaultPackageName);
+    }
+
+    public String packageName(String className) {
+        try {
+            return Class.forName("java.lang." + className).getPackage().getName();
+        } catch (ClassNotFoundException e) {
+            return ofNullable(packageNames.get(className)).orElse(defaultPackageName);
+        }
+    }
+
+    private static String className(ImportDeclaration importDeclaration) {
         String[] nameParts = nameParts(importDeclaration);
         return nameParts[nameParts.length - 1];
     }
 
-    private String packageName(ImportDeclaration importDeclaration) {
+    private static String packageName(ImportDeclaration importDeclaration) {
         String[] nameParts = nameParts(importDeclaration);
         return stream(nameParts).limit(nameParts.length - 1L).collect(joining("."));
     }
 
-    private String[] nameParts(ImportDeclaration importDeclaration) {
+    private static String[] nameParts(ImportDeclaration importDeclaration) {
         String name = importDeclaration.getName().toString();
         return name.split("\\.");
     }

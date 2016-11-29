@@ -18,6 +18,7 @@
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import junit.framework.TestCase;
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.SuppressWarningsAnnotation.suppressWarnings;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,5 +31,9 @@ public class SuppressWarningsFactoryTest extends TestCase {
 
         assertThat(unused.annotationType()).isEqualTo(SuppressWarnings.class);
         assertThat(unused.value()).containsExactly("unused");
+    }
+
+    public void testEqualsAndHashCode() {
+        EqualsVerifier.forClass(SuppressWarningsAnnotation.class).verify();
     }
 }

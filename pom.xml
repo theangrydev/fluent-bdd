@@ -102,6 +102,11 @@
             <version>${assertj.core.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>nl.jqno.equalsverifier</groupId>
+            <artifactId>equalsverifier</artifactId>
+            <version>2.1.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -302,6 +307,10 @@
                         <param>acceptance*</param>
                     </targetTests>
                     <exportLineCoverage>true</exportLineCoverage>
+                    <excludedMethods>
+                        <excludedMethod>hashCode</excludedMethod>
+                        <excludedMethod>equals</excludedMethod>
+                    </excludedMethods>
                 </configuration>
                 <executions>
                     <execution>

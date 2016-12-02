@@ -50,4 +50,11 @@ public class PackageNameByClassNameTest {
 
         assertThat(packageNameByClassName(compilationUnit, DEFAULT_PACKAGE_NAME).packageName("Filters")).isEqualTo("org.assertj.core.api.filter");
     }
+
+    @Test
+    public void javaLangClasses() {
+        CompilationUnit compilationUnit = new CompilationUnit(new PackageDeclaration(new NameExpr("io.github.theangrydev.fluentbdd.assertjgenerator")), emptyList(), emptyList());
+
+        assertThat(packageNameByClassName(compilationUnit, DEFAULT_PACKAGE_NAME).packageName("Integer")).isEqualTo("java.lang");
+    }
 }

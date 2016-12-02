@@ -18,6 +18,7 @@
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
 import com.github.javaparser.ParseException;
+import com.google.common.annotations.VisibleForTesting;
 import com.squareup.javapoet.JavaFile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -51,10 +52,20 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
     @Parameter(defaultValue = "io.github.theangrydev.fluentbdd.assertj", required = true)
     private String outputPackage;
 
+    private final JavaEmitter javaEmitter;
+
+    public WithFluentAssertJGeneratorMojo() {
+        this(javaEmitter());
+    }
+
+    @VisibleForTesting
+    WithFluentAssertJGeneratorMojo(JavaEmitter javaEmitter) {
+        this.javaEmitter = javaEmitter;
+    }
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            JavaEmitter javaEmitter = javaEmitter();
             JavaFile delegateWithAssertions = javaEmitter.delegateWithAssertions(outputPackage);
             JavaFile withFluentAssertJ = javaEmitter.withFluentAssertJ(outputPackage);
 

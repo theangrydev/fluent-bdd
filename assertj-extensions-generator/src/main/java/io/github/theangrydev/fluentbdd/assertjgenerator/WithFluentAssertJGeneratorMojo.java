@@ -22,6 +22,8 @@ import com.squareup.javapoet.JavaFile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -31,34 +33,22 @@ import java.nio.file.Path;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.JavaEmitter.javaEmitter;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 
-/**
- * @goal generate-sources
- * @phase generate-sources
- */
 @SuppressWarnings({
     "PMD.DefaultPackage", // Needed by the maven plugin convention
     "PMD.AvoidCatchingGenericException" // Needed to ensure uncaught exceptions are logged
 })
+@Mojo(name = "generate-sources", defaultPhase = GENERATE_SOURCES)
 public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
 
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
+    @Parameter(property = "project", readonly = true, required = true)
     private MavenProject project;
 
-    /**
-     * @parameter default-value="target/generated-sources/assertj-extensions-generator"
-     * @required
-     */
+    @Parameter(defaultValue = "target/generated-sources/assertj-extensions-generator", required = true)
     private File outputDirectory;
 
-    /**
-     * @parameter default-value="io.github.theangrydev.fluentbdd.assertj"
-     * @required
-     */
+    @Parameter(defaultValue = "io.github.theangrydev.fluentbdd.assertj", required = true)
     private String outputPackage;
 
     @Override

@@ -132,6 +132,7 @@
                             <compilerArgs>
                                 <arg>-Werror</arg>
                                 <arg>-Xlint:all</arg>
+                                <arg>-Xlint:-processing</arg>
                             </compilerArgs>
                         </configuration>
                     </execution>

@@ -24,9 +24,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
 
-    <!-- TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove these excludes -->
+    <!-- Cannot have a proper constructor because of the way the maven plugin API works -->
     <Match>
         <Class name="io.github.theangrydev.fluentbdd.assertjgenerator.WithFluentAssertJGeneratorMojo"/>
+        <BugPattern name="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
     </Match>
 
     <!-- These bugs are already tested by the PMD rules -->

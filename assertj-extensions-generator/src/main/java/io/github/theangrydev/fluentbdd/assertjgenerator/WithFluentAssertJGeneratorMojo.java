@@ -17,6 +17,7 @@
  */
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
+import com.github.javaparser.ParseException;
 import com.squareup.javapoet.JavaFile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -46,19 +47,19 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    MavenProject project;
+    private MavenProject project;
 
     /**
      * @parameter default-value="target/generated-sources/assertj-extensions-generator"
      * @required
      */
-    File outputDirectory;
+    private File outputDirectory;
 
     /**
      * @parameter default-value="io.github.theangrydev.fluentbdd.assertj"
      * @required
      */
-    String outputPackage;
+    private String outputPackage;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -71,7 +72,7 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
             writeJavaFile(withFluentAssertJ);
 
             project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
-        } catch (Exception any) {
+        } catch (IOException | ParseException | ClassNotFoundException | RuntimeException any) {
             getLog().error("Problem generating", any);
         }
     }
@@ -96,5 +97,17 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
         return outputDirectory.toPath()
                 .resolve(outputPackage.replace('.', File.separatorChar))
                 .resolve(outputClassName.typeSpec.name + ".java");
+    }
+
+    public void setOutputPackage(String outputPackage) {
+        this.outputPackage = outputPackage;
+    }
+
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    public void setOutputDirectory(File outputDirectory) {
+        this.outputDirectory = outputDirectory;
     }
 }

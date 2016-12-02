@@ -38,9 +38,9 @@ public class WithFluentAssertJGeneratorMojoTest {
         Path tempDirectory = Files.createTempDirectory(getClass().getName());
 
         WithFluentAssertJGeneratorMojo generatorMojo = new WithFluentAssertJGeneratorMojo();
-        generatorMojo.project = mock(MavenProject.class);
-        generatorMojo.outputDirectory = tempDirectory.toFile();
-        generatorMojo.outputPackage = "io.github.theangrydev.fluentbdd.assertj";
+        generatorMojo.setProject(mock(MavenProject.class));
+        generatorMojo.setOutputDirectory(tempDirectory.toFile());
+        generatorMojo.setOutputPackage("io.github.theangrydev.fluentbdd.assertj");
 
         generatorMojo.execute();
 

@@ -27,7 +27,6 @@ import org.mockito.exceptions.verification.VerificationInOrderFailure;
 
 import static org.mockito.Mockito.mock;
 
-//TODO: https://github.com/theangrydev/fluent-bdd/issues/13 rewrite these tests, they are crap and just for coverage at the moment
 public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, WithAssertions {
 
     @Rule
@@ -58,7 +57,6 @@ public class FluentMockitoTest implements WithFluentMockito<FluentMockitoTest>, 
             given(dependency).willReturn(10).when().someMethod("thing");
         }).hasMessage("The 'given' steps must be specified before the 'when' and 'then' steps");
 
-        // TODO: look at FluentBddTest and see if there is something common that can be extracted around making the test green when in a bad state
         // Just to make the other validation steps pass
         thenVerify(dependency).someMethod("thing");
     }

@@ -29,7 +29,6 @@ import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
 
-//TODO: https://github.com/theangrydev/fluent-bdd/issues/13 rewrite these tests, they are crap and just for coverage at the moment
 public class FluentMockitoListenerTest implements WithAssertions {
 
     private final MockitoFramework mockitoFramework = mock(MockitoFramework.class);

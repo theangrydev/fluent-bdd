@@ -40,7 +40,7 @@ public class WithFluentAssertJTest implements WithFluentAssertJ<WithFluentAssert
     private int intResult;
 
     @Test
-    public void whenCallingCanSetIntResult() {
+    public void thenAssertionsExist() {
         given(someDependency);
         whenCalling(() -> intResult = 42);
         then(theResult().intResult).isLessThan(43);

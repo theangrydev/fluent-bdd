@@ -72,7 +72,7 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <configuration combine.self="override">
-                    <skip>true</skip><!-- TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove and add test coverage -->
+                    <skip>true</skip><!-- The generated sources are already tested in the assertj-extensions-generator module -->
                 </configuration>
             </plugin>
         </plugins>

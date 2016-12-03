@@ -37,8 +37,6 @@ import static io.github.theangrydev.fluentbdd.assertjgenerator.TypeNameDetermina
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.*;
 
-// TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove PMD suppression
-@SuppressWarnings("PMD.TooManyMethods")
 public class JavaEmitter {
     private static final String ASSERTJ_API_PACKAGE = WithAssertions.class.getPackage().getName();
     private static final String ASSERTJ_ASSERTIONS_JAVA_FILE = WithAssertions.class.getSimpleName() + ".java";

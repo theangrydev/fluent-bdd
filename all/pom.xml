@@ -23,7 +23,7 @@
     <parent>
         <artifactId>fluent-bdd</artifactId>
         <groupId>io.github.theangrydev.fluentbdd</groupId>
-        <version>8.2.2</version>
+        <version>8.2.3-SNAPSHOT</version>
     </parent>
     <artifactId>all</artifactId>
 

@@ -17,7 +17,6 @@
  */
 package io.github.theangrydev.fluentbdd.assertjgenerator;
 
-import com.github.javaparser.ParseException;
 import com.google.common.annotations.VisibleForTesting;
 import com.squareup.javapoet.JavaFile;
 import org.apache.maven.plugin.AbstractMojo;
@@ -29,17 +28,12 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static io.github.theangrydev.fluentbdd.assertjgenerator.JavaEmitter.javaEmitter;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 
-@SuppressWarnings({
-    "PMD.DefaultPackage", // Needed by the maven plugin convention
-    "PMD.AvoidCatchingGenericException" // Needed to ensure uncaught exceptions are logged
-})
+@SuppressWarnings("PMD.AvoidCatchingGenericException") // Needed to ensure uncaught exceptions are logged
 @Mojo(name = "generate-sources", defaultPhase = GENERATE_SOURCES)
 public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
 
@@ -52,14 +46,18 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
     @Parameter(defaultValue = "io.github.theangrydev.fluentbdd.assertj", required = true)
     private String outputPackage;
 
+    private final JavaFileReader javaFileReader;
+    private final JavaFileWriter javaFileWriter;
     private final JavaEmitter javaEmitter;
 
     public WithFluentAssertJGeneratorMojo() {
-        this(javaEmitter());
+        this(new JavaFileReader(), new JavaFileWriter(), javaEmitter());
     }
 
     @VisibleForTesting
-    WithFluentAssertJGeneratorMojo(JavaEmitter javaEmitter) {
+    WithFluentAssertJGeneratorMojo(JavaFileReader javaFileReader, JavaFileWriter javaFileWriter, JavaEmitter javaEmitter) {
+        this.javaFileReader = javaFileReader;
+        this.javaFileWriter = javaFileWriter;
         this.javaEmitter = javaEmitter;
     }
 
@@ -73,25 +71,22 @@ public class WithFluentAssertJGeneratorMojo extends AbstractMojo {
             writeJavaFile(withFluentAssertJ);
 
             project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
-        } catch (IOException | ParseException | ClassNotFoundException | RuntimeException any) {
+        } catch (IOException | ClassNotFoundException | RuntimeException any) {
             getLog().error("Problem generating", any);
         }
     }
 
     private void writeJavaFile(JavaFile javaFile) throws IOException {
-        javaFile.writeTo(outputDirectory);
-        getLog().info("Wrote " + outputFile(javaFile));
+        javaFileWriter.write(outputDirectory, javaFile);
+        Path outputFile = outputFile(javaFile);
+        getLog().info("Wrote " + outputFile);
         if (getLog().isDebugEnabled()) {
-            logFile(javaFile);
+            logFile(outputFile);
         }
     }
 
-    private void logFile(JavaFile outputClassName) throws IOException {
-        getLog().debug("File content: " + fileContent(outputClassName));
-    }
-
-    private String fileContent(JavaFile outputClassName) throws IOException {
-        return new String(Files.readAllBytes(outputFile(outputClassName)), UTF_8);
+    private void logFile(Path outputFile) throws IOException {
+        getLog().debug("File content: " + javaFileReader.fileContent(outputFile));
     }
 
     private Path outputFile(JavaFile outputClassName) {

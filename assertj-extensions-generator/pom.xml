@@ -101,14 +101,6 @@
                     </ignoredResourcePatterns>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <configuration combine.self="override">
-                    <skip>true</skip><!-- TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove and add test coverage -->
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

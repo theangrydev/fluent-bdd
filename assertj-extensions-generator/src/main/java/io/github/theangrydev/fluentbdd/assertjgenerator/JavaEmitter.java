@@ -89,7 +89,7 @@ public class JavaEmitter {
                 .build();
     }
 
-    public JavaFile withFluentAssertJ(String outputPackage) throws ParseException, ClassNotFoundException {
+    public JavaFile withFluentAssertJ(String outputPackage) throws ClassNotFoundException {
         return JavaFile.builder(outputPackage, withFluentAssertJTypeSpec(outputPackage, compilationUnit))
                 .indent("\t")
                 .skipJavaLangImports(true)

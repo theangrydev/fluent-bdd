@@ -24,73 +24,64 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.mockito.InOrder;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class WithFluentAssertJGeneratorMojoTest {
 
+    private static final JavaFile WITH_FLUENT_ASSERT_J = javaFile("WithFluentAssertJ");
+    private static final JavaFile DELEGATE_WITH_ASSERTIONS = javaFile("DelegateWithAssertions");
     private static final String OUTPUT_PACKAGE = "io.github.theangrydev.fluentbdd.assertj";
+    private static final Path OUTPUT_DIRECTORY = Paths.get("/some/directory");
 
+    private final JavaFileReader javaFileReader = mock(JavaFileReader.class);
+    private final JavaFileWriter javaFileWriter = mock(JavaFileWriter.class);
     private final JavaEmitter javaEmitter = mock(JavaEmitter.class);
     private final Log log = mock(Log.class);
     private final MavenProject mavenProject = mock(MavenProject.class);
 
-    @Rule
-    public TemporaryFolder outputDirectory = new TemporaryFolder();
-
     @Test
-    public void testGeneratesWithFluentAssertJFile() throws MojoFailureException, MojoExecutionException, IOException {
-        WithFluentAssertJGeneratorMojo generatorMojo = new WithFluentAssertJGeneratorMojo();
-        generatorMojo.setProject(mock(MavenProject.class));
-        generatorMojo.setOutputDirectory(outputDirectory.getRoot());
-        generatorMojo.setOutputPackage(OUTPUT_PACKAGE);
+    public void testGeneratesWithFluentAssertJFile() throws MojoFailureException, MojoExecutionException, IOException, ParseException, ClassNotFoundException {
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         generatorMojo.execute();
 
-        Path delegateWithAssertionsFile = packagePath().resolve("DelegateWithAssertions.java");
-        assertEquals(toString(Paths.get("./src/test/resources/DelegateWithAssertions.java")), toString(delegateWithAssertionsFile));
-
-        Path withFluentAssertJFile = packagePath().resolve("WithFluentAssertJ.java");
-        assertEquals(toString(Paths.get("./src/test/resources/WithFluentAssertJ.java")), toString(withFluentAssertJFile));
+        verify(javaFileWriter).write(OUTPUT_DIRECTORY.toFile(), DELEGATE_WITH_ASSERTIONS);
+        verify(javaFileWriter).write(OUTPUT_DIRECTORY.toFile(), WITH_FLUENT_ASSERT_J);
     }
 
     @Test
     public void outputDirectoryIsAddedAsAProjectCompileSourceRoot() throws MojoFailureException, MojoExecutionException, ParseException, ClassNotFoundException {
-        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks();
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         generatorMojo.execute();
 
-        verify(mavenProject).addCompileSourceRoot(outputDirectory.getRoot().getAbsolutePath());
+        verify(mavenProject).addCompileSourceRoot(OUTPUT_DIRECTORY.toFile().getAbsolutePath());
         InOrder inOrder = inOrder(log, mavenProject);
-        inOrder.verify(log).info("Wrote " + packagePath().resolve("DelegateWithAssertions.java"));
-        inOrder.verify(log).info("Wrote " + packagePath().resolve("WithFluentAssertJ.java"));
+        inOrder.verify(log).info("Wrote " + packagePath(OUTPUT_DIRECTORY).resolve("DelegateWithAssertions.java"));
+        inOrder.verify(log).info("Wrote " + packagePath(OUTPUT_DIRECTORY).resolve("WithFluentAssertJ.java"));
     }
 
     @Test
     public void infoLogging() throws MojoFailureException, MojoExecutionException, ParseException, ClassNotFoundException {
-        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks();
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         generatorMojo.execute();
 
-        verify(log).info("Wrote " + packagePath().resolve("DelegateWithAssertions.java"));
-        verify(log).info("Wrote " + packagePath().resolve("WithFluentAssertJ.java"));
+        verify(log).info("Wrote " + packagePath(OUTPUT_DIRECTORY).resolve("DelegateWithAssertions.java"));
+        verify(log).info("Wrote " + packagePath(OUTPUT_DIRECTORY).resolve("WithFluentAssertJ.java"));
         verify(log, never()).debug(any(CharSequence.class));
     }
 
     @Test
     public void debugLoggingDisabled() throws MojoFailureException, MojoExecutionException, ParseException, ClassNotFoundException {
-        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks();
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         when(log.isDebugEnabled()).thenReturn(false);
 
@@ -100,19 +91,22 @@ public class WithFluentAssertJGeneratorMojoTest {
     }
 
     @Test
-    public void debugLoggingEnabled() throws MojoFailureException, MojoExecutionException, ParseException, ClassNotFoundException {
-        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks();
+    public void debugLoggingEnabled() throws MojoFailureException, MojoExecutionException, ParseException, ClassNotFoundException, IOException {
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         when(log.isDebugEnabled()).thenReturn(true);
+        when(javaFileReader.fileContent(packagePath(OUTPUT_DIRECTORY).resolve("DelegateWithAssertions.java"))).thenReturn("DelegateWithAssertions content");
+        when(javaFileReader.fileContent(packagePath(OUTPUT_DIRECTORY).resolve("WithFluentAssertJ.java"))).thenReturn("WithFluentAssertJ content");
 
         generatorMojo.execute();
 
-        verify(log, times(2)).debug(startsWith("File content: package io.github.theangrydev.fluentbdd.assertj;"));
+        verify(log).debug("File content: DelegateWithAssertions content");
+        verify(log).debug("File content: WithFluentAssertJ content");
     }
 
     @Test
     public void uncaughtExceptionsAreLogged() throws ParseException, ClassNotFoundException, MojoFailureException, MojoExecutionException {
-        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks();
+        WithFluentAssertJGeneratorMojo generatorMojo = mojoWithMocks(OUTPUT_DIRECTORY);
 
         RuntimeException uncaughtException = new RuntimeException("boom");
         when(javaEmitter.withFluentAssertJ(any())).thenThrow(uncaughtException);
@@ -122,28 +116,24 @@ public class WithFluentAssertJGeneratorMojoTest {
         verify(log).error("Problem generating", uncaughtException);
     }
 
-    private WithFluentAssertJGeneratorMojo mojoWithMocks() throws ParseException, ClassNotFoundException {
-        WithFluentAssertJGeneratorMojo generatorMojo = new WithFluentAssertJGeneratorMojo(javaEmitter);
+    private WithFluentAssertJGeneratorMojo mojoWithMocks(Path outputDirectory) throws ParseException, ClassNotFoundException {
+        WithFluentAssertJGeneratorMojo generatorMojo = new WithFluentAssertJGeneratorMojo(javaFileReader, javaFileWriter, javaEmitter);
         generatorMojo.setProject(mavenProject);
-        generatorMojo.setOutputDirectory(outputDirectory.getRoot());
+        generatorMojo.setOutputDirectory(outputDirectory.toFile());
         generatorMojo.setOutputPackage(OUTPUT_PACKAGE);
         generatorMojo.setLog(log);
 
-        when(javaEmitter.delegateWithAssertions(OUTPUT_PACKAGE)).thenReturn(javaFile("DelegateWithAssertions"));
-        when(javaEmitter.withFluentAssertJ(OUTPUT_PACKAGE)).thenReturn(javaFile("WithFluentAssertJ"));
+        when(javaEmitter.delegateWithAssertions(OUTPUT_PACKAGE)).thenReturn(DELEGATE_WITH_ASSERTIONS);
+        when(javaEmitter.withFluentAssertJ(OUTPUT_PACKAGE)).thenReturn(WITH_FLUENT_ASSERT_J);
         return generatorMojo;
     }
 
-    private Path packagePath() {
-        return outputDirectory.getRoot().toPath().resolve("io").resolve("github").resolve("theangrydev").resolve("fluentbdd").resolve("assertj");
+    private Path packagePath(Path outputDirectory) {
+        return outputDirectory.resolve("io").resolve("github").resolve("theangrydev").resolve("fluentbdd").resolve("assertj");
     }
 
-    private JavaFile javaFile(String className) {
+    private static JavaFile javaFile(String className) {
         TypeSpec typeSpec = TypeSpec.classBuilder(className).build();
         return JavaFile.builder(OUTPUT_PACKAGE, typeSpec).build();
-    }
-
-    private String toString(Path file) throws IOException {
-        return new String(Files.readAllBytes(file), UTF_8).replace("\r\n", "\n");
     }
 }

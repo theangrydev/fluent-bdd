@@ -115,15 +115,6 @@ public class WithFluentBddTest implements WithFluentBdd<WithFluentBddTest.TestRe
     private FluentBdd<TestResult> fluentBdd;
 
     @Mock
-    private Statement statement;
-
-    @Mock
-    private Statement base;
-
-    @Mock
-    private Description description;
-
-    @Mock
     private Given given;
 
     @Mock

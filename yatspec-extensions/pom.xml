@@ -43,9 +43,9 @@
 
         <!-- Test dependencies -->
         <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>3.4.1</version>
+            <groupId>io.github.theangrydev.thinhttpclient</groupId>
+            <artifactId>apache-adapter</artifactId>
+            <version>0.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

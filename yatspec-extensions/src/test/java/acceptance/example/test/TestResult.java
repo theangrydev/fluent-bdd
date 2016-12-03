@@ -18,13 +18,12 @@
 package acceptance.example.test;
 
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
-import okhttp3.Response;
+import io.github.theangrydev.thinhttpclient.api.Response;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

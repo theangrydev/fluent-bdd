@@ -17,44 +17,38 @@
  */
 package acceptance.example.production;
 
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.github.theangrydev.thinhttpclient.api.HttpClient;
+import io.github.theangrydev.thinhttpclient.api.RequestBuilder;
+import io.github.theangrydev.thinhttpclient.api.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import static io.github.theangrydev.thinhttpclient.apache.ApacheHttpClient.apacheHttpClient;
+import static io.github.theangrydev.thinhttpclient.api.Method.GET;
+
 public class OpenWeatherMapService {
 
-    private final OkHttpClient okHttpClient = new OkHttpClient();
-    private final HttpUrl weatherServiceUrl;
+    private final HttpClient httpClient = apacheHttpClient();
+    private final String weatherServiceUrl;
 
     public OpenWeatherMapService(String weatherServiceUrl) {
-        this.weatherServiceUrl = HttpUrl.parse(weatherServiceUrl);
+        this.weatherServiceUrl = weatherServiceUrl;
     }
 
     public String fetchWeatherFor(String city) {
-        HttpUrl url = weatherServiceUrl.newBuilder().addPathSegment("data").addPathSegment("2.5").addPathSegment("weather").setQueryParameter("q", city).build();
+        String url = weatherServiceUrl + "/data/2.5/weather?q=" + city;
         Response response = tryToFetchWeather(url);
-        return parseDescription(responseBody(response));
+        return parseDescription(response.body);
     }
 
     private String parseDescription(String responseBody) {
         return new JSONObject(responseBody).getJSONArray("weather").getJSONObject(0).getString("description");
     }
 
-    private String responseBody(Response response) {
+    private Response tryToFetchWeather(String url) {
         try {
-            return response.body().string();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not fetch body from response: " + response);
-        }
-    }
-
-    private Response tryToFetchWeather(HttpUrl url) {
-        try {
-            return okHttpClient.newCall(new Request.Builder().url(url).build()).execute();
+            return httpClient.execute(new RequestBuilder().method(GET).url(url));
         } catch (IOException ioException) {
             throw new RuntimeException("Could not fetch weather from: " + url, ioException);
         }

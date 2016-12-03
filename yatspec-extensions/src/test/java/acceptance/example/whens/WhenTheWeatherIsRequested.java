@@ -20,10 +20,12 @@ package acceptance.example.whens;
 import acceptance.example.test.TestInfrastructure;
 import acceptance.example.test.TestResult;
 import io.github.theangrydev.fluentbdd.core.When;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.github.theangrydev.thinhttpclient.api.Request;
+import io.github.theangrydev.thinhttpclient.api.RequestBuilder;
+import io.github.theangrydev.thinhttpclient.api.Response;
 import org.assertj.core.api.WithAssertions;
+
+import static io.github.theangrydev.thinhttpclient.api.Method.GET;
 
 public class WhenTheWeatherIsRequested implements When<TestResult>, WithAssertions {
 
@@ -48,8 +50,8 @@ public class WhenTheWeatherIsRequested implements When<TestResult>, WithAssertio
     }
 
     private Request weatherRequest(String baseUrl) {
-        HttpUrl weatherUrl = HttpUrl.parse(baseUrl).newBuilder().addPathSegment("weather").addQueryParameter("city", this.city).build();
-        return new Request.Builder().url(weatherUrl).build();
+        String weatherUrl = baseUrl + "/weather?city=" + this.city;
+        return new RequestBuilder().method(GET).url(weatherUrl).build();
     }
 
     public WhenTheWeatherIsRequested forCity(String city) {

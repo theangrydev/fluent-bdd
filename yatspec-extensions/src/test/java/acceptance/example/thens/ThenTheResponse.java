@@ -18,25 +18,14 @@
 package acceptance.example.thens;
 
 import acceptance.example.test.TestResult;
-import okhttp3.Response;
 import org.assertj.core.api.WithAssertions;
-
-import java.io.IOException;
 
 public class ThenTheResponse implements WithAssertions {
 
     private final String responseBody;
 
     public ThenTheResponse(TestResult testResult) {
-        responseBody = responseBody(testResult.response);
-    }
-
-    private String responseBody(Response response) {
-        try {
-            return response.body().string();
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not read body from response: " + response);
-        }
+        responseBody = testResult.response.body;
     }
 
     public ThenTheResponse isEqualTo(String response) {

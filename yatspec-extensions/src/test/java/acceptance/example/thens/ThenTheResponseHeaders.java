@@ -18,7 +18,7 @@
 package acceptance.example.thens;
 
 import acceptance.example.test.TestResult;
-import okhttp3.Response;
+import io.github.theangrydev.thinhttpclient.api.Response;
 import org.assertj.core.api.WithAssertions;
 
 public class ThenTheResponseHeaders implements WithAssertions {
@@ -30,7 +30,7 @@ public class ThenTheResponseHeaders implements WithAssertions {
     }
 
     public ThenTheResponseHeaders contains(String headerName) {
-        assertThat(response.headers().names()).contains(headerName);
+        assertThat(response.header(headerName)).isNotEmpty();
         return this;
     }
 }

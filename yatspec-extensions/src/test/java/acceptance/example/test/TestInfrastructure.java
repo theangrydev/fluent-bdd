@@ -23,9 +23,10 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import io.github.theangrydev.fluentbdd.yatspec.WriteOnlyTestItems;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.github.theangrydev.thinhttpclient.apache.ApacheHttpClient;
+import io.github.theangrydev.thinhttpclient.api.Request;
+import io.github.theangrydev.thinhttpclient.api.RequestBuilder;
+import io.github.theangrydev.thinhttpclient.api.Response;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static io.github.theangrydev.thinhttpclient.apache.ApacheHttpClient.apacheHttpClient;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
@@ -79,7 +81,7 @@ public class TestInfrastructure {
 
     public Response execute(Request request) {
         try {
-            return new OkHttpClient().newCall(request).execute();
+            return apacheHttpClient().execute(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -106,11 +108,11 @@ public class TestInfrastructure {
     }
 
     public void recordIncomingRequest(String caller, Request request) {
-        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", request.method(), caller, SYSTEM_NAME), request);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", request.method, caller, SYSTEM_NAME), request);
     }
 
     public void recordOutgoingResponse(String caller, Response response) {
-        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", response.code(), SYSTEM_NAME, caller), response);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(format("%s from %s to %s", response.status, SYSTEM_NAME, caller), response);
     }
 
     public void recordOutgoingRequest(String dependencyName, com.github.tomakehurst.wiremock.http.Request request) {

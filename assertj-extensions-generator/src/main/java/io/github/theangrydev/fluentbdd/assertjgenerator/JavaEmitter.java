@@ -39,7 +39,7 @@ import static javax.lang.model.element.Modifier.*;
 
 // TODO: https://github.com/theangrydev/fluent-bdd/issues/14 remove PMD suppression
 @SuppressWarnings("PMD.TooManyMethods")
-public final class JavaEmitter {
+public class JavaEmitter {
     private static final String ASSERTJ_API_PACKAGE = WithAssertions.class.getPackage().getName();
     private static final String ASSERTJ_ASSERTIONS_JAVA_FILE = WithAssertions.class.getSimpleName() + ".java";
     private static final String ASSERTJ_ASSERTIONS_JAVA_FILE_RESOURCE_PATH = ASSERTJ_API_PACKAGE.replace('.', '/') + "/" + ASSERTJ_ASSERTIONS_JAVA_FILE;

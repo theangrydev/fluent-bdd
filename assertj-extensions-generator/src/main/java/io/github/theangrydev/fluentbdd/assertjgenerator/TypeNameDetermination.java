@@ -46,7 +46,11 @@ public final class TypeNameDetermination extends GenericVisitorAdapter<TypeName,
     }
 
     public TypeName determineTypeName(Type type) {
-        return type.accept(this, type);
+        TypeName typeName = type.accept(this, type);
+        if (typeName == null) {
+            throw new UnsupportedOperationException("Unsupported type: " + type);
+        }
+        return typeName;
     }
 
     @Override

@@ -55,6 +55,15 @@ Dependency:
 ```
 You can also depend on the modules `core`, `assertj-extensions`, `hamcrest-extensions`, `mockito-extensions` and `yatspec-extensions` separately if you don't need all of them.
 
+## Module Stability
+| Module              | Stability     | Comments |
+| ------------------- | ------------- | -------- |
+| core                | Stable        | Used by my team on a daily basis, contains the bulk of the Fluent BDD framework |
+| yatspec-extensions  | Stable        | Used by my team on a daily basis, lightweight module that pulls in the [YatSpec](https://github.com/bodar/yatspec) dependency and some small integrations |
+| assertj-extensions  | Experimental  | No real world users yet, added since [AssertJ](http://joel-costigliola.github.io/assertj/) has lots of useful assertion methods that could come in handy |
+| hamcrest-extensions | Experimental  | No real world users yet, added since [Hamcrest](http://hamcrest.org/) is a popular framework that users might already be invested in |
+| mockito-extensions  | Experimental  | No real world users yet, developed as a curiosity to see how integration with [Mockito](http://site.mockito.org/) could be possible |
+
 ## Releases
 The versioning scheme follows [Semantic Versioning 2.0.0](http://semver.org/), to help you identify non backwards-compatible changes when you are upgrading.
 

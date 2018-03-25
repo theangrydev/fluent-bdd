@@ -8,7 +8,8 @@
 [![codebeat badge](https://codebeat.co/badges/d3718741-f398-41e0-a8d8-d2cb40c8a4d9)](https://codebeat.co/projects/github-com-theangrydev-fluent-bdd)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev.fluentbdd:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev.fluentbdd:fluent-bdd)
 
-# Fluent BDD
+![Fluent BDD logo](https://raw.githubusercontent.com/theangrydev/fluent-bdd/master/logo.png)
+
 [Example:](https://github.com/theangrydev/fluent-bdd/blob/master/yatspec-extensions/src/test/java/acceptance/ExampleTest.java)
 ```java
 @RunWith(SpecRunner.class)

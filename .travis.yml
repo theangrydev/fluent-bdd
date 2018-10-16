@@ -1,11 +1,6 @@
 # https://docs.travis-ci.com/user/customizing-the-build
 language: java
 jdk: oraclejdk8
-addons:
-  sonarcloud:
-    organization: "theangrydev-github"
-    token:
-      secure: $SONAR_TOKEN
 cache:
   directories:
     - $HOME/.m2
@@ -13,7 +8,7 @@ install: mvn install -DskipTests=true -Dorg.slf4j.simpleLogger.log.org.apache.ma
 script: mvn verify
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar; fi
+  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sona -Dsonar.projectKey=fluent-bdd -Dsonar.organization=theangrydev-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN; fi
 notifications:
   webhooks:
     urls:

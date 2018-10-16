@@ -1,3 +1,5 @@
+![Fluent BDD logo](https://raw.githubusercontent.com/theangrydev/fluent-bdd/master/logo.png)
+
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.theangrydev.fluentbdd/all.svg)](https://mvnrepository.com/artifact/io.github.theangrydev.fluentbdd/all)
 [![Javadoc](http://javadoc-badge.appspot.com/io.github.theangrydev.fluentbdd/all.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.github.theangrydev.fluentbdd/all)
 [![Gitter](https://badges.gitter.im/fluent-bdd/Lobby.svg)](https://gitter.im/fluent-bdd/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -8,8 +10,6 @@
 [![codebeat badge](https://codebeat.co/badges/d3718741-f398-41e0-a8d8-d2cb40c8a4d9)](https://codebeat.co/projects/github-com-theangrydev-fluent-bdd)
 
 [![Quality Gate](https://sonarcloud.io/api/project_badges/quality_gate?project=io.github.theangrydev.fluentbdd:fluent-bdd)](https://sonarcloud.io/dashboard?id=io.github.theangrydev.fluentbdd:fluent-bdd)
-
-![Fluent BDD logo](https://raw.githubusercontent.com/theangrydev/fluent-bdd/master/logo.png)
 
 [Example:](https://github.com/theangrydev/fluent-bdd/blob/master/yatspec-extensions/src/test/java/acceptance/ExampleTest.java)
 ```java

@@ -7,7 +7,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/93ca6effd928494a92b974ca585a9b2a)](https://www.codacy.com/app/liam-williams/fluent-bdd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=theangrydev/fluent-bdd&amp;utm_campaign=Badge_Grade)
 [![codebeat badge](https://codebeat.co/badges/d3718741-f398-41e0-a8d8-d2cb40c8a4d9)](https://codebeat.co/projects/github-com-theangrydev-fluent-bdd)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=io.github.theangrydev.fluentbdd:fluent-bdd)](https://sonarqube.com/dashboard/index/io.github.theangrydev.fluentbdd:fluent-bdd)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.theangrydev:fluent-bdd&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.github.theangrydev:fluent-bdd)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.theangrydev:fluent-bdd)](https://sonarcloud.io/dashboard?id=io.github.theangrydev:fluent-bdd)
 
 ![Fluent BDD logo](https://raw.githubusercontent.com/theangrydev/fluent-bdd/master/logo.png)
 

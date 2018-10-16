@@ -2,7 +2,10 @@
 language: java
 jdk: oraclejdk8
 addons:
-  sonarqube: true
+  sonarcloud:
+    organization: "theangrydev-github"
+    token:
+      secure: $SONAR_TOKEN
   apt:
     packages:
       - oracle-java8-installer
@@ -13,7 +16,7 @@ install: mvn install -DskipTests=true -B -V
 script: mvn verify
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN; fi
+  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar; fi
 notifications:
   webhooks:
     urls:

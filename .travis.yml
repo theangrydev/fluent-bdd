@@ -6,9 +6,6 @@ addons:
     organization: "theangrydev-github"
     token:
       secure: $SONAR_TOKEN
-  apt:
-    packages:
-      - oracle-java8-installer
 cache:
   directories:
     - $HOME/.m2

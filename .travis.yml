@@ -4,8 +4,7 @@ jdk: oraclejdk8
 cache:
   directories:
     - $HOME/.m2
-install: mvn install -DskipTests=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B -V
-script: mvn verify
+script: mvn install -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B -V
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar -Dsonar.projectKey=fluent-bdd -Dsonar.organization=theangrydev-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN; fi

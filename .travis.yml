@@ -4,10 +4,16 @@ jdk: oraclejdk8
 cache:
   directories:
     - $HOME/.m2
+addons:
+  sonarcloud:
+    organization: default
+    token:
+      secure: $SONAR_TOKEN
+
 script: mvn install -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B -V
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar -Dsonar.projectKey=io.github.theangrydev:fluent-bdd -Dsonar.organization=theangrydev-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B; fi
+  - if [ ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == "master" ]; then mvn sonar:sonar -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B; fi
 notifications:
   webhooks:
     urls:

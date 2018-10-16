@@ -4,12 +4,12 @@ jdk: oraclejdk8
 cache:
   directories:
     - $HOME/.m2
+    - $HOME/.sonar/cache
 addons:
   sonarcloud:
     organization: default
     token:
       secure: $SONAR_TOKEN
-
 script: mvn install -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B -V
 after_success:
   - bash <(curl -s https://codecov.io/bash)

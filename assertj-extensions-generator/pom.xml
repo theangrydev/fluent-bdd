@@ -30,7 +30,7 @@
     <packaging>maven-plugin</packaging>
 
     <properties>
-        <maven.dependencies.version>3.3.9</maven.dependencies.version>
+        <maven.dependencies.version>3.8.1</maven.dependencies.version>
     </properties>
 
     <dependencies>

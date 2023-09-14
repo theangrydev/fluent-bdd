@@ -71,7 +71,7 @@
         <sonar.language>java</sonar.language>
         <mockito.version>2.2.28</mockito.version>
         <pitest.version>1.1.10</pitest.version>
-        <json.version>20160810</json.version>
+        <json.version>20230227</json.version>
         <assertj.core.version>3.5.2</assertj.core.version>
         <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
         <duplicate.finder.plugin.version>1.2.1</duplicate.finder.plugin.version>

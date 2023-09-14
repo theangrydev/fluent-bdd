@@ -20,8 +20,9 @@ package io.github.theangrydev.fluentbdd.hamcrest;
 import io.github.theangrydev.fluentbdd.core.When;
 import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * This acts as a bridge to use BDD language with Hamcrest matchers.
